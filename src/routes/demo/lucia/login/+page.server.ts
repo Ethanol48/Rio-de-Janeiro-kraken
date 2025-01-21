@@ -17,10 +17,10 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 	login: async (event) => {
 		const formData = await event.request.formData();
-		const username = formData.get('username');
+		const login = formData.get('login');
 		const password = formData.get('password');
 
-		if (!validateUsername(username)) {
+		if (!validateUsername(login)) {
 			return fail(400, {
 				message: 'Invalid username (min 3, max 31 characters, alphanumeric only)'
 			});
@@ -29,7 +29,7 @@ export const actions: Actions = {
 			return fail(400, { message: 'Invalid password (min 6, max 255 characters)' });
 		}
 
-		const results = await db.select().from(table.user).where(eq(table.user.username, username));
+		const results = await db.select().from(table.user).where(eq(table.user.login, login));
 
 		const existingUser = results.at(0);
 		if (!existingUser) {
@@ -54,11 +54,11 @@ export const actions: Actions = {
 	},
 	register: async (event) => {
 		const formData = await event.request.formData();
-		const username = formData.get('username');
+		const login = formData.get('login');
 		const password = formData.get('password');
 
-		if (!validateUsername(username)) {
-			return fail(400, { message: 'Invalid username' });
+		if (!validateUsername(login)) {
+			return fail(400, { message: 'Invalid login' });
 		}
 		if (!validatePassword(password)) {
 			return fail(400, { message: 'Invalid password' });
@@ -74,7 +74,7 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db.insert(table.user).values({ id: userId, username, passwordHash });
+			await db.insert(table.user).values({ id: userId, login, passwordHash });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
@@ -93,12 +93,15 @@ function generateUserId() {
 	return id;
 }
 
+
+const login_regex = /^[a-zA-Z-]+\.[a-zA-Z-]+$/;
+
 function validateUsername(username: unknown): username is string {
 	return (
 		typeof username === 'string' &&
 		username.length >= 3 &&
-		username.length <= 31 &&
-		/^[a-z0-9_-]+$/.test(username)
+		username.length <= 63 &&
+		login_regex.test(username)
 	);
 }
 

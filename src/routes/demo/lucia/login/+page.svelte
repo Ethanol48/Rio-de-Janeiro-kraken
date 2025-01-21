@@ -8,8 +8,8 @@
 <h1>Login/Register</h1>
 <form method="post" action="?/login" use:enhance>
 	<label>
-		Username
-		<input name="username" />
+		Login
+		<input name="login" />
 	</label>
 	<label>
 		Password
