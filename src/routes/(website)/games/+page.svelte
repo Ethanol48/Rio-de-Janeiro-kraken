@@ -7,4 +7,3 @@
 <h1>HELLO</h1>
 
 
-<Button href="/signout">Sign out</Button>
