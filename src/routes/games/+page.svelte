@@ -1,10 +1,10 @@
 <script>
 	import { enhance } from '$app/forms';
+  import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
 
 <h1>HELLO</h1>
 
-<form method="post" action="?/logout" use:enhance>
-	<button>Sign out</button>
-</form>
+
+<Button href="/signout">Sign out</Button>
