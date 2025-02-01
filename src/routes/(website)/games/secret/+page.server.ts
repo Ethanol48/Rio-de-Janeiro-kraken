@@ -10,11 +10,9 @@ export const load: PageServerLoad = async (event) => {
     return redirect(302, '/games');
   }
 
-  const result_query = await foundedSecret(event.locals.user.id)
-
   return {
     user: event.locals.user,
-    claimed: result_query[0].foundedSecret
+    claimed: await foundedSecret(event.locals.user.id)
   };
 };
 
@@ -23,9 +21,7 @@ export const actions: Actions = {
     const userId = locals.user?.id;
     if (!userId) return fail(401, { message: 'Unauthorized' });
 
-
-    const result_query = await foundedSecret(userId)
-    const claimed = result_query[0].foundedSecret
+    const claimed = await foundedSecret(userId)
 
     if (claimed) {
       return fail(400, { youClaimedItAlready: true });

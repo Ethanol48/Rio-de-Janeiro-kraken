@@ -14,8 +14,12 @@ export const leaderBoard = async () => {
 
 
 export const foundedSecret = async (userId: string) => {
-  return await db
+
+  const result_query = await db
     .select({ foundedSecret: user.foundSecret })
     .from(user)
     .where(eq(user.id, userId))
+
+  const claimed = result_query[0].foundedSecret
+  return claimed
 }
