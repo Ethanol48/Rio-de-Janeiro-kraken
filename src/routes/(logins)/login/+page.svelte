@@ -79,13 +79,13 @@
 	<p style="color: red">{form?.message ?? ''}</p>
 </div>
 
-<style lang="scss">
-	// form {
-	//   display: flex;
-	//   flex-flow: column;
-	//
-	//   label {
-	//     margin-top: 20px;
-	//   }
-	// }
+<style>
+	/*form {*/
+	/*  display: flex;*/
+	/*  flex-flow: column;*/
+	/**/
+	/*  label {*/
+	/*    margin-top: 20px;*/
+	/*  }*/
+	/*}*/
 </style>

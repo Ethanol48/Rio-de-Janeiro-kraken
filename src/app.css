@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer base {
+
   :root {
     /*--background: 0 0% 100%;*/
     /*--foreground: 222.2 84% 4.9%;*/
@@ -105,5 +108,31 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+
+  /*  custom  */
+  h1.typography {
+    @apply scroll-m-20 text-4xl font-extrabold lg:text-5xl
+  }
+
+  h2.typography {
+    @apply mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold transition-colors first:mt-0
+  }
+
+  h3.typography {
+    @apply scroll-m-20 text-2xl font-semibold
+  }
+
+  h4.typography {
+    @apply scroll-m-20 text-xl font-semibold
+  }
+
+  p.typography {
+    @apply leading-7 [&:not(:first-child)]:mt-6
+  }
+
+  blockquote.typography {
+    @apply mt-6 border-l-2 pl-6 italic
   }
 }
