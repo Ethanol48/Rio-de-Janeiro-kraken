@@ -1,16 +1,9 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
-	let { data }: {data : PageServerData} = $props();
+	let { data }: { data: PageServerData } = $props();
+	import * as Table from '$lib/components/ui/table';
 </script>
 
-<h1>LeaderBoard</h1>
+<h1 class="mb-3 text-lg">Leaderboard</h1>
 
-<div class="flex flex-col w-40">
-  {#each data.profiles as profile}
-    <!-- content here -->
-    <div class="flex flex-row border-black border justify-between">
-      <p class="">{profile.login}</p>
-      <p class="">{profile.points}</p>
-    </div>
-  {/each}
-</div>
+<div></div>

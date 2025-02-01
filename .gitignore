@@ -25,4 +25,3 @@ vite.config.ts.timestamp-*
 # SQLite
 *.db
 
-/src/routes/games/secret/

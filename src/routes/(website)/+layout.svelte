@@ -25,6 +25,14 @@
 		</div>
 	{/if}
 </div>
+
+<div class="absolute left-7 top-7">
+	<nav class="rounded p-3 shadow">
+		<Button href="/home">Home</Button>
+		<Button href="/leaderboard">Leaderboard</Button>
+		<Button href="/games">Games!!</Button>
+	</nav>
+</div>
 <!-- else content here -->
 
 {@render children()}
