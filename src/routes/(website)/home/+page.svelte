@@ -6,9 +6,6 @@
 
   let noUser = data.user === null;
   let claimed = data.claimed === true;
-
-  console.log("noUser: ", noUser)
-  console.log("claimed: ", claimed)
 </script>
 
 
