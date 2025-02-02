@@ -84,7 +84,7 @@
 
 	.arrow {
 		position: absolute;
-		top: 0px;
+		top: -20px;
 		left: 50%;
 		transform: translateX(-50%);
 		width: 60px;
