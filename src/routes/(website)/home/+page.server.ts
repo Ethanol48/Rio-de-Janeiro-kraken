@@ -1,32 +1,37 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { foundedSecret, setFoundedSecret } from '$lib/server/db/utilities';
+import { addPoints, foundedButton, setButton } from '$lib/server/db/utilities';
 
 export const load: PageServerLoad = async (event) => {
   if (!event.locals.user) {
-    return redirect(302, '/games');
+    return {
+      user: null,
+      claimed: null
+    };
   }
+
+  const claimed = await foundedButton(event.locals.user.id)
 
   return {
     user: event.locals.user,
-    claimed: await foundedSecret(event.locals.user.id)
+    claimed: claimed
   };
 };
 
 export const actions: Actions = {
-  foundSecret: async ({ locals }) => {
+  foundButton: async ({ locals }) => {
     const userId = locals.user?.id;
     if (!userId) return fail(401, { message: 'Unauthorized' });
 
-    const claimed = await foundedSecret(userId)
+    const claimed = await foundedButton(userId)
 
     if (claimed) {
-      return fail(400, { youClaimedItAlready: true });
+      return fail(401, { message: 'You already claimed the points' });
     }
 
     try {
-
-      setFoundedSecret(userId);
+      setButton(userId);
+      addPoints(userId, 5)
       return { success: true };
 
     } catch (e) {
@@ -34,5 +39,3 @@ export const actions: Actions = {
     }
   }
 };
-
-

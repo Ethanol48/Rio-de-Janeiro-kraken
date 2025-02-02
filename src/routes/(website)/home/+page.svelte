@@ -1,8 +1,14 @@
 <script lang="ts">
-  import type { LayoutServerData } from './$types';
+  import { Button } from '$lib/components/ui/button';
+  import * as Dialog from "$lib/components/ui/dialog/index.js";
 
-  let { data }: { data: LayoutServerData } = $props();
+  let { data } = $props();
 
+  let noUser = data.user === null;
+  let claimed = data.claimed === true;
+
+  console.log("noUser: ", noUser)
+  console.log("claimed: ", claimed)
 </script>
 
 
@@ -12,3 +18,45 @@
 {/if}
 
 <h1>Hello how r u doing</h1>
+
+
+{#if !(noUser || claimed)}
+<div class="invisible-custom absolute bottom-4 left-5">
+  <Dialog.Root>
+
+    <Dialog.Trigger> 
+      <Button class="cursor-pointer" size="sm">Secret</Button>
+    </Dialog.Trigger>
+
+    <Dialog.Content class="sm:max-w-[425px] justify-center">
+      <Dialog.Header>
+        <Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
+        <Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
+      </Dialog.Header>
+    <div class="flex justify-center">
+    <form method="POST" action="?/foundButton">
+      <Button type="submit" disabled={data.claimed} class="mt-2 rounded bg-primary p-2 text-white">
+        {#if data.claimed}
+          Déjà réclamé 🎉
+        {:else}
+          Réclamer
+        {/if}
+      </Button>
+</form>
+    </div>
+    </Dialog.Content>
+  </Dialog.Root>
+</div>
+
+{/if}
+
+<style lang="scss">
+  
+div.invisible-custom {
+  opacity: 0;
+  * {
+    opacity: 0;
+  }
+}
+
+</style>
