@@ -17,6 +17,20 @@ export const session = sqliteTable('session', {
   expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
+
+export const blackjack = sqliteTable('blackjack', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id),
+  ended: integer('ended', { mode: 'boolean' }).default(false),
+
+  // safe the cards as a string?
+  // {Color}{symbol/number};{Carta};{Carta}
+  playerCards: text('player_cards').notNull().default(""),
+  dealerCards: text('dealer_cards').notNull().default("")
+});
+
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
