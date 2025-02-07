@@ -5,19 +5,19 @@ import {
 	isGameOnGoing,
 	setFoundedSecret
 } from '$lib/server/db/utilities';
-import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, params }) => {
 	if (!locals.user) {
-		redirect(302, '/games');
+		return {
+			user: null,
+			points: null,
+			game: null
+		};
 	}
-
-	let game = await isGameOnGoing(locals.user.id);
-	const gameId = game.id;
 
 	return {
 		user: locals.user,
 		points: await getPoints(locals.user.id),
-		game: gameId
+		game: params.game_id
 	};
 };

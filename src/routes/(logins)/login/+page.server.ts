@@ -13,8 +13,8 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/games');
 	}
 	return {
-    user: event.locals.user
-  };
+		user: event.locals.user
+	};
 };
 
 export const actions: Actions = {
@@ -104,7 +104,6 @@ function generateUserId() {
 	const id = encodeBase32LowerCase(bytes);
 	return id;
 }
-
 
 const login_regex = /^[a-zA-Z-]+\.[a-zA-Z-]+$/;
 
