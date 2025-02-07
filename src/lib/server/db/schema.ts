@@ -4,7 +4,7 @@ export const user = sqliteTable('user', {
   id: text('id').primaryKey(),
   login: text('login').notNull().unique(),
   passwordHash: text('passwordHash').notNull(),
-  points: integer('points').default(0),
+  points: integer('points').default(10),
   foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
   button: integer('button', { mode: 'boolean' }).default(false)
 });
@@ -24,6 +24,7 @@ export const blackjack = sqliteTable('blackjack', {
     .notNull()
     .references(() => user.id),
   ended: integer('ended', { mode: 'boolean' }).default(false),
+  totalbet: integer('total_bet').notNull().default(0),
 
   // safe the cards as a string?
   // {Color}{symbol/number};{Carta};{Carta}

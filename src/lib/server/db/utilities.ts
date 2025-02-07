@@ -2,7 +2,8 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { db } from '.';
 import { blackjack, user } from './schema';
 import { count, desc, eq } from 'drizzle-orm';
-import { boolean } from 'drizzle-orm/mysql-core';
+
+import { hex_md5 } from '$lib/misc/md5';
 
 export const leaderBoard = async () => {
   return await db
@@ -10,6 +11,16 @@ export const leaderBoard = async () => {
     .from(user)
     .orderBy(desc(user.points))
     .limit(10)
+}
+
+export const CreateBlackJackGame = async (userId: string): Promise<string> => {
+  const hash = hex_md5(userId + Date.now().toString() + Math.random().toString())
+  const id = await db
+    .insert(blackjack)
+    .values({ id: hash, userId: userId, ended: false })
+    .returning({ id: blackjack.id })
+
+  return id[0].id
 }
 
 export const GetBlackJackGame = async (userId: string) => {
@@ -20,6 +31,16 @@ export const GetBlackJackGame = async (userId: string) => {
 
   const gameId = result_query[0].id
   return gameId
+}
+
+export const isGameOfUser = async (gameId: string, userId: string) => {
+  const result_query = await db
+    .select({ gameUserId: blackjack.userId })
+    .from(blackjack)
+    .where(eq(blackjack.id, gameId))
+
+  const gameUserId = result_query[0].gameUserId;
+  return gameUserId === userId;
 }
 
 
@@ -77,14 +98,14 @@ export const setButton = async (userId: string) => {
 }
 
 
-export const getPoints = async (userId: string) => {
+export const getPoints = async (userId: string): Promise<number> => {
   const result_query = await db
     .select({ points: user.points })
     .from(user)
     .where(eq(user.id, userId))
 
   const points = result_query[0].points
-  return points
+  return points!
 }
 
 export const addPoints = async (userId: string, points: number) => {
