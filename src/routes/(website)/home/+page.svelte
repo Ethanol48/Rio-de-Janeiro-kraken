@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from "$lib/components/ui/dialog/index.js";
+	import { enhance } from '$app/forms';
 
   let { data } = $props();
 
@@ -31,7 +32,7 @@
         <Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
       </Dialog.Header>
     <div class="flex justify-center">
-    <form method="POST" action="?/foundButton">
+    <form method="POST" action="?/foundButton" use:enhance>
       <Button type="submit" disabled={data.claimed} class="mt-2 rounded bg-primary p-2 text-white">
         {#if data.claimed}
           Déjà réclamé 🎉
