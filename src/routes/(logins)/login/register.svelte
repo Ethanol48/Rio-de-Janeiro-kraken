@@ -1,23 +1,19 @@
-<script>  
-	import { enhance } from '$app/forms';
+<script>
 	import { Input } from '$lib/components/ui/input';
-	import * as Card from '$lib/components/ui/card';  
+	import * as Card from '$lib/components/ui/card';
 
-  let { login, password } = $props();
+	let { login, password } = $props();
 
 	let claseBoton =
 		'focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 shadow h-9 px-4 py-2';
-
 </script>
-
-
 
 <Card.Root>
 	<Card.Header>
 		<Card.Title class="text-2xl" style="color: black;">Register</Card.Title>
 	</Card.Header>
 	<Card.Content class="w-[250px]">
-		<form method="post" action="?/register" use:enhance>
+		<form method="post" action="?/register">
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
