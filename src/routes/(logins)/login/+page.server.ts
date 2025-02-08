@@ -25,7 +25,7 @@ export const actions: Actions = {
 
 		if (!validateUsername(login)) {
 			return fail(400, {
-				message: 'Invalid username (min 3, max 31 characters, alphanumeric only)'
+				message: 'Invalid username (min 3, max 20 characters, alphanumeric only)'
 			});
 		}
 		if (!validatePassword(password)) {
@@ -106,14 +106,14 @@ function generateUserId() {
 }
 
 
-const login_regex = /^[a-zA-Z-]+\.[a-zA-Z-]+$/;
+const username_regex = /^[a-zA-Z0-9]+$/;
 
 function validateUsername(username: unknown): username is string {
 	return (
 		typeof username === 'string' &&
 		username.length >= 3 &&
-		username.length <= 63 &&
-		login_regex.test(username)
+		username.length <= 20 &&
+		username_regex.test(username)
 	);
 }
 
