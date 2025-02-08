@@ -61,10 +61,17 @@ export const actions: Actions = {
 		const password = formData.get('password');
 
 		if (!validateUsername(login)) {
-			return fail(400, { message: 'Invalid login' });
+			return fail(400, { message: 'Invalid username' });
 		}
 		if (!validatePassword(password)) {
 			return fail(400, { message: 'Invalid password' });
+		}
+
+		const results = await db.select().from(table.user).where(eq(table.user.login, login));
+
+		const existingUser = results.at(0);
+		if (existingUser) {
+			return fail(400, { message: 'The username must be unique' });
 		}
 
 		const userId = generateUserId();
