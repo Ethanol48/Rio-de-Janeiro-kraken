@@ -25,28 +25,6 @@ export const actions: Actions = {
     }
 
     try {
-<<<<<<< HEAD
-=======
-      // Récupérer l'utilisateur actuel pour connaître ses points
-      const user = await db
-        .select()
-        .from(table.user)
-        .where(eq(table.user.id, userId))
-        .limit(1);
-
-      if (user.length === 0) {
-        return fail(404, { message: 'User not found' });
-      }
-
-      const currentPoints = user[0].points || 0;
-
-      // Mettre à jour le champ foundSecret et ajouter 10 points
-      await db
-        .update(table.user)
-        .set({ foundSecret: true, points: currentPoints + 10 })
-        .where(eq(table.user.id, userId));
->>>>>>> 491bf7a (dernierpush)
-
       setFoundedSecret(userId);
       return { success: true };
     } catch (e) {
