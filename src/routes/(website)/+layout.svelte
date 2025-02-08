@@ -27,10 +27,14 @@
 </div>
 
 <div class="absolute left-7 top-7">
-	<nav class="rounded p-3 shadow">
-		<Button href="/home">Home</Button>
-		<Button href="/leaderboard">Leaderboard</Button>
-		<Button href="/games">Games!!</Button>
+	<nav class=" rounded  p-3 shadow">
+		<div class="w-[112px] sm:w-fit flex flex-row flex-wrap gap-2 ">
+		<Button href="/home">🏠 • Home</Button>
+		<Button href="/leaderboard">📜 • Leaderboard</Button>
+		<Button href="/games">🕹️ • Games</Button>
+		<Button href="/shop">🎁 • SHOP</Button>
+		</div>
+		
 	</nav>
 </div>
 <!-- else content here -->

@@ -56,7 +56,7 @@
 
 	{#if result}
 		<div class="result-box">
-			🎉 Résultat : <strong>{result}</strong>
+			Félecitation, vous avez gagné <strong>{result}</strong>
 		</div>
 	{/if}
 </div>
