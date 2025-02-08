@@ -4,23 +4,35 @@
 	import fleche from '$lib/images/fleche.png';
 
 	const SEGMENTS = 5;
-	const SEGMENT_NAMES = ['1 pts', 'Soirée Kraken', 'Rose', '5 pts', '2 points'];
+	const SEGMENT_NAMES = ['1 points', '10 points, INCROYABLE!!🪙', '5 points', '3 points', '2 points'];
 
 	let spinning = false;
 	let result: string | null = null;
+	let errorMessage: string | null = null;
 	let wheelElement: HTMLImageElement;
 
 	async function spinWheel() {
 		if (spinning) return;
 		spinning = true;
+		errorMessage = null; // Réinitialiser le message d'erreur
 
 		try {
 			// Appel de l'API
 			const response = await fetch('/games/roue_random/api/spin');
+			const data = await response.json();
+
 			if (!response.ok) {
-				throw new Error(`Erreur HTTP : ${response.status}`);
+				// Si l'utilisateur ne peut pas jouer
+				if (response.status === 403) {
+					errorMessage = data.error; // Afficher le message d'erreur
+				} else {
+					throw new Error(`Erreur HTTP : ${response.status}`);
+				}
+				return;
 			}
-			const { segment } = await response.json();
+
+			// Si l'utilisateur peut jouer
+			const { segment } = data;
 
 			// Calcul de la rotation
 			const targetRotation = segment * 72 + 360 * 8; // 8 tours
@@ -31,22 +43,20 @@
 				ease: 'power3.out',
 				onComplete: () => {
 					spinning = false;
-					result = SEGMENT_NAMES[segment];
+					result = SEGMENT_NAMES[segment]; // Afficher le résultat
 				}
 			});
 		} catch (error) {
 			console.error('Erreur:', error);
+			errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
 			spinning = false;
 		}
 	}
 </script>
 
-<!-- Le reste du code reste identique -->
-
 <div class="container">
 	<div class="wheel-frame">
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />
-
 		<img class="arrow" src={fleche} alt="Flèche indicateur" />
 	</div>
 
@@ -54,9 +64,15 @@
 		{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
 	</button>
 
+	{#if errorMessage}
+		<div class="error-box">
+			{errorMessage}
+		</div>
+	{/if}
+
 	{#if result}
 		<div class="result-box">
-			Félecitation, vous avez gagné <strong>{result}</strong>
+			Félicitations, vous avez gagné <strong>{result}</strong>
 		</div>
 	{/if}
 </div>
@@ -104,5 +120,23 @@
 
 	button:hover {
 		transform: scale(1.05);
+	}
+
+	.error-box {
+		margin-top: 1rem;
+		padding: 1rem;
+		background: #ffebee;
+		color: #c62828;
+		border: 1px solid #c62828;
+		border-radius: 8px;
+	}
+
+	.result-box {
+		margin-top: 1rem;
+		padding: 1rem;
+		background: #e8f5e9;
+		color: #2e7d32;
+		border: 1px solid #2e7d32;
+		border-radius: 8px;
 	}
 </style>

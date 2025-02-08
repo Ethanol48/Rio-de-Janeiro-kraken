@@ -6,7 +6,8 @@ export const user = sqliteTable('user', {
   passwordHash: text('passwordHash').notNull(),
   points: integer('points').default(0),
   foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
-  button: integer('button', { mode: 'boolean' }).default(false)
+  button: integer('button', { mode: 'boolean' }).default(false),
+  LastPlayRoue: integer('LastPlayRoue').default(0)
 });
 
 export const session = sqliteTable('session', {
