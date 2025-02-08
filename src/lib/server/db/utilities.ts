@@ -4,7 +4,6 @@ import { blackjack, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { hash } from '@node-rs/argon2';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
-import type { Card } from '$lib/components/ui/card';
 
 export const leaderBoard = async () => {
 	return await db

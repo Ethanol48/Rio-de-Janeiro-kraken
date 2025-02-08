@@ -1,16 +1,11 @@
-
-
 - Black Jack
 
 - Simulate deck
 
 - Bets
-    - Double
+
+  - Double
 
 - Give cards
-    - to Dealer
-    - to Player
-
-
-
-
+  - to Dealer
+  - to Player
