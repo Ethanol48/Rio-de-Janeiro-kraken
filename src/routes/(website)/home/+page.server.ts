@@ -21,12 +21,12 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
   foundButton: async ({ locals }) => {
     const userId = locals.user?.id;
-    if (!userId) return fail(401, { message: 'Unauthorized' });
+    if (!userId) return fail(401, { success: false, message: 'Unauthorized' });
 
     const claimed = await foundedButton(userId)
 
     if (claimed) {
-      return fail(401, { message: 'You already claimed the points' });
+      return fail(401, { success: false, message: 'You already claimed the points' });
     }
 
     try {
