@@ -27,14 +27,25 @@
 </div>
 
 <div class="absolute left-7 top-7">
-	<nav class=" rounded  p-3 shadow">
-		<div class="w-[112px] sm:w-fit flex flex-row flex-wrap gap-2 ">
-		<Button href="/home">🏠 • Home</Button>
-		<Button href="/leaderboard">📜 • Leaderboard</Button>
-		<Button href="/games">🕹️ • Games</Button>
-		<Button href="/shop">🎁 • SHOP</Button>
+	<nav class=" rounded p-3 shadow">
+		<div class="flex w-[40px] flex-row flex-wrap gap-2 sm:w-fit">
+			<Button href="/home">
+				<p class="ml-[-1px] text-xl">🏠</p>
+				<p class="invisible w-0 sm:visible sm:w-fit">• Home</p>
+			</Button>
+			<Button href="/leaderboard">
+				<p class="ml-[-1px] text-xl">📜</p>
+				<p class="invisible w-0 sm:visible sm:w-fit">• Leaderboard</p>
+			</Button>
+			<Button href="/games">
+				<p class="ml-[-1px] text-xl">🕹️</p>
+				<p class="invisible w-0 sm:visible sm:w-fit">• Games</p>
+			</Button>
+			<Button href="/shop">
+				<p class="ml-[-1px] text-xl">🎁</p>
+				<p class="invisible w-0 sm:visible sm:w-fit">• SHOP</p>
+			</Button>
 		</div>
-		
 	</nav>
 </div>
 <!-- else content here -->
