@@ -46,6 +46,18 @@ export const GetBlackJackGame = async (userId: string) => {
   return game;
 };
 
+
+export const DoesGameExist = async (gameId: string) => {
+  const result_query = await db
+    .select()
+    .from(blackjack)
+    .where(eq(blackjack.id, gameId));
+
+  const theres_result = result_query.length > 0;
+
+  return theres_result;
+};
+
 export const DoesGameExistAndNotEnded = async (gameId: string) => {
   const result_query = await db
     .select()
@@ -130,6 +142,18 @@ export const getPoints = async (userId: string): Promise<number> => {
 
   const points = result_query[0].points;
   return points!;
+};
+
+export const reducePoints = async (userId: string, points: number) => {
+  if (points < 0) return;
+
+  // this wont be null normally, you are only suppose to call this fonction
+  const prevPoints = await getPoints(userId);
+
+  return await db
+    .update(user)
+    .set({ points: prevPoints! - points })
+    .where(eq(user.id, userId));
 };
 
 export const addPoints = async (userId: string, points: number) => {

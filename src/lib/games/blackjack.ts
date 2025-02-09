@@ -152,6 +152,7 @@ export enum Decision {
   STAND,
   HIT,
   DOUBLE,
+  START,
   UNKOWN
 }
 
@@ -165,6 +166,8 @@ export const translateDecitionUser = (decition: string): Decision => {
       return Decision.DOUBLE;
     case 'stand':
       return Decision.STAND;
+    case 'start':
+      return Decision.START;
 
     default:
       return Decision.UNKOWN;
@@ -338,32 +341,12 @@ export function StringToCards(cards: string): Card[] {
   return result;
 }
 
-function Turn(hand: Hand) {
-  const counts = hand.sumOfCards();
-  const decision = decideMove(counts.current_count, counts.min_count);
-  // TODO: take the action
-}
-
 
 // decision to play dealer
 export function adjustForAces(current_count: number, min_count: number) {
-  console.log("current: ", current_count)
-  console.log("min: ", min_count)
   while (current_count > 21 && current_count !== min_count) {
-    console.log("current: ", current_count)
-    console.log("min: ", min_count)
     current_count -= 10; // Convert an Ace from 11 to 1
   }
   return current_count; // Return the adjusted hand value
 }
 
-export function decideMove(current_count: number, min_count: number) {
-  let effectiveTotal = adjustForAces(current_count, min_count); // Adjust Aces if needed
-
-  // Basic blackjack strategy for hitting or standing
-  if (effectiveTotal >= 17) {
-    return Decision.STAND; // Stand on 17 or more
-  } else {
-    return Decision.HIT; // Hit on 16 or less
-  }
-}
