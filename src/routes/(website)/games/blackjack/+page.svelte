@@ -1,15 +1,23 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageServerData } = $props();
 
+	let waiting = $state(false);
+
 	async function callGet() {
+		waiting = true;
+
 		const resp = await fetch('/games/blackjack', {
 			method: 'GET'
 		});
 
-		console.log(resp);
+		const id = await resp.json();
+
+		goto(`/games/blackjack/${id.id}`);
 	}
 </script>
 
@@ -18,10 +26,14 @@
 		{#if data.game !== null}
 			<Button>Re-join game</Button>
 		{:else}
-			<Button onclick={callGet}>Play</Button>
+			<Button onclick={callGet} disabled={waiting}>
+				{#if waiting}
+					Creating Room
+				{:else}
+					Play
+				{/if}
+			</Button>
 		{/if}
-
-		<h1>Hola</h1>
 
 		<!--
   get gameSession if any and button to go to session
