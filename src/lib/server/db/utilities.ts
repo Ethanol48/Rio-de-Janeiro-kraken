@@ -1,8 +1,6 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { db } from '.';
 import { user } from './schema';
 import { desc, eq ,sql} from 'drizzle-orm';
-import { boolean } from 'drizzle-orm/mysql-core';
 
 export const leaderBoard = async () => {
   return await db

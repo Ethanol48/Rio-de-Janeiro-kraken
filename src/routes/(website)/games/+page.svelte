@@ -14,10 +14,10 @@
 	<button onclick={() => goTo('/games/roue_random')}>
 		<span class="box"> Roue de la Chance 🍀 </span>
 	</button>
-	<button onclick={() => goTo("/games/krak'ball")}>
+	<button onclick={() => goTo("/games/krakball")}>
 		<span class="box"> Trouve ta Rose 🌹 </span>
 	</button>
-	<button onclick={() => goTo("/games/krak'Jack")}>
+	<button onclick={() => goTo("/games/krakJack")}>
 		<span class="box">
 			<p>Krak'Jack</p>
 			<p>♠️</p>
