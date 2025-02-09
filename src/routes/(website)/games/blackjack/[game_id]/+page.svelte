@@ -1,32 +1,23 @@
-<script>
+<script lang="ts">
 	import { Carta, Color, Hand, StringToCards } from '$lib/games/blackjack';
 	import Blackjack from './comps/Blackjack.svelte';
-	import Card from './comps/Card.svelte';
-	import { cn } from '$lib/utils';
-
-	const decitions = ['start', 'hit', 'double', 'stand'];
-
-	const cartas_str = 'HQ;S2;H4;SA;S6';
-	const hand = new Hand(StringToCards(cartas_str));
-
-	const c = hand.cards.shift();
 
 	let { data } = $props();
 
-	//let cartas = [
-	//	{ color: Color.HEARTS, symbol: Carta.Ace },
-	//	{ color: Color.DIAMONDS, symbol: Carta.Queen },
-	//	{ color: Color.SPADES, symbol: Carta.King },
-	//	{ color: Color.CLOVERS, symbol: Carta.Ace }
-	//];
-
-	console.log(data.game);
+	const puntos = data.points!;
+	console.log(data.game?.dealerCards);
+	console.log('game ended: ', data.game?.ended);
 </script>
 
-<p class="text-2xl">Card: {c?.ToString()}</p>
-<p class="text-2xl">Card Value: {c?.Value()}</p>
-
-<p class="text-2xl">Sum of cards: {hand.sumOfCards()}</p>
-<p class="text-2xl">Sum of cards: {hand.cards.length}</p>
-
-<Blackjack points={data.points} />
+{#if data.game !== undefined && data.game !== null}
+	<Blackjack
+		gameId={data.game.id}
+		points={puntos}
+		ended={data.game.ended!}
+		firstPlay={data.game.firstPlay!}
+		playerHand={new Hand(StringToCards(data.game.playerCards))}
+		dealerHand={new Hand(StringToCards(data.game.dealerCards))}
+	/>
+{:else}
+	<!-- else content here -->
+{/if}

@@ -13,11 +13,13 @@ export const load: PageServerLoad = async ({ locals }) => {
   }
 
   let game = await isGameOnGoing(locals.user.id);
-  const gameId = game.data!.id;
+  const gameId = game.data?.id;
+
+  const puntos = await getPoints(locals.user.id);
 
   return {
     user: locals.user,
-    points: await getPoints(locals.user.id),
+    points: puntos!,
     game: gameId
   };
 };

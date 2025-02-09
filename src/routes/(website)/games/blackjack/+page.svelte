@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageServerData } = $props();
@@ -19,12 +18,14 @@
 
 		goto(`/games/blackjack/${id.id}`);
 	}
+
+	console.log(data.game);
 </script>
 
 <div>
 	{#if data.user !== null}
-		{#if data.game !== null}
-			<Button>Re-join game</Button>
+		{#if data.game !== null && data.game !== undefined}
+			<Button onclick={callGet}>Re-join game</Button>
 		{:else}
 			<Button onclick={callGet} disabled={waiting}>
 				{#if waiting}

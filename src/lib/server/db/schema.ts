@@ -33,8 +33,10 @@ export const blackjack = sqliteTable('blackjack', {
   totalbet: integer('total_bet').notNull().default(0),
 
   started: integer('started', { mode: 'boolean' }).default(false),
+  firstPlay: integer('first_play', { mode: 'boolean' }).default(true),
+  neutral: integer('neutral', { mode: 'boolean' }).default(false),
   ended: integer('ended', { mode: 'boolean' }).default(false),
-  playerWon: integer('playerWon', { mode: 'boolean' }).default(false)
+  playerWon: integer('player_won', { mode: 'boolean' }).default(false)
 });
 
 export type Session = typeof session.$inferSelect;

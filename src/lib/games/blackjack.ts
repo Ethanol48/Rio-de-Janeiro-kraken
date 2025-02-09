@@ -13,7 +13,8 @@ export enum Carta {
   Jack,
   Queen,
   King,
-  Ace
+  Ace,
+  PLACEHOLDER
 }
 
 //export enum Value {
@@ -42,7 +43,7 @@ export enum Color {
   SPADES,
   HEARTS,
   DIAMONDS,
-  CLOVERS
+  CLOVERS,
 }
 
 
@@ -133,10 +134,6 @@ export class Hand {
         min += this.cards[i].max;
       }
     }
-
-    console.log("hand current: ", current)
-    console.log("hand min: ", min)
-
     return adjustForAces(current, min)
   }
 }
@@ -157,7 +154,7 @@ export enum Decision {
 }
 
 export const translateDecitionUser = (decition: string): Decision => {
-  // DECITIONS = ['hit', 'double', 'stand'];
+  // DECITIONS = ['hit', 'double', 'stand', 'start'];
   //
   switch (decition) {
     case 'hit':
@@ -312,15 +309,24 @@ function stringToSymbol(input: string): Carta {
   }
 }
 
+
+export function CardToString(cards: Card) {
+  return cards.ToString();
+}
+
 export function CardsToString(cards: Card[]) {
   let result = '';
+
+  const theresNone = cards.length == 0;
 
   for (let i = 0; i < cards.length - 1; i++) {
     result += cards[i].ToString();
     result += ';';
   }
 
-  result += cards[cards.length - 1].ToString();
+  if (!theresNone) {
+    result += cards[cards.length - 1].ToString();
+  }
   return result;
 }
 
