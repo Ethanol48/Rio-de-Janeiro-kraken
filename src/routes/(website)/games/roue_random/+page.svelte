@@ -7,12 +7,13 @@
 	const SEGMENT_NAMES = ['1 points', '10 points, INCROYABLE!!🪙', '5 points', '3 points', '2 points'];
 
 	let spinning = false;
+	let intromsg = true; 
 	let result: string | null = null;
 	let errorMessage: string | null = null;
 	let wheelElement: HTMLImageElement;
 
 	async function spinWheel() {
-		console.log()
+		intromsg = false;
 		if (spinning) return;
 		spinning = true;
 		errorMessage = null; // Réinitialiser le message d'erreur
@@ -60,6 +61,13 @@
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />
 		<img class="arrow" src={fleche} alt="Flèche indicateur" />
 	</div>
+	{#if intromsg}
+		<div >
+			<h2 style="font-size: 18px;">
+				Fait tourner la roue toutes les 3 heures pour gagner des <b>points</b> !
+			</h2>
+		</div>
+	{/if}
 
 	<button on:click={spinWheel} disabled={spinning}>
 		{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
@@ -94,14 +102,17 @@
 	}
 
 	.wheel {
-		width: 100%;
-		height: 100%;
+		width: 80%;
+		height: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20%;
 		transition: transform 0.1s;
 	}
 
 	.arrow {
 		position: absolute;
-		top: -20px;
+		top: 100px;
 		left: 50%;
 		transform: translateX(-50%);
 		width: 60px;

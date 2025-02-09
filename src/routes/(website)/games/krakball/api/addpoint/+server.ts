@@ -13,7 +13,7 @@ export async function GET({ locals }) { // Suppose que l'user est dans locals
   
   try {
     // Vérification du temps d'attente
-    await addPoints(userId,+2);
+    await addPoints(userId,+3);
     
     
     return new Response(

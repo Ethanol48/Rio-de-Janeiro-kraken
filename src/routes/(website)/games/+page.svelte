@@ -24,7 +24,7 @@
 		</span>
 	</button>
 
-	<button onclick={() => (window.location.href = "https://kraken.armand-ms.fr")}>
+	<button onclick={() => (window.location.href = "https://kraken-run.armand-ms.fr")}>
 		<span class="box">
 		  <p>Krak'Run</p>
 		  <p>🪸</p>

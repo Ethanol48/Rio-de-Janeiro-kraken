@@ -13,7 +13,7 @@
 		<Card.Title class="text-2xl" style="color: black;">Login</Card.Title>
 	</Card.Header>
 	<Card.Content class="w-[250px]">
-		<form method="post" action="?/login">
+		<form method="POST" >
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>

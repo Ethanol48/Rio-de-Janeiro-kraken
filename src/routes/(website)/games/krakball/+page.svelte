@@ -7,6 +7,7 @@
   let isAnimating = false;
   let gameStarted = false;
   let timeLeft = 30;
+  let msgstart = true;
   let timer;
   let resultMessage = '';
   let jeu_a_commencer = false
@@ -27,11 +28,16 @@
 
   async function Checkplay() {
     
+    
     const response = await fetch('/games/krakball/api/removepoint');
 		const data = await response.json();
     console.log(data)
     if(data==="None"){
       resultMessage='Vous avez déjà jouer 10 fois aujourd\'hui, attendais le lendeamin !'
+      return "-1";
+    }
+    if(data==="NONON"){
+      resultMessage='Tu me prends pour un débile?\n Reviens quand tu auras assez de points pour me défier'
       return "-1";
     }
     return "1";
@@ -43,6 +49,7 @@
     jeu_a_commencer = false;
     resetGame();
   }
+  msgstart = false;
 
   const checksipeutjouer = await Checkplay()
   if(checksipeutjouer=="-1"){
@@ -134,10 +141,10 @@
       onComplete: () => {
         if (cup === winningCup) {
           showRose = true;
-          resultMessage = 'Félicitations, vous avez trouvé la rose ! 🌹';
+          resultMessage = 'Quoi?? Tu as trouvé la rose ! 🌹 \n Pfff, bon voila tes 3 points';
           
         } else {
-          resultMessage = 'Désolé, il n\'y a rien sous ce gobelet.';
+          resultMessage = 'Dommage, pas cette fois haha !';
         }
         endGame(cup === winningCup);
       },
@@ -249,7 +256,7 @@
 }
 
 </style>
-
+<br><br><br>
 <div class="container">
   <div class="cups-container justify-between">
     {#each cups as cup}
@@ -269,6 +276,10 @@
   </button>
   {#if resultMessage}
     <div class="message">{resultMessage}</div>
+  {/if}
+
+  {#if msgstart}
+    <div ><br><br> Ahh, tu veux me défier? Okay mais tu vas devoir me donné un point alors haha ! <br><br>Si tu trouves la rose de Cupidon, je te donnerai en échange <b style="text-decoration: underline;"> 3 points</b>!</div>
   {/if}
   {#if gameStarted}
     <div class="timer">Temps restant : {timeLeft} secondes</div>

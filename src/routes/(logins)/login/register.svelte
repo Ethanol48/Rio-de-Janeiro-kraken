@@ -13,7 +13,7 @@
 		<Card.Title class="text-2xl" style="color: black;">Register</Card.Title>
 	</Card.Header>
 	<Card.Content class="w-[250px]">
-		<form method="post" action="?/register">
+		<form method="POST">
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
@@ -40,7 +40,7 @@
 				/>
 			</label>
 			<div class="mt-3 flex flex-col gap-3">
-				<button class={claseBoton} formaction="?/register">Register</button>
+				<button class={claseBoton} formaction="?/register" formmethod="POST">Register</button>
 			</div>
 		</form>
 	</Card.Content>

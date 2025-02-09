@@ -6,7 +6,7 @@
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
 </script>
 
-<div class="absolute right-7 top-7 flex h-fit w-fit">
+<div class="absolute right-1 top-7 flex h-fit w-fit">
 	{#if data.user === null}
 		<Button size="lg" href="/login">Log in</Button>
 	{:else}
@@ -26,7 +26,7 @@
 	{/if}
 </div>
 
-<div class="absolute left-7 top-7">
+<div class="absolute left-1 top-3">
 	<nav class=" rounded p-3 shadow">
 		<div class="flex w-[40px] flex-row flex-wrap gap-2 sm:w-fit">
 			<Button href="/home">

@@ -1,0 +1,4 @@
+# Permet les requêtes cross-origin (CORS)
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type"
