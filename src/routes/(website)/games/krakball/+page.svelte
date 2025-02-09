@@ -279,7 +279,7 @@
   {/if}
 
   {#if msgstart}
-    <div ><br><br> Ahh, tu veux me défier? Okay mais tu vas devoir me donné un point alors haha ! <br><br>Si tu trouves la rose de Cupidon, je te donnerai en échange <b style="text-decoration: underline;"> 3 points</b>!</div>
+    <div ><br><br> Ahh, tu veux me défier? Okay mais tu vas devoir me donner un point alors haha ! <br><br>Si tu trouves la rose de Cupidon, je te donnerai en échange <b style="text-decoration: underline;"> 3 points</b>!</div>
   {/if}
   {#if gameStarted}
     <div class="timer">Temps restant : {timeLeft} secondes</div>
