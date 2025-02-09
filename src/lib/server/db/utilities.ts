@@ -38,12 +38,12 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 
 export const GetBlackJackGame = async (userId: string) => {
   const result_query = await db
-    .select({ id: blackjack.id })
+    .select()
     .from(blackjack)
     .where(eq(blackjack.userId, userId));
 
-  const gameId = result_query[0].id;
-  return gameId;
+  const game = result_query[0];
+  return game;
 };
 
 export const DoesGameExistAndNotEnded = async (gameId: string) => {
@@ -57,6 +57,19 @@ export const DoesGameExistAndNotEnded = async (gameId: string) => {
   return { theres_result: theres_result, result: result_query[0] };
 };
 
+
+// TODO
+//export const addBetToGame = async (gameId: string, points: number) => {
+//  // this wont be null normally, you are only suppose to call this fonction
+//  const game = await GetBlackJackGame(gameId);
+//
+//
+//  return await db
+//    .update(blackjack)
+//    .set({ points: game! + points })
+//    .where(eq(blackjack.id, gameId));
+//};
+
 export const isGameOfUser = async (gameId: string, userId: string) => {
   const result_query = await db
     .select({ gameUserId: blackjack.userId })
@@ -69,7 +82,7 @@ export const isGameOfUser = async (gameId: string, userId: string) => {
 
 export const isGameOnGoing = async (
   userId: string
-): Promise<{ game: Boolean; id: string | null }> => {
+) => {
   const result_query: { number: number }[] = await db
     .select({ number: count() })
     .from(blackjack)
@@ -78,7 +91,7 @@ export const isGameOnGoing = async (
   const num = result_query[0].number;
 
   if (num == 0) return { game: false, id: null };
-  return { game: true, id: await GetBlackJackGame(userId) };
+  return { game: true, data: await GetBlackJackGame(userId) };
 };
 
 export const foundedSecret = async (userId: string) => {

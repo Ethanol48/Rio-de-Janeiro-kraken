@@ -1,4 +1,4 @@
-import { createCards, translateDecitionUser, Decision, StringToCards, CardsToString } from '$lib/games/blackjack';
+import { createCards, Hand, translateDecitionUser, Decision, StringToCards, CardsToString } from '$lib/games/blackjack';
 import {
   CreateBlackJackGame,
   DoesGameExistAndNotEnded,
@@ -83,6 +83,8 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
     return json({ message: 'You are not able to bet more that you already have' }, { status: 400 });
   }
 
+  // take the points and put it in the bet
+
   // game logic
   //
   // give cards to:
@@ -98,9 +100,9 @@ export const POST: RequestHandler = async ({ request, locals, url }) => {
   //
   // request user decition
 
-  const cards = StringToCards(GameReq.result.pile_cards);
-  const player_cards = StringToCards(GameReq.result.playerCards);
-  const dealer_cards = StringToCards(GameReq.result.dealerCards);
+  const cards = new Hand(StringToCards(GameReq.result.pile_cards));
+  const player_cards = new Hand(StringToCards(GameReq.result.playerCards));
+  const dealer_cards = new Hand(StringToCards(GameReq.result.dealerCards));
 
   console.log("pile_cards: ", GameReq.result.pile_cards)
   console.log("player_cards: ", GameReq.result.playerCards)

@@ -45,13 +45,23 @@ export enum Color {
   CLOVERS
 }
 
+
 class Card {
   symbol: Carta;
   color: Color;
+  min: number;
+  max: number;
 
   constructor(_symbol: Carta, _color: Color) {
     this.symbol = _symbol;
     this.color = _color;
+
+    this.max = this.Value();
+    if (_symbol == Carta.Ace) {
+      this.min = 1;
+    } else {
+      this.min = this.max;
+    }
   }
 
   ToString() {
@@ -63,6 +73,38 @@ class Card {
 
     return result;
   }
+
+  Value() {
+
+    switch (this.symbol) {
+      case Carta.Two:
+        return 2;
+      case Carta.Three:
+        return 3;
+      case Carta.Four:
+        return 4;
+      case Carta.Five:
+        return 5;
+      case Carta.Six:
+        return 6;
+      case Carta.Seven:
+        return 7;
+      case Carta.Eight:
+        return 8;
+      case Carta.Nine:
+        return 9;
+      case Carta.Ten:
+        return 10;
+      case Carta.Jack:
+        return 10;
+      case Carta.Queen:
+        return 10;
+      case Carta.King:
+        return 10;
+      case Carta.Ace:
+        return 11;
+    }
+  }
 }
 
 //export type Card = {
@@ -71,44 +113,38 @@ class Card {
 //  //value: Value
 //}
 
-export type Hand = {
+export class Hand {
   cards: Card[];
-};
 
-export const Value = (card: Card) => {
-  switch (card.symbol) {
-    case Carta.Two:
-      return 2;
-    case Carta.Three:
-      return 3;
-    case Carta.Four:
-      return 4;
-    case Carta.Five:
-      return 5;
-    case Carta.Six:
-      return 6;
-    case Carta.Seven:
-      return 7;
-    case Carta.Eight:
-      return 8;
-    case Carta.Nine:
-      return 9;
-    case Carta.Ten:
-      return 10;
-    case Carta.Jack:
-      return 10;
-    case Carta.Queen:
-      return 10;
-    case Carta.King:
-      return 10;
-    case Carta.Ace:
-      return 11;
+  constructor(_cards: Card[]) {
+    this.cards = _cards
   }
-};
+
+  sumOfCards(): number {
+    let min = 0;
+    let current = 0;
+
+    for (let i = 0; i < this.cards.length; i++) {
+      if (this.cards[i].symbol === Carta.Ace) {
+        current += 11;
+        min += 1;
+      } else {
+        current += this.cards[i].max;
+        min += this.cards[i].max;
+      }
+    }
+
+    console.log("hand current: ", current)
+    console.log("hand min: ", min)
+
+    return adjustForAces(current, min)
+  }
+}
+
 
 export function enOfGameState(playerCards: Hand, dealerCards: Hand): State {
-  if (sumOfCards(dealerCards) > sumOfCards(playerCards)) return State.PLAYER_LOST;
-  if (sumOfCards(dealerCards) == sumOfCards(playerCards)) return State.NEUTRAL;
+  if (dealerCards.sumOfCards() > playerCards.sumOfCards()) return State.PLAYER_LOST;
+  if (dealerCards.sumOfCards() == playerCards.sumOfCards()) return State.NEUTRAL;
   else return State.PLAYER_WON;
 }
 
@@ -289,49 +325,39 @@ export function StringToCards(cards: string): Card[] {
   const cartas = cards.split(';');
   const result = Array();
 
+  if (cards === "")
+    return result;
+
   for (let i = 0; i < cartas.length; i++) {
     const color = stringToColor(cartas[i][0]);
     const symbol = stringToSymbol(cartas[i][1]);
     const card = new Card(symbol, color);
-
     result.push(card);
   }
 
   return result;
 }
 
-function Turn(hand: hand) {
-  const counts = sumOfCards(hand);
+function Turn(hand: Hand) {
+  const counts = hand.sumOfCards();
   const decision = decideMove(counts.current_count, counts.min_count);
   // TODO: take the action
 }
 
-function sumOfCards(hand: Hand): { min_count: number; current_count: number } {
-  let min = 0;
-  let current = 0;
-
-  for (let i = 0; i < hand.cards.length; i++) {
-    if (hand.cards[i].symbol === Carta.Ace) {
-      current += 11;
-      min += 1;
-    } else {
-      current += Value(hand.cards[i]);
-      min += Value(hand.cards[i]);
-    }
-  }
-
-  return { min_count: min, current_count: current };
-}
 
 // decision to play dealer
-function adjustForAces(current_count: number, min_count: number) {
+export function adjustForAces(current_count: number, min_count: number) {
+  console.log("current: ", current_count)
+  console.log("min: ", min_count)
   while (current_count > 21 && current_count !== min_count) {
+    console.log("current: ", current_count)
+    console.log("min: ", min_count)
     current_count -= 10; // Convert an Ace from 11 to 1
   }
   return current_count; // Return the adjusted hand value
 }
 
-function decideMove(current_count: number, min_count: number) {
+export function decideMove(current_count: number, min_count: number) {
   let effectiveTotal = adjustForAces(current_count, min_count); // Adjust Aces if needed
 
   // Basic blackjack strategy for hitting or standing

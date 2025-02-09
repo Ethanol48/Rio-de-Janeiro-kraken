@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Card from './Card.svelte';
+	import Bet from './Bet.svelte';
+
 	let { points } = $props();
 
 	const DECITIONS = ['hit', 'double', 'stand'];
@@ -7,6 +10,8 @@
 	const incrementX = 17;
 	const incrementY = 20;
 
+	let betting = $state(true);
+
 	// flow of game
 	// place bet, confirm
 
@@ -14,6 +19,10 @@
 
 	//if dealer has a ten
 </script>
+
+{#if betting}
+	<Bet {points} />
+{/if}
 
 <!--
 <div class="bottom relative">
