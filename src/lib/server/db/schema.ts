@@ -8,9 +8,7 @@ export const user = sqliteTable('user', {
   foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
   button: integer('button', { mode: 'boolean' }).default(false),
   last_spin: integer('last_spin').default(0), 
-  lastpoint: integer('lastpoint').default(0), // Timestamp en secondes
-  lastplayday: text('lastplayday'), // Timestamp en secondes
-  numberofplaytoday: integer('numberofplaytoday').default(0), // Timestamp en secondes
+  numberofplaytoday: integer('numberofplaytoday').default(0),
 });
 
 export const session = sqliteTable('session', {

@@ -12,28 +12,34 @@
 	let claimed = data.claimed === true;
 
 	const submitFoundButton: SubmitFunction = () => {
-		toast.custom(Custom, { componentProps: { texto: 'Points reclamer', emoji: ' 🎉' } });
+		toast.custom(Custom, { componentProps: { texto: 'Points réclamés', emoji: ' 🎉' } });
 	};
 </script>
 
+<div class="header">
+	<img src="/kraken.png" alt="Logo" class="logo" />
+</div>
+<br><br>
+
 {#if data.user !== null}
-	<h1>Hi, {data.user.login}!</h1>
-	<p>Your user ID is {data.user.id}.</p>
+	<h1>Salut, <b> {data.user.login}</b> !</h1><br>
+	<p style="font-size: 12px;">Ton ID utilisateur est {data.user.id}.</p>
 {/if}
 
-<h1>Hello how r u doing</h1>
+<h1>Bienvenue dans notre monde d'amour et de jeux ❤️</h1>
+<p>Joue et amuse-toi pour cette <b style="text-decoration: underline;">Saint-Valentin !</b></p>
 
 {#if !(noUser || claimed)}
 	<div class="invisible-custom absolute bottom-4 left-5">
 		<Dialog.Root>
 			<Dialog.Trigger>
-				<Button class="cursor-pointer" size="sm">Secret</Button>
+				<Button class="cursor-pointer secret-button" size="sm">Secret</Button>
 			</Dialog.Trigger>
 
 			<Dialog.Content class="justify-center sm:max-w-[425px]">
 				<Dialog.Header>
-					<Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
-					<Dialog.Description class="text-center">Reclame ta recompense</Dialog.Description>
+					<Dialog.Title>T'as trouvé le bouton secret !!!</Dialog.Title>
+					<Dialog.Description class="text-center">Réclame ta récompense</Dialog.Description>
 				</Dialog.Header>
 				<div class="flex justify-center">
 					<form method="POST" action="?/foundButton" use:enhance={submitFoundButton}>
@@ -56,10 +62,37 @@
 {/if}
 
 <style lang="scss">
+	.header {
+		display: flex;
+		justify-content: center;
+		padding: 10px;
+	}
+
+	.logo {
+		width: 80px;
+		height: auto;
+	}
+
 	div.invisible-custom {
 		opacity: 0;
 		* {
 			opacity: 0;
+		}
+	}
+
+	.secret-button {
+		animation: pulse 1.5s infinite;
+	}
+
+	@keyframes pulse {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+		100% {
+			transform: scale(1);
 		}
 	}
 </style>
