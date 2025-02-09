@@ -113,14 +113,14 @@ function generateUserId() {
 }
 
 
-const username_regex = /^[a-zA-Z0-9.]+$/;
+const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm;
 
 function validateUsername(username: unknown): username is string {
   return (
     typeof username === 'string' &&
     username.length >= 3 &&
-    username.length <= 20 &&
-    username_regex.test(username)
+    username.length <= 60 &&
+    regex.test(username)
   );
 }
 
