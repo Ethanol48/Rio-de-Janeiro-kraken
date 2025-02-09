@@ -12,6 +12,7 @@
 	let wheelElement: HTMLImageElement;
 
 	async function spinWheel() {
+		console.log()
 		if (spinning) return;
 		spinning = true;
 		errorMessage = null; // Réinitialiser le message d'erreur
@@ -21,6 +22,7 @@
 			const response = await fetch('/games/roue_random/api/spin');
 			const data = await response.json();
 
+			
 			if (!response.ok) {
 				// Si l'utilisateur ne peut pas jouer
 				if (response.status === 403) {
@@ -30,7 +32,6 @@
 				}
 				return;
 			}
-
 			// Si l'utilisateur peut jouer
 			const { segment } = data;
 

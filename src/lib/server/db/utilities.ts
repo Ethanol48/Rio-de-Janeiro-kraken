@@ -1,7 +1,7 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { db } from '.';
 import { user } from './schema';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq ,sql} from 'drizzle-orm';
 import { boolean } from 'drizzle-orm/mysql-core';
 
 export const leaderBoard = async () => {
@@ -13,57 +13,7 @@ export const leaderBoard = async () => {
 }
 
 
-export const LastlayRoue = async (userId: string) => {
-  const result_query = await db
-    .select({ LastlayRoue: user.LastPlayRoue })
-    .from(user)
-    .where(eq(user.id, userId))
 
-
-  return result_query
-}
-
-function dateToInt(date: Date): number {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Mois de 1 à 12
-  const day = String(date.getDate()).padStart(2, '0'); // Jour de 1 à 31
-  const hours = String(date.getHours()).padStart(2, '0'); // Heures de 0 à 23
-  const minutes = String(date.getMinutes()).padStart(2, '0'); // Minutes de 0 à 59
-
-  return parseInt(`${year}${month}${day}${hours}${minutes}`);
-}
-
-export async function canUserPlay(userId: string): Promise<{ canPlay: boolean, waitTime?: number }> {
-  // Récupérer la dernière date de jeu de l'utilisateur
-  const result = await LastlayRoue(userId);
-  const lastPlayInt = result[0]?.LastlayRoue;
-
-  // Si l'utilisateur n'a jamais joué, il peut jouer
-  if (!lastPlayInt) {
-    return { canPlay: true };
-  }
-
-  // Obtenir la date et l'heure actuelles au format YYYYMMDDHHmm
-  const now = new Date();
-  const nowInt = dateToInt(now);
-
-  // Calculer la différence de temps
-  const timeDifference = nowInt - lastPlayInt;
-
-  // Vérifier si la différence est d'au moins 3 heures (3000 en format entier)
-  if (timeDifference >= 3000) {
-    // L'utilisateur peut jouer, on met à jour la date de dernier jeu
-    await db.update(user)
-      .set({ LastPlayRoue: nowInt })
-      .where(eq(user.id, userId));
-
-    return { canPlay: true };
-  } else {
-    // L'utilisateur doit attendre
-    const waitTime = 3000 - timeDifference; // Temps d'attente restant en minutes
-    return { canPlay: false, waitTime };
-  }
-}
 
 
 export const foundedSecret = async (userId: string) => {
@@ -133,15 +83,68 @@ export const addPoints = async (userId: string, points: number) => {
 
 
 
+// jeu roue
+
+// utilities/games.ts
+
+// Vérifie si l'utilisateur peut jouer
+export const canUserSpin = async (userId: string) => {
+  const result = await db
+    .select({ last_spin: user.last_spin })
+    .from(user)
+    .where(eq(user.id, userId));
+
+  const lastSpin = result[0]?.last_spin;
+  
+  // Si l'utilisateur n'a jamais joué, il peut jouer
+  if (!lastSpin) return { canPlay: true, nextSpin: null };
+
+  const now = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+  const nextSpinTime = lastSpin + 3 * 60 * 60; // 3 heures en secondes
+
+  if (now >= nextSpinTime) {
+    return { canPlay: true, nextSpin: null };
+  } else {
+    const waitSeconds = nextSpinTime - now;
+    const hours = Math.floor(waitSeconds / 3600);
+    const minutes = Math.round((waitSeconds % 3600) / 60);
+    return { canPlay: false, nextSpin: { hours, minutes } };
+  }
+};
+
+// Met à jour le dernier spin et ajoute les points
+export const processSpin = async (userId: string, points: number) => {
+  const now = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+  return db.update(user)
+    .set({
+      points: sql`${user.points} + ${points}`,
+      last_spin: now // Timestamp actuel en secondes
+    })
+    .where(eq(user.id, userId));
+};
 
 
 
+// jeu du krak'rose
 
 
 
+export const Combiendefoisjouer = async (userId: string) => {
+  const result_query = await db
+    .select({ numberofplaytoday: user.numberofplaytoday })
+    .from(user)
+    .where(eq(user.id, userId))
 
+  const points = result_query[0].numberofplaytoday
+  return points
+}
 
+export const Addplaynumber = async (userId: string, ) => {
+  // this wont be null normally, you are only suppose to call this fonction
+  const prevPoints = await Combiendefoisjouer(userId)
 
-
-
-
+  return await db
+    .update(user)
+    .set({ numberofplaytoday: (prevPoints! + 1) })
+    .where(eq(user.id, userId))
+}

@@ -7,7 +7,10 @@ export const user = sqliteTable('user', {
   points: integer('points').default(0),
   foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
   button: integer('button', { mode: 'boolean' }).default(false),
-  LastPlayRoue: integer('LastPlayRoue').default(0)
+  last_spin: integer('last_spin').default(0), 
+  lastpoint: integer('lastpoint').default(0), // Timestamp en secondes
+  lastplayday: text('lastplayday'), // Timestamp en secondes
+  numberofplaytoday: integer('numberofplaytoday').default(0), // Timestamp en secondes
 });
 
 export const session = sqliteTable('session', {

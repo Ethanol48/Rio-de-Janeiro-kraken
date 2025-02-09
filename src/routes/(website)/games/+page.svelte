@@ -23,6 +23,14 @@
 			<p>♠️</p>
 		</span>
 	</button>
+
+	<button onclick={() => (window.location.href = "https://kraken.armand-ms.fr")}>
+		<span class="box">
+		  <p>Krak'Run</p>
+		  <p>🪸</p>
+		</span>
+	  </button>
+	  
 </div>
 
 <style>

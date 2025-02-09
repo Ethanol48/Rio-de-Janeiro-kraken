@@ -10,7 +10,7 @@
   let timer;
   let resultMessage = '';
   let jeu_a_commencer = false
-  let winningCup = cups[Math.floor(Math.random() * cups.length)]; 
+  let winningCup =1// cups[Math.floor(Math.random() * cups.length)]; 
   let showRose = false; 
   let start = false;
   let button_msg = "Commencer le jeu"
@@ -25,12 +25,31 @@
     });
   }
 
-  function startGame() {
+  async function Checkplay() {
+    
+    const response = await fetch('/games/krak\'ball/api/removepoint');
+		const data = await response.json();
+    console.log(data)
+    if(data==="None"){
+      resultMessage='Vous avez déjà jouer 10 fois aujourd\'hui, attendais le lendeamin !'
+      return "-1";
+    }
+    return "1";
+    
+  }
+  async function startGame() {
   if (isAnimating) return;
   if(jeu_a_commencer){
     jeu_a_commencer = false;
     resetGame();
   }
+
+  const checksipeutjouer = await Checkplay()
+  if(checksipeutjouer=="-1"){
+    return;
+  }
+  
+
   gameStarted = true;
   button_msg = "Recommencer"
   jeu_a_commencer = true
@@ -38,7 +57,7 @@
   resultMessage = '';
   selectedCup = null;
   showRose = false;
-  winningCup = cups[Math.floor(Math.random() * cups.length)];
+  winningCup = 1//cups[Math.floor(Math.random() * cups.length)];
 
   
 
@@ -116,6 +135,7 @@
         if (cup === winningCup) {
           showRose = true;
           resultMessage = 'Félicitations, vous avez trouvé la rose ! 🌹';
+          
         } else {
           resultMessage = 'Désolé, il n\'y a rien sous ce gobelet.';
         }
@@ -124,7 +144,13 @@
     });
   }
 
-  function endGame(isWinner) {
+  async function endGame(isWinner) {
+    if(isWinner){
+      const response = await fetch('/games/krak\'ball/api/addpoint');
+			const data = await response.json();
+      console.log(data)
+
+    }
     gameStarted = false;
     clearInterval(timer);
   }
