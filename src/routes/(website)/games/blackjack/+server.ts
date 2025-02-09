@@ -291,17 +291,19 @@ async function changeGameDBState(ended: boolean, started: Boolean, playerCards: 
     if (state !== null) {
       switch (state) {
         case State.PLAYER_WON:
-
+          playerWon = true;
           // recupere mise + bet  
           addPoints(game.userId, game.totalbet * 2)
           break;
 
         case State.NEUTRAL:
+          playerWon = false;
           // recupere mise
           addPoints(game.userId, game.totalbet)
           break;
 
         case State.PLAYER_LOST:
+          playerWon = false;
           // do nothing
           break;
       }
@@ -314,6 +316,7 @@ async function changeGameDBState(ended: boolean, started: Boolean, playerCards: 
           playerCards: CardsToString(playerCards.cards),
           dealerCards: CardsToString(dealer_cards.cards),
           pile_cards: CardsToString(deck),
+          playerWon: playerWon,
           ended: ended
         })
         .where(eq(blackjack.id, game.id));
