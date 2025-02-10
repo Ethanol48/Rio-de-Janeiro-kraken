@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   optimizeDeps: {
-    exclude: ["@node-rs/argon2", "@node-rs/bcrypt", "@node-rs", "oslo"]
+    exclude: ["@node-rs/argon2", "@node-rs/bcrypt", "@node-rs", "oslo", "@node-rs/argon2-wasm32-wasi"]
   },
   plugins: [sveltekit()],
 
