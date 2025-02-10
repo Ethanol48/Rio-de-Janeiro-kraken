@@ -66,6 +66,16 @@ export const getPoints = async (userId: string) => {
   return points
 }
 
+export const getUsername = async (userId: string) => {
+  const result_query = await db
+    .select({ username: user.username }) 
+    .from(user)
+    .where(eq(user.id, userId));
+
+  return result_query[0]?.username; 
+}
+
+
 export const addPoints = async (userId: string, points: number) => {
   // this wont be null normally, you are only suppose to call this fonction
   const prevPoints = await getPoints(userId)

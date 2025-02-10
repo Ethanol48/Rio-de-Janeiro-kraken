@@ -10,6 +10,7 @@
 
 	let login = $state('');
 	let password = $state('');
+	let username = $state('');
 </script>
 
 <Tabs.Root>

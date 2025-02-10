@@ -11,7 +11,7 @@
   let timer;
   let resultMessage = '';
   let jeu_a_commencer = false
-  let winningCup =1// cups[Math.floor(Math.random() * cups.length)]; 
+  let winningCup =cups[Math.floor(Math.random() * cups.length)]; 
   let showRose = false; 
   let start = false;
   let button_msg = "Payer 1 point pour jouer"
@@ -64,7 +64,7 @@
   resultMessage = '';
   selectedCup = null;
   showRose = false;
-  winningCup = 1//cups[Math.floor(Math.random() * cups.length)];
+  winningCup = cups[Math.floor(Math.random() * cups.length)];
 
   
 

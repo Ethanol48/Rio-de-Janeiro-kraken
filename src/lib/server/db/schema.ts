@@ -3,6 +3,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 export const user = sqliteTable('user', {
   id: text('id').primaryKey(),
   login: text('login').notNull().unique(),
+  username: text('username').notNull(),
   passwordHash: text('passwordHash').notNull(),
   points: integer('points').default(0),
   foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),

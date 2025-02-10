@@ -4,6 +4,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
+import { addPoints } from '$lib/server/db/utilities';
 import * as table from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 import { LOGIN_REDIRECT } from '$lib/constants';
@@ -36,7 +37,7 @@ export const actions: Actions = {
 
     const existingUser = results.at(0);
     if (!existingUser) {
-      return fail(400, { message: 'Incorrect username or password' });
+      return fail(400, { message: 'Incorrect email or password' });
     }
 
     const validPassword = await verify(existingUser.passwordHash, password, {
@@ -46,18 +47,21 @@ export const actions: Actions = {
       parallelism: 1
     });
     if (!validPassword) {
-      return fail(400, { message: 'Incorrect username or password' });
+      return fail(400, { message: 'Incorrect email or password' });
     }
 
     const sessionToken = auth.generateSessionToken();
     const session = await auth.createSession(sessionToken, existingUser.id);
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
+    addPoints(existingUser.id,10)
+
     return redirect(302, '/games');
   },
   register: async (event) => {
     const formData = await event.request.formData();
     const login = formData.get('login');
+    const username = formData.get('username');
     const password = formData.get('password');
 
     if (!validateUsername(login)) {
@@ -84,7 +88,7 @@ export const actions: Actions = {
     });
 
     try {
-      await db.insert(table.user).values({ id: userId, login, passwordHash });
+      await db.insert(table.user).values({ id: userId, login, username, passwordHash });
 
       const sessionToken = auth.generateSessionToken();
       const session = await auth.createSession(sessionToken, userId);

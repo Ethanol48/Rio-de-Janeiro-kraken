@@ -18,7 +18,7 @@ const config = {
 
   kit: {
     csrf: {
-      checkOrigin: false // ⚠️ Désactive la vérification de l'origine
+      checkOrigin: false // Cause une erreur dans register
   },
 
     // adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.

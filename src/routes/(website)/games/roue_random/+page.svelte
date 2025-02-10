@@ -4,7 +4,7 @@
 	import fleche from '$lib/images/fleche.png';
 
 	const SEGMENTS = 5;
-	const SEGMENT_NAMES = ['1 points', '10 points, INCROYABLE!!🪙', '5 points', '3 points', '2 points'];
+	const SEGMENT_NAMES = ['2 points', '20 points, INCROYABLE!!🪙', '10 points', '6 points', '4 points'];
 
 	let spinning = false;
 	let intromsg = true; 

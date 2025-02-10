@@ -17,49 +17,59 @@
 </script>
 
 <div class="header">
-	<img src="/kraken.png" alt="Logo" class="logo" />
+	<img src="/kraken.png" alt="Logo" class="logo animate-fade-in" />
 </div>
 <br><br>
 
 {#if data.user !== null}
-	<h1>Salut, <b> {data.user.login}</b> !</h1><br>
-	<p style="font-size: 12px;">Ton ID utilisateur est {data.user.id}.</p>
+	<h1 class="animate-slide-in">Salut, <b> {data.user.login}</b> !</h1><br>
+	<p style="font-size: 12px;" class="animate-slide-in">Tu as actuellement {data.points} points !</p>
 {/if}
 
-<h1>Bienvenue dans notre monde d'amour et de jeux ❤️</h1>
-<p>Joue et amuse-toi pour cette <b style="text-decoration: underline;">Saint-Valentin !</b></p>
+<h1 class="animate-slide-in">Bienvenue dans notre monde d'amour et de jeux ❤️</h1>
+<p class="animate-slide-in">Joue et amuse-toi pour cette <b style="text-decoration: underline;">Saint-Valentin !</b></p>
 
-{#if !(noUser || claimed)}
-	<div class="invisible-custom absolute bottom-4 left-5">
-		<Dialog.Root>
-			<Dialog.Trigger>
-				<Button class="cursor-pointer secret-button" size="sm">Secret</Button>
-			</Dialog.Trigger>
+<br>
+<br>
+<div class="button-group animate-fade-in">
+	<Dialog.Root>
+		<Dialog.Trigger>
+			<Button class="cursor-pointer" size="sm">🪪 • Mon profil</Button>
+		</Dialog.Trigger>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>Information 1</Dialog.Title>
+				<Dialog.Description>
+					<br>
+					Username :  {data.usename}
+					<br>
+					Email: {data.user?.login}
 
-			<Dialog.Content class="justify-center sm:max-w-[425px]">
-				<Dialog.Header>
-					<Dialog.Title>T'as trouvé le bouton secret !!!</Dialog.Title>
-					<Dialog.Description class="text-center">Réclame ta récompense</Dialog.Description>
-				</Dialog.Header>
-				<div class="flex justify-center">
-					<form method="POST" action="?/foundButton" use:enhance={submitFoundButton}>
-						<Button
-							type="submit"
-							disabled={data.claimed}
-							class="mt-2 rounded bg-primary p-2 text-white"
-						>
-							{#if data.claimed}
-								Déjà réclamé 🎉
-							{:else}
-								Réclamer
-							{/if}
-						</Button>
-					</form>
-				</div>
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-{/if}
+				</Dialog.Description>
+			</Dialog.Header>
+			<Dialog.Close>
+				<Button class="mt-2">Fermer</Button>
+			</Dialog.Close>
+		</Dialog.Content>
+	</Dialog.Root>
+
+	<Dialog.Root>
+		<Dialog.Trigger>
+			<Button class="cursor-pointer" size="sm">📜 • Réglement</Button>
+		</Dialog.Trigger>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>Information 2</Dialog.Title>
+				<Dialog.Description>
+					Un autre texte pour la deuxième fenêtre modale.
+				</Dialog.Description>
+			</Dialog.Header>
+			<Dialog.Close>
+				<Button class="mt-2">Fermer</Button>
+			</Dialog.Close>
+		</Dialog.Content>
+	</Dialog.Root>
+</div>
 
 <style lang="scss">
 	.header {
@@ -73,26 +83,28 @@
 		height: auto;
 	}
 
-	div.invisible-custom {
-		opacity: 0;
-		* {
-			opacity: 0;
-		}
+	@keyframes fade-in {
+		from { opacity: 0; }
+		to { opacity: 1; }
 	}
 
-	.secret-button {
-		animation: pulse 1.5s infinite;
+	@keyframes slide-in {
+		from { transform: translateY(-20px); opacity: 0; }
+		to { transform: translateY(0); opacity: 1; }
 	}
 
-	@keyframes pulse {
-		0% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(1.1);
-		}
-		100% {
-			transform: scale(1);
-		}
+	.animate-fade-in {
+		animation: fade-in 2s ease-out;
+	}
+
+	.animate-slide-in {
+		animation: slide-in 3s ease-out;
+	}
+
+	.button-group {
+		display: flex;
+		gap: 10px;
+		justify-content: center;
+		margin-top: 20px;
 	}
 </style>
