@@ -5,6 +5,7 @@
 
 </script>
 
+<title>Krak'n Roses - Krak Jack</title>
 <div class="container">
 	<h1> <b><i>Bientot Disponible</i></b></h1>
 </div>

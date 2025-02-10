@@ -15,7 +15,7 @@
 		toast.custom(Custom, { componentProps: { texto: 'Points réclamés', emoji: ' 🎉' } });
 	};
 </script>
-
+<title>Krak'n Roses - Home</title>
 <div class="header">
 	<img src="/kraken.png" alt="Logo" class="logo animate-fade-in" />
 </div>

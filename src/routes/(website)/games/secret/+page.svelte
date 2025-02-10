@@ -6,6 +6,7 @@
 	console.log('Congrats!! you found the secret arrow of Cupid!');
 </script>
 
+<title>Krak'n Roses - SecretPage</title>
 <h1 class="typography">La Flèche Perdue de Cupidon</h1>
 
 <div class="my-5 w-2/3">

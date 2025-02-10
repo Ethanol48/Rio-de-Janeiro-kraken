@@ -56,6 +56,7 @@
 	}
 </script>
 
+<title>Krak'n Roses - RoueChanceuse</title>
 <div class="container">
 	<div class="wheel-frame">
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />

@@ -3,6 +3,8 @@
 	let { data }: { data: PageServerData } = $props();
 </script>
 
+
+<title>Krak'n Roses - Shop</title>
 <div class="flex w-2/4 flex-col justify-center">
 	<h1 class="typography mb-3 ml-auto mr-auto text-lg text-gray-900">SHOP</h1>
 

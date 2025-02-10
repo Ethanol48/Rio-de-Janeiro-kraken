@@ -257,6 +257,8 @@
 
 </style>
 <br><br><br>
+
+<title>Krak'n Roses - Krak'Rose</title>
 <div class="container">
   <div class="cups-container justify-between">
     {#each cups as cup}
