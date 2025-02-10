@@ -98,13 +98,12 @@
 		position: relative;
 		width: 500px;
 		height: 500px;
-		margin: 2rem 0;
 	}
 
 	.wheel {
 		width: 80%;
 		height: 80%;
-		margin-left: auto;
+		margin-left: 15%;
 		margin-right: auto;
 		margin-top: 20%;
 		transition: transform 0.1s;
@@ -113,7 +112,7 @@
 	.arrow {
 		position: absolute;
 		top: 100px;
-		left: 50%;
+		left: 55%;
 		transform: translateX(-50%);
 		width: 60px;
 		z-index: 2;

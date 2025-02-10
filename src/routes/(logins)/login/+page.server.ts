@@ -11,7 +11,7 @@ import { LOGIN_REDIRECT } from '$lib/constants';
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.user) {
-    return redirect(302, '/games');
+    return redirect(302, '/home');
   }
   return {
     user: event.locals.user
@@ -54,9 +54,8 @@ export const actions: Actions = {
     const session = await auth.createSession(sessionToken, existingUser.id);
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
-    addPoints(existingUser.id,10)
 
-    return redirect(302, '/games');
+    return redirect(302, '/home');
   },
   register: async (event) => {
     const formData = await event.request.formData();
@@ -96,7 +95,7 @@ export const actions: Actions = {
     } catch (e) {
       return fail(500, { message: 'An error has occurred' });
     }
-    return redirect(302, '/games');
+    return redirect(302, '/home');
   },
   logout: async (event) => {
     if (!event.locals.session) {

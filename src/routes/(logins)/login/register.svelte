@@ -18,19 +18,23 @@
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
 -->
+				<Card.Description class="mb-1 font-bold" style="color: black;">Username</Card.Description>
+
+				<Input bind:value={username} placeholder="Username" type="text" style="color: black;" />
+				<input bind:value={username} class="invisible m-0 h-0 w-0 p-0" type="text" name="username" />
+				</label>
+				<label>
+					<Card.Description class="mb-1 font-bold" style="color: black;">Email</Card.Description>
+
 				<Input bind:value={login} placeholder="email" type='email'style="color: black;" />
 				<input bind:value={login} class="invisible m-0 h-0 w-0 p-0"type='email' name="login" />
+				<Card.Description class="mb-1 font-bold" style="color: black;">Password</Card.Description>
+
 			</label>
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
--->				<Card.Description class="mb-1 font-bold" style="color: black;">Username</Card.Description>
-
-				<Input bind:value={username} placeholder="Username" style="color: black;" />
-				<input bind:value={username} class="invisible m-0 h-0 w-0 p-0"  name="username" />
-			</label>
-			<label>
-				<Card.Description class="mb-1 font-bold" style="color: black;">Password</Card.Description>
+-->				
 				<!--
       <div class="text-lg">Password</div>
 -->

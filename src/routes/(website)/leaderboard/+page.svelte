@@ -19,7 +19,7 @@
 				{#each data.profiles as profile, i}
 					<tr>
 						<td style="text-align: center;"> {i + 1} </td>
-						<td> {profile.login} </td>
+						<td> {profile.username} </td>
 						<td style="text-align: center;"> {profile.points} </td>
 					</tr>
 				{/each}

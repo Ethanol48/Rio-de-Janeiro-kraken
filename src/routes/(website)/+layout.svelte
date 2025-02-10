@@ -16,7 +16,7 @@
 					<div class="flex flex-row">
 						<img src={userIcon} class="mr-2 h-6 w-6" alt="" />
 						<div>
-							{data}
+							{data.user.username}
 						</div>
 					</div>
 				</div>

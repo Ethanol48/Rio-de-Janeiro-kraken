@@ -4,10 +4,10 @@ import { desc, eq ,sql} from 'drizzle-orm';
 
 export const leaderBoard = async () => {
   return await db
-    .select({ login: user.login, points: user.points })
+    .select({  points: user.points, username:user.username })
     .from(user)
     .orderBy(desc(user.points))
-    .limit(10)
+    .limit(20)
 }
 
 
