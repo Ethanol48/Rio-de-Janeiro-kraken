@@ -7,6 +7,8 @@
 	}
 </script>
 
+
+<title>Krak'n Roses - Games</title>
 <h1 class="text-xl">Hi, {data.user.login}!</h1>
 <h2 class="mt-5">There are so many games, choose yours !</h2>
 
