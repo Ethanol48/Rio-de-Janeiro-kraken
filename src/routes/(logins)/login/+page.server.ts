@@ -64,17 +64,26 @@ export const actions: Actions = {
     const password = formData.get('password');
 
     if (!validateUsername(login)) {
-      return fail(400, { message: 'Invalid username' });
+
+      console.log("invalid user: ", login);
+      return fail(400, { message: 'Invalid email' });
     }
     if (!validatePassword(password)) {
       return fail(400, { message: 'Invalid password' });
+    }
+
+    let usernameStr: string;
+    if (username === null) {
+      return fail(400, { message: 'You must set an username' });
+    } else {
+       usernameStr = username.toString();
     }
 
     const results = await db.select().from(table.user).where(eq(table.user.login, login));
 
     const existingUser = results.at(0);
     if (existingUser) {
-      return fail(400, { message: 'The username must be unique' });
+      return fail(400, { message: 'This email has already been used !' });
     }
 
     const userId = generateUserId();
@@ -87,7 +96,9 @@ export const actions: Actions = {
     });
 
     try {
-      await db.insert(table.user).values({ id: userId, login, username, passwordHash });
+      await db.insert(table.user).values(
+        { id: userId, login: login, username: usernameStr, passwordHash: passwordHash }
+      );
 
       const sessionToken = auth.generateSessionToken();
       const session = await auth.createSession(sessionToken, userId);
@@ -116,7 +127,7 @@ function generateUserId() {
 }
 
 
-const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm;
+const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
 
 function validateUsername(username: unknown): username is string {
   return (
