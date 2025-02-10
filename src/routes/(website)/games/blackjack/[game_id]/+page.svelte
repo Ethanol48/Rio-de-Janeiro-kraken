@@ -11,10 +11,8 @@
 
 {#if data.game !== undefined && data.game !== null}
 	<Blackjack
-		gameId={data.game.id}
 		points={puntos}
-		ended={data.game.ended!}
-		firstPlay={data.game.firstPlay!}
+		game={data.game}
 		playerHand={new Hand(StringToCards(data.game.playerCards))}
 		dealerHand={new Hand(StringToCards(data.game.dealerCards))}
 	/>

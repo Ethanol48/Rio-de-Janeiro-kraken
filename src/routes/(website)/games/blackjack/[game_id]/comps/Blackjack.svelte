@@ -4,22 +4,24 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Carta, Color, Decision, Hand, StringToCards } from '$lib/games/blackjack';
 	import { goto } from '$app/navigation';
+	import type { PageServerData } from '../$types';
+	import { LOGIN_REDIRECT } from '$lib/constants';
 
 	let {
 		points,
 		playerHand,
 		dealerHand,
-		gameId,
-		firstPlay,
-		ended
+		game
 	}: {
 		points: number;
 		playerHand: Hand;
 		dealerHand: Hand;
-		gameId: string;
-		firstPlay: boolean;
-		ended: boolean;
+		game: NonNullable<PageServerData['game']>;
 	} = $props();
+
+	if (game === undefined) {
+		goto(LOGIN_REDIRECT);
+	}
 
 	let bet = $state([0]);
 	let betting_num = $derived(bet[0]);
@@ -31,13 +33,19 @@
 	const incrementY = 20;
 
 	let betting = $state(true);
+	let ended = $state(false);
+	if (game.ended !== null) {
+		ended = game.ended;
+	}
 
 	async function startGame() {
+		betting = false;
+
 		const resp = await fetch(`/games/blackjack`, {
 			method: 'POST',
 			body: JSON.stringify({
 				points: bet[0],
-				gameId: gameId,
+				gameId: game.id,
 				decition: 'start'
 			}),
 			headers: {
@@ -55,9 +63,9 @@
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
 
 		if (dealerHand.cards.length == 1) {
-			firstPlay = true;
+			game.firstPlay = true;
 		} else if (dealerHand.cards.length > 1) {
-			firstPlay = false;
+			game.firstPlay = false;
 		}
 	}
 
@@ -82,7 +90,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				points: 0,
-				gameId: gameId,
+				gameId: game.id,
 				decition: decitionToSend
 			}),
 			headers: {
@@ -100,9 +108,9 @@
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
 
 		if (dealerHand.cards.length == 1) {
-			firstPlay = true;
+			game.firstPlay = true;
 		} else if (dealerHand.cards.length > 1) {
-			firstPlay = false;
+			game.firstPlay = false;
 		}
 	}
 
@@ -110,12 +118,9 @@
 
 	async function callGet() {
 		waiting = true;
-		console.log('calling callGet()');
 
 		const resp = await fetch('/games/blackjack', { method: 'GET' });
 		const id = await resp.json();
-
-		console.log('id: ', id);
 
 		goto(`/games/blackjack/${id.id}`);
 		waiting = false;
@@ -146,7 +151,7 @@
 		</div>
 		<div class="relative w-full">
 			<h2 class="absolute -bottom-[40px] text-center">Dealer Cards</h2>
-			{#if firstPlay}
+			{#if game.firstPlay}
 				{#if playerHand.cards.length > 0}
 					<Card
 						class={'absolute'}
@@ -156,7 +161,7 @@
 						symbol={Carta.PLACEHOLDER}
 					/>
 				{/if}
-				{#each dealerHand.cards as carta, i}
+				{#each dealerHand.cards as carta}
 					<Card
 						class={'absolute'}
 						turned={false}
@@ -180,7 +185,7 @@
 	</div>
 
 	{#if betting}
-		<Bet bind:value={bet} {points} />
+		<Bet bind:value={bet} {points} startGameFunc={startGame} />
 	{/if}
 </div>
 
