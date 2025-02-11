@@ -6,6 +6,7 @@
 	import { toast } from 'svelte-sonner';
 	import Custom from '$lib/components/custom-sonner.svelte';
 
+
 	let { data } = $props();
 
 	let noUser = data.user === null;
@@ -92,12 +93,13 @@
 				<Dialog.Title>Thanks to:</Dialog.Title>
 				<Dialog.Description>
 					<br>
-					• ArmandMS
+					> <a style="text-decoration: underline;" href="https://armand-ms.fr" target="_blank" rel="noopener noreferrer">ArmandMS </a>
 					<br><br>
-					• Ethan Rouimi
+					> <a style="text-decoration: underline;" href="https://ethan-rouimi.com/" target="_blank" rel="noopener noreferrer">Ethan Rouimi</a>
 					<br><br>
-					• Kraken - EPITA
+					> <a  style="text-decoration: underline;" href="https://www.instagram.com/kraken_bde_epita/" target="_blank" rel="noopener noreferrer">Kraken - EPITA</a>
 				</Dialog.Description>
+				
 			</Dialog.Header>
 			<Dialog.Close>
 				<Button class="mt-2">Fermer</Button>
