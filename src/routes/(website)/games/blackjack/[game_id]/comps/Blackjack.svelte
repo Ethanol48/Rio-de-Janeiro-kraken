@@ -203,16 +203,24 @@
 						color={Color.SPADES}
 						symbol={Carta.PLACEHOLDER}
 					/>
-				{/if}
-				{#each dealerHand.cards as carta, i}
 					<Card
 						class={'absolute'}
 						turned={false}
-						style={`bottom: ${incrementY * i + (gameStand === true ? 30 : 50)}px; left: ${incrementX * i + (gameStand === true ? 0 : 17)}px;`}
-						color={carta.color}
-						symbol={carta.symbol}
+						style={`bottom: ${incrementY + 30}px; left: ${incrementX}px;`}
+						color={dealerHand.cards[0].color}
+						symbol={dealerHand.cards[0].symbol}
 					/>
-				{/each}
+				{:else}
+					{#each dealerHand.cards as carta, i}
+						<Card
+							class={'absolute'}
+							turned={false}
+							style={`bottom: ${incrementY * i + 30}px; left: ${incrementX * i}px;`}
+							color={carta.color}
+							symbol={carta.symbol}
+						/>
+					{/each}
+				{/if}
 			</div>
 		</div>
 

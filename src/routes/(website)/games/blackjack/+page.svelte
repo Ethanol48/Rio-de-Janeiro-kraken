@@ -9,7 +9,12 @@
 
 	async function callGet() {
 		waiting = true;
-		goto(`/games/blackjack/new_game`);
+
+		const resp = await fetch('/games/blackjack', { method: 'GET' });
+		const id = await resp.json();
+
+		//console.log('id: ', id);
+		goto(`/games/blackjack/${id.id}`);
 	}
 
 	console.log(data.game);
