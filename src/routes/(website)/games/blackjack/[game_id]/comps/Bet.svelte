@@ -11,6 +11,8 @@
 	}: { points: number; value: number[]; startGameFunc: MouseEventHandler<HTMLElement> } = $props();
 </script>
 
+<div class="flex flex-col">
+
 <div class="flex w-[300px] flex-col justify-center gap-6 rounded-xl bg-pink-50 p-6 shadow">
 	<div class="flex flex-row justify-between">
 		<h3 class="typography">Place your bet</h3>
@@ -23,5 +25,13 @@
 		<p>{points}</p>
 	</div>
 
-	<Button class="mx-auto w-1/3" onclick={startGameFunc}>Confirm Bet</Button>
+  <div class="flex flex-row gap-3 justify-around">
+	  <Button size="lg" class="" onclick={() => { value = [1] }}>Min</Button>
+	  <Button size="lg" class="" onclick={() => { value = [points / 2] }}>Middle</Button>
+	  <Button size="lg" class="" onclick={() => { value = [points] }}>All-in</Button>
+  </div>
+
+</div>
+
+	<Button class="mx-auto w-1/3 mt-12" onclick={startGameFunc}>Confirm Bet</Button>
 </div>

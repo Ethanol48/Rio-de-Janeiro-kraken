@@ -194,6 +194,10 @@ export const addPoints = async (userId: string, points: number) => {
   // this wont be null normally, you are only suppose to call this fonction
   const prevPoints = await getPoints(userId);
 
+
+  console.log("prevPoints: ", prevPoints);
+  console.log("points: ", points);
+
   return await db
     .update(user)
     .set({ points: (prevPoints! + points) })

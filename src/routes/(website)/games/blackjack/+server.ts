@@ -19,7 +19,7 @@ import { point } from 'drizzle-orm/pg-core';
 
 export const GET: RequestHandler = async ({ locals }) => {
   if (locals.user === null) {
-    return json({ message: 'Not allowed you must be signed in' }, { status: 401 });
+    return json({ message: 'You are not allowed to play you must be signed in' }, { status: 401 });
   }
 
 
@@ -121,6 +121,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   // check the bet
   if (points > actualPoints!) {
     return json({ message: 'You are not able to bet more that you already have' }, { status: 400 });
+  }
+
+  if (points === 0 && decition_enum === Decision.START) {
+    return json({ message: 'You cannot bet 0 points!!!' }, { status: 400 });
   }
 
   if (points < 0) {
@@ -243,6 +247,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       // { PlayerLost: bool }
 
       await reducePoints(GameReq.userId, GameReq.totalbet);
+      points += GameReq.totalbet;
 
       canreplay = false;
 
@@ -401,9 +406,11 @@ async function changeGameDBState(
     switch (state) {
       case State.PLAYER_WON:
         setPlayerWonTrue(game.id);
-
+      
+        console.log("totalBet: ", game.totalbet);
         // recupere mise + bet  
-        addPoints(game.userId, game.totalbet * 2)
+        addPoints(game.userId, game.totalbet)
+        addPoints(game.userId, game.totalbet)
         break;
 
       case State.NEUTRAL:

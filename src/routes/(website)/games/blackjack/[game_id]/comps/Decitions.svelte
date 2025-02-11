@@ -25,7 +25,6 @@
 				}}>Stand</Button
 			>
 			<Button
-				disabled={points < totalBet}
 				onclick={() => {
 					playFunc(Decision.DOUBLE);
 				}}>Double</Button
