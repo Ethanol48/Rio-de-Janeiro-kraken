@@ -42,9 +42,30 @@ export const stock = sqliteTable('stock', {
 
 
 
+export const blackjack = sqliteTable('blackjack', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id),
+
+  // safe the cards as a string?
+  // {Color}{symbol/number};{Carta};{Carta}
+  playerCards: text('player_cards').notNull().default(''),
+  dealerCards: text('dealer_cards').notNull().default(''),
+  pile_cards: text('pile_cards').notNull(),
+
+  totalbet: integer('total_bet').notNull().default(0),
+
+  stand: integer('stand', { mode: 'boolean' }).default(false),
+  started: integer('started', { mode: 'boolean' }).default(false),
+  firstPlay: integer('first_play', { mode: 'boolean' }).default(true),
+  neutral: integer('neutral', { mode: 'boolean' }).default(false),
+  ended: integer('ended', { mode: 'boolean' }).default(false),
+  playerWon: integer('player_won', { mode: 'boolean' }).default(false)
+});
+
+
 export type Session = typeof session.$inferSelect;
-
 export type User = typeof user.$inferSelect;
-
 export type Order = typeof ordrer.$inferSelect;
 export type Stock = typeof stock.$inferSelect;

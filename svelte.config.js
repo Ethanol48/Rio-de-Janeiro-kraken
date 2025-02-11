@@ -5,16 +5,15 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://svelte.dev/docs/kit/integrations
-  // for more information about preprocessors
-  preprocess: sequence([
-    vitePreprocess({
-      postcss: {
-        plugins: [autoprefixer]
-      }
-    }),
-  ]),
-
+	// Consult https://svelte.dev/docs/kit/integrations
+	// for more information about preprocessors
+	preprocess: sequence([
+		vitePreprocess({
+			postcss: {
+				plugins: [autoprefixer]
+			}
+		})
+	]),
 
   kit: {
     csrf: {

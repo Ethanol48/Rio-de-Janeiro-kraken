@@ -1,8 +1,11 @@
+- Black Jack
 
+- Simulate deck
 
+- Bets
 
+  - Double
 
-
-- Games:
-    - lore: cupid needs your help
-    - idk
+- Give cards
+  - to Dealer
+  - to Player

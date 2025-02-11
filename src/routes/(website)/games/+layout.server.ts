@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { LOGIN_REDIRECT } from '$lib/constants'
+import { LOGIN_REDIRECT } from '$lib/constants';
 
 export const load: LayoutServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -8,4 +8,3 @@ export const load: LayoutServerLoad = async (event) => {
 	}
 	return { user: event.locals.user };
 };
-

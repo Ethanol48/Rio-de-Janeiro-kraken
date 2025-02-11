@@ -1,1 +1,2 @@
-export const LOGIN_REDIRECT = "/login"
+export const LOGIN_REDIRECT = '/login';
+
