@@ -126,7 +126,7 @@ export const processSpin = async (userId: string, points: number) => {
   return db.update(user)
     .set({
       points: sql`${user.points} + ${points}`,
-      last_spin: now // Timestamp actuel en secondes
+      //last_spin: now // Timestamp actuel en secondes
     })
     .where(eq(user.id, userId));
 };

@@ -5,7 +5,7 @@ import { canUserSpin, processSpin } from '$lib/server/db/utilities';
 import { eq } from 'drizzle-orm';
 
 // Mapping des gains par segment
-const SEGMENT_POINTS = [2, 20, 10, 6, 4]; // Index = segment
+const SEGMENT_POINTS = [0, 20, 10, 6, 4]; // Index = segment
 
 export async function GET({ locals }) { // Suppose que l'user est dans locals
   const userId = locals.user.id; // À adapter selon ton système d'authentification
@@ -24,7 +24,7 @@ export async function GET({ locals }) { // Suppose que l'user est dans locals
     }
 
     // Calcul du résultat
-    const probabilities = [40, 5, 5, 20, 30]; // Total = 100%
+    const probabilities = [5, 5, 10, 30, 50]; // Total = 100%
     const random = Math.random() * 100;
     
     let cumulative = 0;

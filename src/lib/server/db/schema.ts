@@ -22,10 +22,9 @@ export const session = sqliteTable('session', {
 });
 
 export const ordrer = sqliteTable('ordrer', {
-  id: text('id').primaryKey(),
   userId: text('user_id')
-    .notNull()
-    .references(() => user.id),
+    .primaryKey()
+    .notNull(),
   cereal: integer('nb_cereal').default(0),
   pate: integer('nb_pate').default(0),
   nb_kebab: integer('nb_kebab').default(0),
@@ -46,3 +45,6 @@ export const stock = sqliteTable('stock', {
 export type Session = typeof session.$inferSelect;
 
 export type User = typeof user.$inferSelect;
+
+export type Order = typeof ordrer.$inferSelect;
+export type Stock = typeof stock.$inferSelect;

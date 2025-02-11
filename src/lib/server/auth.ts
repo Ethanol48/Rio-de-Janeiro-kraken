@@ -26,6 +26,20 @@ export async function createSession(token: string, userId: string) {
 	return session;
 }
 
+
+export async function createOrderUser( userId2: string) {
+	const orderId: table.Order = {
+		userId: userId2,
+		cereal: 0,
+		pate: 0,
+		nb_kebab: 0,
+		nb_chocolat: 0,
+		nb_billet: 0
+	};
+	await db.insert(table.ordrer).values(orderId);
+	return orderId;
+}
+
 export async function validateSessionToken(token: string) {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const [result] = await db

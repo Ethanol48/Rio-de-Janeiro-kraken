@@ -9,8 +9,8 @@
 	<h1 class="typography mb-3 ml-auto mr-auto text-lg text-gray-900">SHOP</h1>
 
 	<br><br>
-	<h3>
-		Un shop arrivent dès mardi ! <br><br>Alors préparer vos points car les stocks sont limités ! 🎁
+	<h3 style="text-align: center; font-size:20px">
+		Un shop arrivent dès mercredi matin! <br><br>De nombreuses récompenses seront disponibles alors préparez vos points car les stocks sont limités ! 🎁
 	</h3>
 
 	

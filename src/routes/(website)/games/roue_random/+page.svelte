@@ -2,6 +2,8 @@
 	import { gsap } from 'gsap';
 	import wheel from '$lib/images/wheel.png';
 	import fleche from '$lib/images/fleche.png';
+	import { Button } from '$lib/components/ui/button';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
 	const SEGMENTS = 5;
 	const SEGMENT_NAMES = ['2 points', '20 points, INCROYABLE!!🪙', '10 points', '6 points', '4 points'];
@@ -56,20 +58,46 @@
 	}
 </script>
 
+
+
 <title>Krak'n Roses - RoueChanceuse</title>
 <div class="container">
 	<div class="wheel-frame">
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />
 		<img class="arrow" src={fleche} alt="Flèche indicateur" />
 	</div>
-	{#if intromsg}
-		<div >
-			<h2 style="font-size: 18px;">
-				Fait tourner la roue toutes les 3 heures pour gagner des <b>points</b> !
-			</h2>
-		</div>
+
+
+	{#if intromsg} 
+	<div style="margin-left: 2%;">
+		<Dialog.Root>
+			<Dialog.Trigger>
+				<Button class="cursor-pointer" size="sm"> <b>Comment jouer ❔</b></Button>
+			</Dialog.Trigger>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+					<Dialog.Description>
+						<br>
+						HAHAHA ! Tu viens tenter ta <b>chance</b> ?  <br> <br>
+					Très bien, voici le deal : tu peux gagner d'incroyables <b>récompenses</b>, et
+					peut-être même un cadeau <b>secret</b>... 🎁 Mais attention, tu ne peux jouer qu'une fois toutes les 3 heures.
+						<br><br>
+					Alors, reviens me voir et tente ta <b>chance</b> ! 🍀
+	
+	
+					</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Close>
+					<Button class="mt-2">Fermer</Button>
+				</Dialog.Close>
+			</Dialog.Content>
+		</Dialog.Root>
+	</div>
+		
 	{/if}
 
+	<br>
 	<button on:click={spinWheel} disabled={spinning}>
 		{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
 	</button>
@@ -124,6 +152,7 @@
 		font-size: 1.1rem;
 		background: #e74c3c;
 		color: white;
+		margin-left: 2%;
 		border: none;
 		border-radius: 8px;
 		cursor: pointer;

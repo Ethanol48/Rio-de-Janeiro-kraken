@@ -14,7 +14,7 @@ export async function GET({ locals }) { // Suppose que l'user est dans locals
   try {
 
     const temp = await Combiendefoisjouer(userId);
-    if(temp>=10)
+    if(temp>=15)
         return new Response(
             JSON.stringify("None"),
             { headers: { 'Content-Type': 'application/json' } }

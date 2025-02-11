@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { gsap } from 'gsap';
+	import { Button } from '$lib/components/ui/button';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
   let cups = [1, 2, 3];
   let selectedCup: number | null = null;
@@ -33,11 +35,11 @@
 		const data = await response.json();
     console.log(data)
     if(data==="None"){
-      resultMessage='Vous avez déjà jouer 10 fois aujourd\'hui, attendais le lendeamin !'
+      resultMessage='Vous avez déjà jouer 15 fois aujourd\'hui, attendais le lendeamin !'
       return "-1";
     }
     if(data==="NONON"){
-      resultMessage='Tu me prends pour un débile?\n Reviens quand tu auras assez de points pour me défier'
+      resultMessage='Et tes points ils sont où?\n Reviens quand tu auras assez de points pour me défier'
       return "-1";
     }
     return "1";
@@ -276,12 +278,37 @@
    
 
   </button>
-  {#if resultMessage}
+  {#if resultMessage==="Dommage, pas cette fois haha !"}
+    <div class="message" style="color: red;">{resultMessage}</div>
+    {:else}
     <div class="message">{resultMessage}</div>
   {/if}
+  
 
   {#if msgstart}
-    <div ><br><br> Ahh, tu veux me défier? Okay mais tu vas devoir me donner un point alors haha ! <br><br>Si tu trouves la rose de Cupidon, je te donnerai en échange <b style="text-decoration: underline;"> 3 points</b>!</div>
+  <div style="margin-left: 2%;">
+    <br>
+		<Dialog.Root>
+			<Dialog.Trigger>
+				<Button class="cursor-pointer" size="sm"> <b>Comment jouer ❔</b></Button>
+			</Dialog.Trigger>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+					<Dialog.Description>
+            <br>
+            <b>Ah, tu veux me défier ?</b> Très bien, mais il faudra me donner un point en échange, haha ! <br><br>
+
+            🌹 Si tu trouves la rose de Cupidon, je te donnerai <b style="text-decoration: underline;">3 points</b> en récompense ! À toi de jouer ! 💪
+	
+					</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Close>
+					<Button class="mt-2">Fermer</Button>
+				</Dialog.Close>
+			</Dialog.Content>
+		</Dialog.Root>
+	</div>
   {/if}
   {#if gameStarted}
     <div class="timer">Temps restant : {timeLeft} secondes</div>

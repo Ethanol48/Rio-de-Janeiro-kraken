@@ -66,8 +66,16 @@
 		<Dialog.Content >
 			<Dialog.Header>
 				<Dialog.Title>❔ • Informations</Dialog.Title>
-				<Dialog.Description>
-					Bienvenue sur notre jeu, amuse toi !
+				<Dialog.Description> <br>
+					Dans le royaume de l'amour, <b style="text-decoration: underline;">Cupidon</b> a décidé de vous mettre à l’épreuve. <br>
+					Différents mini-jeux ont été créés pour tester vos capacités et déterminer si vous êtes l’élu !  <br> <br>
+
+					🎯 Votre <b>mission</b> ? Gagnez un maximum de points à travers les mini-jeux, échangez-les dans le shop 
+					contre des récompenses et tentez de décrocher une place pour la soirée Krak’n Roses ! <br> <br>
+
+					💘 Mais ce n’est pas tout… Cupidon a perdu l’une de ses flèches dans les jeux. Serez-vous capable de découvrir sa cachette <b>secrète</b> ? <br> <br>
+
+					✨ <b style="text-decoration: underline; font-size:20px">Bonne chance et que les jeux commencent !</b> ✨
 				</Dialog.Description>
 			</Dialog.Header>
 			<Dialog.Close>
