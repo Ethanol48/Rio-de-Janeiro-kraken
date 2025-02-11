@@ -259,7 +259,7 @@
 
 			{#if decitions}
 				<div class="flex w-full justify-center">
-					<Decitions {points} totalBet={game.totalbet} playFunc={play} />
+					<Decitions {points} {totalBet} playFunc={play} />
 				</div>
 			{/if}
 			{#if gameEnded === true}
