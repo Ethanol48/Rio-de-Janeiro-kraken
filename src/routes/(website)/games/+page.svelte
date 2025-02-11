@@ -19,7 +19,7 @@
 	<button onclick={() => goTo("/games/krakball")}>
 		<span class="box"> Trouve ta Rose 🌹 </span>
 	</button>
-	<button onclick={() => goTo("/games/krakJack")}>
+	<button onclick={() => goTo("/games/blackjack")}>
 		<span class="box">
 			<p>Krak'Jack</p>
 			<p>♠️</p>

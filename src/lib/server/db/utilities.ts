@@ -1,6 +1,4 @@
 import { db } from '.';
-import { user } from './schema';
-import { desc, eq ,sql} from 'drizzle-orm';
 import { blackjack, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { hash } from '@node-rs/argon2';
@@ -168,7 +166,6 @@ export const getUsername = async (userId: string) => {
   return result_query[0]?.username; 
 }
 
-};
 
 export const reducePoints = async (userId: string, points: number) => {
   if (points < 0) return;
@@ -202,11 +199,6 @@ export const addPoints = async (userId: string, points: number) => {
     .set({ points: (prevPoints! + points) })
     .where(eq(user.id, userId))
 }
-
-
-
-
-
 
 // jeu roue
 
@@ -243,7 +235,7 @@ export const processSpin = async (userId: string, points: number) => {
   return db.update(user)
     .set({
       points: sql`${user.points} + ${points}`,
-      //last_spin: now // Timestamp actuel en secondes
+      last_spin: now // Timestamp actuel en secondes
     })
     .where(eq(user.id, userId));
 };
