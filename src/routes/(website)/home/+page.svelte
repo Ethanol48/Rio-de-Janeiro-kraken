@@ -95,7 +95,7 @@
 					<br>
 					> <a style="text-decoration: underline;" href="https://armand-ms.fr" target="_blank" rel="noopener noreferrer">ArmandMS </a>
 					<br><br>
-					> <a style="text-decoration: underline;" href="https://ethan-rouimi.com/" target="_blank" rel="noopener noreferrer">Ethan Rouimi</a>
+					> <a style="text-decoration: underline;" href="https://github.com/Ethanol48/" target="_blank" rel="noopener noreferrer">Ethan Rouimi</a>
 					<br><br>
 					> <a  style="text-decoration: underline;" href="https://www.instagram.com/kraken_bde_epita/" target="_blank" rel="noopener noreferrer">Kraken - EPITA</a>
 				</Dialog.Description>
