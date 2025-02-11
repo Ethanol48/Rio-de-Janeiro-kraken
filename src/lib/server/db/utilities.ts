@@ -187,3 +187,20 @@ export const addPoints = async (userId: string, points: number) => {
     .set({ points: prevPoints! + points })
     .where(eq(user.id, userId));
 };
+
+
+export const setPlayerWonTrue = async (gameId: string) => {
+  return await db.update(blackjack).set({ playerWon: true, neutral: false }).where(eq(blackjack.id, gameId));
+};
+
+export const setPlayerWonFalse = async (gameId: string) => {
+  return await db.update(blackjack).set({ playerWon: false, neutral: false }).where(eq(blackjack.id, gameId));
+};
+
+export const setNeutral = async (gameId: string) => {
+  return await db.update(blackjack).set({ playerWon: false, neutral: true, }).where(eq(blackjack.id, gameId));
+};
+
+export const setStand = async (gameId: string) => {
+  return await db.update(blackjack).set({ stand: true }).where(eq(blackjack.id, gameId));
+};

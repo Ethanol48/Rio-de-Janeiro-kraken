@@ -1,4 +1,4 @@
-import type { Actions, PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import {
   GetBlackJackGameById,
   getPoints,
@@ -14,13 +14,16 @@ export const load: PageServerLoad = async ({ locals, params }) => {
   const game = await GetBlackJackGameById(params.game_id)
   if (game !== undefined && game !== null) {
     game.pile_cards = "";
+    console.log("game: ", game)
 
-    if (!game.firstPlay) {
-      let buffer = "";
-      buffer += game.dealerCards[3];
-      buffer += game.dealerCards[4];
+    if (!(game.firstPlay === true && game.started === false)) {
+      if (game.stand === false && game.ended === false) {
+        let buffer = "";
+        buffer += game.dealerCards[3];
+        buffer += game.dealerCards[4];
 
-      game.dealerCards = buffer;
+        game.dealerCards = buffer;
+      }
     }
   }
 

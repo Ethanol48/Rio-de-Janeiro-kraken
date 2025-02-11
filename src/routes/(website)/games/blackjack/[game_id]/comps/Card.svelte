@@ -3,6 +3,7 @@
 	import Icon from '$lib/games/Icon.svelte';
 	import WhiteHeart from '$lib/svgs/white-heart.svelte';
 	import { cn } from '$lib/utils';
+	import { fly } from 'svelte/transition';
 
 	let {
 		color,
@@ -15,7 +16,14 @@
 	let simbolo = symbolToString(symbol);
 </script>
 
-<div class={cn(classes)} style={styles}>
+<div
+	in:fly={{
+		delay: 100,
+		duration: 300
+	}}
+	class={cn(classes)}
+	style={styles}
+>
 	{#if !turned}
 		<div
 			class={'relative flex h-[100px] w-[70px] flex-col items-center justify-center rounded border border-black bg-white p-2 align-middle'}

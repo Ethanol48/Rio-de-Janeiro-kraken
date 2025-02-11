@@ -1,4 +1,3 @@
-import { symbol } from 'zod';
 
 export enum Carta {
   Two,
@@ -331,11 +330,14 @@ export function CardsToString(cards: Card[]) {
 }
 
 export function StringToCards(cards: string): Card[] {
-  const cartas = cards.split(';');
   const result = Array();
+  if (cards === '')
+    return result;
 
   if (cards === "")
     return result;
+
+  const cartas = cards.split(';');
 
   for (let i = 0; i < cartas.length; i++) {
     const color = stringToColor(cartas[i][0]);
@@ -355,4 +357,5 @@ export function adjustForAces(current_count: number, min_count: number) {
   }
   return current_count; // Return the adjusted hand value
 }
+
 

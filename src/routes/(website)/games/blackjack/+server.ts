@@ -1,4 +1,4 @@
-import { createCards, Hand, State, Card, translateDecitionUser, Decision, StringToCards, CardToString, CardsToString } from '$lib/games/blackjack';
+import { Hand, State, Card, translateDecitionUser, Decision, StringToCards, CardToString, CardsToString } from '$lib/games/blackjack';
 import { db } from '$lib/server/db';
 import { blackjack } from '$lib/server/db/schema';
 import {
@@ -7,8 +7,11 @@ import {
   DoesGameExistAndNotEnded,
   GetBlackJackGameById,
   getPoints,
-  isGameOnGoing,
   reducePoints,
+  setPlayerWonTrue,
+  setPlayerWonFalse,
+  setNeutral,
+  setStand
 } from '$lib/server/db/utilities';
 import { type RequestHandler, json, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -23,16 +26,17 @@ export const GET: RequestHandler = async ({ locals }) => {
   const resp = await DoesGameExistAndNotEnded(locals.user.id);
   if (!resp.game) {
     // create game
+
+    console.log("creamos juego");
     const gameid = await CreateBlackJackGame(locals.user.id);
+    console.log("id del juego creado: ", gameid);
 
     return json({ id: gameid }, { status: 200 });
   } else {
 
-
     console.log("cae bien :)")
     console.log("id: ", resp.data!.id)
     console.log("ended: ", resp.data?.ended)
-
 
     return json({ id: resp.data!.id }, { status: 200 });
   }
@@ -45,7 +49,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
 
   const req = await request.json();
-  console.log("request: ", req)
+  //console.log("request: ", req)
 
   let decition_enum: Decision;
   let points = 0;
@@ -59,9 +63,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     gameId = req.gameId;
     decition_enum = translateDecitionUser(req.decition);
 
-    console.log("API points: ", points);
-    console.log("API gameId: ", gameId)
-    console.log("API decition: ", decition_enum)
+    //console.log("API points: ", points);
+    //console.log("API gameId: ", gameId)
+    //console.log("API decition: ", decition_enum)
 
   } catch (e) {
     return json(
@@ -149,11 +153,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     return json({ message: 'You are not able to restart a game' }, { status: 400 });
   }
 
-  console.log("pile_cards: ", GameReq.pile_cards)
-  console.log("player_cards: ", GameReq.playerCards)
-  console.log("dealer_cards: ", GameReq.dealerCards)
+  //console.log("pile_cards: ", GameReq.pile_cards)
+  //console.log("player_cards: ", GameReq.playerCards)
+  //console.log("dealer_cards: ", GameReq.dealerCards)
   //console.log("cards: ", cards)
-  console.log("game is started?: ", GameReq.started)
+  //console.log("game is started?: ", GameReq.started)
 
 
   let canreplay = true;
@@ -164,6 +168,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     player_cards: string
     dealer_cards: string
   }
+
+
 
   switch (decition_enum) {
     case Decision.START:
@@ -187,32 +193,15 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       canreplay = false;
       // make decitions of dealer
 
-      const outcome = dealerPlay(player_cards, dealer_cards, cards);
+      setStand(GameReq.id);
 
-      switch (outcome) {
-        case State.PLAYER_WON:
-          playerlost = false;
-          canreplay = false;
-          break;
-
-        case State.NEUTRAL:
-          playerlost = false;
-          canreplay = false;
-          break;
-
-        case State.PLAYER_LOST:
-          playerlost = true;
-          canreplay = false;
-          break;
-      }
+      state = dealerPlay(player_cards, dealer_cards, cards);
 
       data = {
         player_cards: CardsToString(player_cards.cards),
         dealer_cards: CardsToString(dealer_cards.cards)
       }
 
-
-      state = dealerPlay(player_cards, dealer_cards, cards);
 
       // response format:
       // { PlayerLost: bool }
@@ -230,6 +219,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       } catch (e) {
         return fail(500, { message: "There was an error in our part :(" })
       }
+
 
       player_cards.cards.push(cardToGive);
 
@@ -252,7 +242,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       // if yes, game ends, player
       // { PlayerLost: bool }
 
-      await reducePoints(GameReq.userId, points);
+      await reducePoints(GameReq.userId, GameReq.totalbet);
 
       canreplay = false;
 
@@ -267,32 +257,37 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         return fail(500, { message: "There was an error in our part :(" })
       }
 
+      canreplay = false;
+
+      setStand(GameReq.id);
       player_cards.cards.push(cardToGiveDouble);
 
       if (player_cards.sumOfCards() <= 21) {
+
         state = dealerPlay(player_cards, dealer_cards, cards);
 
-        canreplay = false;
 
         switch (state) {
           case State.PLAYER_WON:
-            playerlost = false;
+            setPlayerWonTrue(GameReq.id);
             break;
 
           case State.NEUTRAL:
+            setNeutral(GameReq.id);
+
             playerlost = false;
             break;
 
           case State.PLAYER_LOST:
-            playerlost = true;
+
+            setPlayerWonFalse(GameReq.id);
             break;
 
         }
 
       } else {
-        state = State.PLAYER_LOST
-        canreplay = false;
-        playerlost = true;
+        // over 21
+        setPlayerWonFalse(GameReq.id);
       }
 
 
@@ -314,8 +309,29 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     return fail(500, { message: "There was an error in our part updating the game :(" })
   }
 
-  // tmp
-  return json({ playerLost: playerlost, canreplay: canreplay, outcome: state, start: start, data: data }, { status: 200 });
+
+  if (state !== null) {
+    setStand(GameReq.id);
+
+    return json(
+      {
+        playerWon: state === State.PLAYER_WON,
+        playerNeutral: state === State.NEUTRAL,
+        canreplay: canreplay,
+        start: start,
+        data: data,
+      },
+      { status: 200 });
+
+  } else {
+    return json(
+      {
+        canreplay: canreplay,
+        start: start,
+        data: data,
+      },
+      { status: 200 });
+  }
 };
 
 
@@ -323,7 +339,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 async function changeGameDBState(
   ended: boolean,
   started: Boolean,
-  playerCards: Hand,
+  player_cards: Hand,
   dealer_cards: Hand,
   deck: Card[],
   gameId: string,
@@ -339,14 +355,13 @@ async function changeGameDBState(
     new Error("The game session was not found")
   }
 
-
   // start game
   if (started) {
     try {
       await db
         .update(blackjack)
         .set({
-          playerCards: CardsToString(playerCards.cards),
+          playerCards: CardsToString(player_cards.cards),
           dealerCards: CardsToString(dealer_cards.cards),
           pile_cards: CardsToString(deck),
           totalbet: game.totalbet + points,
@@ -363,11 +378,12 @@ async function changeGameDBState(
 
 
   if (state === null) {
+    console.log("CAE EN STATE === NULL");
     console.log("\n\nended tiene que ser false: ", ended, "\n\n")
     // for hit
     await db.update(blackjack)
       .set({
-        playerCards: CardsToString(playerCards.cards),
+        playerCards: CardsToString(player_cards.cards),
         dealerCards: CardsToString(dealer_cards.cards),
         pile_cards: CardsToString(deck),
         totalbet: game.totalbet + points,
@@ -379,39 +395,37 @@ async function changeGameDBState(
   } else {
     console.log("\n\nended tiene que ser true: ", ended, "\n\n")
 
-    let playerWon = null;
-    let neutral = false;
     ended = true;
     console.log(state);
 
     switch (state) {
       case State.PLAYER_WON:
-        playerWon = true;
+        setPlayerWonTrue(game.id);
+
         // recupere mise + bet  
         addPoints(game.userId, game.totalbet * 2)
         break;
 
       case State.NEUTRAL:
-        playerWon = false;
-        neutral = true;
+        setNeutral(game.id);
+
         // recupere mise
         addPoints(game.userId, game.totalbet)
         break;
 
       case State.PLAYER_LOST:
-        playerWon = false;
-        // do nothing
+        setPlayerWonFalse(game.id);
         break;
     }
 
+    console.log("playerWon??: ", state == State.PLAYER_WON);
+
     await db.update(blackjack)
       .set({
-        playerCards: CardsToString(playerCards.cards),
+        playerCards: CardsToString(player_cards.cards),
         dealerCards: CardsToString(dealer_cards.cards),
         pile_cards: CardsToString(deck),
-        playerWon: playerWon,
         firstPlay: false,
-        neutral: neutral,
         ended: ended
       })
       .where(eq(blackjack.id, game.id));
@@ -423,19 +437,31 @@ function dealerPlay(player_hand: Hand, dealer_hand: Hand, deck: Card[]): State {
   const playerValue = player_hand.sumOfCards();
   let dealerValue = dealer_hand.sumOfCards();
 
-  while (dealerValue < playerValue && dealerValue < 21 && playerValue <= 21) {
+  console.log("cards of Player:", CardsToString(player_hand.cards))
+
+  console.log("cards of Dealer before:", CardsToString(dealer_hand.cards))
+  console.log("calculating outcome");
+  while ((dealerValue < playerValue) && dealerValue < 21 && playerValue <= 21) {
     const card = deck.shift()!;
-    dealer_hand.cards.push(card)
+    dealer_hand.cards.push(card);
     dealerValue = dealer_hand.sumOfCards();
   }
 
+  console.log("cards of Dealer after:", CardsToString(dealer_hand.cards))
+
   if (dealerValue > 21) {
+    console.log("dealer lost, dealer value: ", dealerValue)
+    console.log("player value: ", playerValue)
     return State.PLAYER_WON
   }
   else if (dealerValue == playerValue) {
+    console.log("neutral dealer value: ", dealerValue)
+    console.log("player value: ", playerValue)
     return State.NEUTRAL
   }
   else {
+    console.log("player lost, dealer value: ", dealerValue)
+    console.log("player value: ", playerValue)
     return State.PLAYER_LOST
   }
 }

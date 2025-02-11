@@ -32,6 +32,7 @@ export const blackjack = sqliteTable('blackjack', {
 
   totalbet: integer('total_bet').notNull().default(0),
 
+  stand: integer('stand', { mode: 'boolean' }).default(false),
   started: integer('started', { mode: 'boolean' }).default(false),
   firstPlay: integer('first_play', { mode: 'boolean' }).default(true),
   neutral: integer('neutral', { mode: 'boolean' }).default(false),
