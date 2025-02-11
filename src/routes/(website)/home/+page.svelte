@@ -22,12 +22,12 @@
 <br><br>
 
 {#if data.user !== null}
-	<h1 class="animate-slide-in">Salut, <b> {data.user.username}</b> !</h1><br>
-	<p style="font-size: 12px;" class="animate-slide-in">Tu as actuellement {data.points} points !</p>
+	<h1 class="animate-slide-in">Salut, <b>{data.user.username}</b> !</h1><br>
+	<p style="font-size: 12px;" class="animate-slide-in">Tu as actuellement <b>{data.points}</b> points !</p>
 {/if}
 
-<h1 class="animate-slide-in">Bienvenue dans notre monde d'amour et de jeux ❤️</h1>
-<p class="animate-slide-in">Joue et amuse-toi pour cette <b style="text-decoration: underline;">Saint-Valentin !</b></p>
+<h1 class="animate-slide-in">Cupidon t’attend… Saura-tu relever le défi ? 🏹</h1>
+<p class="animate-slide-in">Plonge dans l’aventure, relève les défis et amuse-toi pour cette <b style="text-decoration: underline;">Saint-Valentin !</b></p>
 
 <br>
 <br>
