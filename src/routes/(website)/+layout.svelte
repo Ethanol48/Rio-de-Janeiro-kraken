@@ -28,22 +28,22 @@
 
 <div class="absolute left-3 top-3">
 	<nav class="rounded p-3 shadow">
-		<div class="flex max-w-20 flex-col sm:flex-row flex-wrap gap-2 w-fit sm:max-w-xl">
+		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 sm:max-w-xl sm:flex-row">
 			<Button href="/home">
 				<p class="ml-[-1px] text-xl">🏠</p>
-				<p class="invisible w-0 h-0 sm:visible sm:w-fit sm:h-fit">• Home</p>
+				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Home</p>
 			</Button>
 			<Button href="/leaderboard">
 				<p class="ml-[-1px] text-xl">📜</p>
-				<p class="invisible w-0 h-0 sm:visible sm:w-fit sm:h-fit">• Leaderboard</p>
+				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Leaderboard</p>
 			</Button>
 			<Button href="/games">
 				<p class="ml-[-1px] text-xl">🕹️</p>
-				<p class="invisible w-0 h-0 sm:visible sm:w-fit sm:h-fit">• Games</p>
+				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Games</p>
 			</Button>
 			<Button href="/shop">
 				<p class="ml-[-1px] text-xl">🎁</p>
-				<p class="invisible w-0 h-0 sm:visible sm:w-fit sm:h-fit">• SHOP</p>
+				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• SHOP</p>
 			</Button>
 		</div>
 	</nav>

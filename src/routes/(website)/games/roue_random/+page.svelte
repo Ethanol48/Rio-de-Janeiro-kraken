@@ -6,10 +6,16 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
 	const SEGMENTS = 5;
-	const SEGMENT_NAMES = ['2 points', '20 points, INCROYABLE!!🪙', '10 points', '6 points', '4 points'];
+	const SEGMENT_NAMES = [
+		'2 points',
+		'20 points, INCROYABLE!!🪙',
+		'10 points',
+		'6 points',
+		'4 points'
+	];
 
 	let spinning = false;
-	let intromsg = true; 
+	let intromsg = true;
 	let result: string | null = null;
 	let errorMessage: string | null = null;
 	let wheelElement: HTMLImageElement;
@@ -25,7 +31,6 @@
 			const response = await fetch('/games/roue_random/api/spin');
 			const data = await response.json();
 
-			
 			if (!response.ok) {
 				// Si l'utilisateur ne peut pas jouer
 				if (response.status === 403) {
@@ -58,8 +63,6 @@
 	}
 </script>
 
-
-
 <title>Krak'n Roses - RoueChanceuse</title>
 <div class="container">
 	<div class="wheel-frame">
@@ -67,37 +70,34 @@
 		<img class="arrow" src={fleche} alt="Flèche indicateur" />
 	</div>
 
-
-	{#if intromsg} 
-	<div style="margin-left: 2%;">
-		<Dialog.Root>
-			<Dialog.Trigger>
-				<Button class="cursor-pointer" size="sm"> <b>Comment jouer ❔</b></Button>
-			</Dialog.Trigger>
-			<Dialog.Content>
-				<Dialog.Header>
-					<Dialog.Title>La Roue Chanceuse</Dialog.Title>
-					<Dialog.Description>
-						<br>
-						HAHAHA ! Tu viens tenter ta <b>chance</b> ?  <br> <br>
-					Très bien, voici le deal : tu peux gagner d'incroyables <b>récompenses</b>, et
-					peut-être même un cadeau <b>secret</b>... 🎁 Mais attention, tu ne peux jouer qu'une fois toutes les 3 heures.
-						<br><br>
-					Alors, reviens me voir et tente ta <b>chance</b> ! 🍀
-	
-	
-					</Dialog.Description>
-				</Dialog.Header>
-				<Dialog.Close>
-					<Button class="mt-2">Fermer</Button>
-				</Dialog.Close>
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-		
+	{#if intromsg}
+		<div style="margin-left: 2%;">
+			<Dialog.Root>
+				<Dialog.Trigger>
+					<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+						<Dialog.Description>
+							<br />
+							HAHAHA ! Tu viens tenter ta <b>chance</b> ? <br /> <br />
+							Très bien, voici le deal : tu peux gagner d'incroyables <b>récompenses</b>, et
+							peut-être même un cadeau <b>secret</b>... 🎁 Mais attention, tu ne peux jouer qu'une
+							fois toutes les 3 heures.
+							<br /><br />
+							Alors, reviens me voir et tente ta <b>chance</b> ! 🍀
+						</Dialog.Description>
+					</Dialog.Header>
+					<Dialog.Close>
+						<Button class="mt-2">Fermer</Button>
+					</Dialog.Close>
+				</Dialog.Content>
+			</Dialog.Root>
+		</div>
 	{/if}
 
-	<br>
+	<br />
 	<button on:click={spinWheel} disabled={spinning}>
 		{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
 	</button>

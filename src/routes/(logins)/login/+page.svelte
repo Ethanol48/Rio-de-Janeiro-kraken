@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
-  import * as Tabs from "$lib/components/ui/tabs/index.js";
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
 
-  import Login from "./login.svelte";
-  import Register from "./register.svelte";
+	import Login from './login.svelte';
+	import Register from './register.svelte';
 
 	let { form }: { form: ActionData } = $props();
-
 
 	let login = $state('');
 	let password = $state('');
@@ -14,19 +13,17 @@
 </script>
 
 <Tabs.Root>
-  <Tabs.List tabindex={0} class="grid w-full grid-cols-2">
-    <Tabs.Trigger value="login">Login</Tabs.Trigger>
-    <Tabs.Trigger value="register">Register</Tabs.Trigger>
-  </Tabs.List>
-  <Tabs.Content value="login">
-    <Login {login} {password} />
-  </Tabs.Content>
-  <Tabs.Content value="register">
-    <Register {login} {password} />
-  </Tabs.Content>
+	<Tabs.List tabindex={0} class="grid w-full grid-cols-2">
+		<Tabs.Trigger value="login">Login</Tabs.Trigger>
+		<Tabs.Trigger value="register">Register</Tabs.Trigger>
+	</Tabs.List>
+	<Tabs.Content value="login">
+		<Login {login} {password} />
+	</Tabs.Content>
+	<Tabs.Content value="register">
+		<Register {login} {password} />
+	</Tabs.Content>
 </Tabs.Root>
-
-
 
 <!--
 <div class="bg-white rounded-xl p-5 border-[1px] w-80 shadow">

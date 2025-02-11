@@ -7,7 +7,6 @@
 	}
 </script>
 
-
 <title>Krak'n Roses - Games</title>
 <h1 class="text-xl">Hi, <b>{data.user.username}</b> !</h1>
 <h2 class="mt-5">There are so many games, choose yours !</h2>
@@ -16,23 +15,22 @@
 	<button onclick={() => goTo('/games/roue_random')}>
 		<span class="box"> Roue de la Chance 🍀 </span>
 	</button>
-	<button onclick={() => goTo("/games/krakball")}>
+	<button onclick={() => goTo('/games/krakball')}>
 		<span class="box"> Trouve ta Rose 🌹 </span>
 	</button>
-	<button onclick={() => goTo("/games/blackjack")}>
+	<button onclick={() => goTo('/games/blackjack')}>
 		<span class="box">
 			<p>Krak'Jack</p>
 			<p>♠️</p>
 		</span>
 	</button>
 
-	<button onclick={() => (window.location.href = "https://kraken-run.armand-ms.fr")}>
+	<button onclick={() => (window.location.href = 'https://kraken-run.armand-ms.fr')}>
 		<span class="box">
-		  <p>Krak'Run</p>
-		  <p>🪸</p>
+			<p>Krak'Run</p>
+			<p>🪸</p>
 		</span>
-	  </button>
-	  
+	</button>
 </div>
 
 <style>

@@ -2,12 +2,11 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Card from '$lib/components/ui/card';
 
-	let { login, password,username } = $props();
+	let { login, password, username } = $props();
 
 	let claseBoton =
 		'focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 shadow h-9 px-4 py-2';
 </script>
-
 
 <title>Krak'n Roses - Register</title>
 <Card.Root>
@@ -23,20 +22,24 @@
 				<Card.Description class="mb-1 font-bold" style="color: black;">Username</Card.Description>
 
 				<Input bind:value={username} placeholder="Username" type="text" style="color: black;" />
-				<input bind:value={username} class="invisible m-0 h-0 w-0 p-0" type="text" name="username" />
-				</label>
-				<label>
-					<Card.Description class="mb-1 font-bold" style="color: black;">Email</Card.Description>
+				<input
+					bind:value={username}
+					class="invisible m-0 h-0 w-0 p-0"
+					type="text"
+					name="username"
+				/>
+			</label>
+			<label>
+				<Card.Description class="mb-1 font-bold" style="color: black;">Email</Card.Description>
 
-				<Input bind:value={login} placeholder="email" type='email'style="color: black;" />
-				<input bind:value={login} class="invisible m-0 h-0 w-0 p-0"type='email' name="login" />
+				<Input bind:value={login} placeholder="email" type="email" style="color: black;" />
+				<input bind:value={login} class="invisible m-0 h-0 w-0 p-0" type="email" name="login" />
 				<Card.Description class="mb-1 font-bold" style="color: black;">Password</Card.Description>
-
 			</label>
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
--->				
+-->
 				<!--
       <div class="text-lg">Password</div>
 -->

@@ -26,8 +26,7 @@ export async function createSession(token: string, userId: string) {
 	return session;
 }
 
-
-export async function createOrderUser( userId2: string) {
+export async function createOrderUser(userId2: string) {
 	const orderId: table.Order = {
 		userId: userId2,
 		cereal: 0,
@@ -45,7 +44,7 @@ export async function validateSessionToken(token: string) {
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data
-			user: { id: table.user.id, login: table.user.login, username:table.user.username },
+			user: { id: table.user.id, login: table.user.login, username: table.user.username },
 			session: table.session
 		})
 		.from(table.session)

@@ -6,7 +6,8 @@
 	import { goto, invalidate } from '$app/navigation';
 	import type { PageServerData } from '../$types';
 	import Decitions from './Decitions.svelte';
-  import { toast } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
+	import { derived } from 'svelte/store';
 
 	let {
 		points,
@@ -61,10 +62,10 @@
 		const enJson = await resp.json();
 		//console.log(enJson);
 
-    if (resp.status === 400 || resp.status === 401)  {
-      toast.error(enJson.message);
-      return;
-    }
+		if (resp.status === 400 || resp.status === 401) {
+			toast.error(enJson.message);
+			return;
+		}
 
 		playerHand = new Hand(StringToCards(enJson.data.player_cards));
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
@@ -119,28 +120,25 @@
 			}
 		});
 
-
 		points -= betting_num;
 
 		const enJson = await resp.json();
 		//console.log('enJson: ', enJson);
 
-    if (resp.status === 400 || resp.status === 401)  {
-      toast.error(enJson.message);
-      return;
-    }
+		if (resp.status === 400 || resp.status === 401) {
+			toast.error(enJson.message);
+			return;
+		}
 
-    if (decition === Decision.DOUBLE) {
-				totalBet += totalBet;
-    }
+		if (decition === Decision.DOUBLE) {
+			totalBet += totalBet;
+		}
 
 		playerHand = new Hand(StringToCards(enJson.data.player_cards));
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
 		dealerHandLength = dealerHand.cards.length;
 
-
 		if (playerHand.sumOfCards() === 21) {
-    
 			play(Decision.STAND);
 		}
 
@@ -195,6 +193,7 @@
 		await wait(1000);
 		window.location.reload();
 	}
+
 
 	// flow of game
 	// place bet, confirm
