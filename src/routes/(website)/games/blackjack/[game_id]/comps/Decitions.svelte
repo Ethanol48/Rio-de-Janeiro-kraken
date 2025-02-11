@@ -13,7 +13,7 @@
 	<div class="flex flex-col justify-center gap-5">
 		<h3 class="typography text-center">Take an action</h3>
 
-		<div class="flex flex-row justify-around">
+		<div class="flex w-full flex-row justify-around">
 			<Button
 				onclick={() => {
 					playFunc(Decision.HIT);

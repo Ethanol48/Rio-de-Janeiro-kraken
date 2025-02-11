@@ -5,7 +5,7 @@
 
 	let { data } = $props();
 
-	const puntos = data.points!;
+	const puntos = data.points;
 	console.log('dealer cards: ', data.game?.dealerCards);
 	console.log('game ended: ', data.game?.ended);
 	console.log('playerWon?? from game object: ', data.game?.playerWon);
@@ -13,7 +13,7 @@
 
 {#if data.game !== undefined && data.game !== null}
 	<Blackjack
-		points={puntos}
+		points={puntos!}
 		game={data.game}
 		playerHand={new Hand(StringToCards(data.game.playerCards))}
 		dealerHand={new Hand(StringToCards(data.game.dealerCards))}

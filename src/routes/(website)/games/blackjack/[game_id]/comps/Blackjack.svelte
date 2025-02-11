@@ -34,18 +34,13 @@
 	let gameStand = $state(game.stand!);
 	let betting = $state(game.firstPlay!);
 	let puntos = $state(points);
-	let decitions = $derived(gameStarted && !gameEnded);
+	let decitions = $derived(gameStarted === true && gameEnded === false);
 	let message = $state('');
 	let totalBet = $state(game.totalbet);
+	let submitted21 = $state(false);
 
 	async function startGame() {
 		betting = false;
-		gameStarted = true;
-		gameEnded = false;
-
-		game.started = true;
-		game.ended = false;
-
 		totalBet = bet[0];
 
 		const resp = await fetch(`/games/blackjack`, {
@@ -67,6 +62,20 @@
 
 		playerHand = new Hand(StringToCards(enJson.data.player_cards));
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
+
+		await wait(300);
+
+		gameStarted = true;
+		gameEnded = false;
+
+		game.started = true;
+		game.ended = false;
+
+		if (playerHand.sumOfCards() === 21) {
+			// TODO: ad toast
+
+			play(Decision.STAND);
+		}
 	}
 
 	async function play(decition: Decision) {
@@ -77,9 +86,6 @@
 				decitionToSend = 'stand';
 				game.stand = true;
 				game.ended = false;
-
-				gameStand = true;
-				gameEnded = false;
 
 				break;
 			case Decision.HIT:
@@ -111,13 +117,20 @@
 		points -= betting_num;
 
 		const enJson = await resp.json();
-		console.log('enJson: ', enJson);
-
-		gameEnded = !enJson.canreplay;
+		//console.log('enJson: ', enJson);
 
 		playerHand = new Hand(StringToCards(enJson.data.player_cards));
 		dealerHand = new Hand(StringToCards(enJson.data.dealer_cards));
 		dealerHandLength = dealerHand.cards.length;
+
+		await wait(300);
+
+		if (decition === Decision.STAND) {
+			gameStand = true;
+			gameEnded = false;
+		}
+
+		gameEnded = !enJson.canreplay;
 
 		if (enJson.canreplay === false) {
 			gameEnded = true;
@@ -137,6 +150,8 @@
 			}
 		}
 	}
+
+	let totalBetWon = $derived(totalBet * 2);
 
 	let waiting = $state(false);
 
@@ -166,8 +181,6 @@
 	//give cards to everyone
 
 	//if dealer has a ten
-
-	console.log('carts of dealer: ', dealerHand.cards.length);
 </script>
 
 {#if waiting}
@@ -177,36 +190,41 @@
 		<div class="flex flex-row justify-between">
 			<div class="relative h-fit w-full">
 				{#if gameStarted}
-					<h2 class="mb-[-60px] text-center">Player Cards</h2>
+					<div class="mb-[-60px]">
+						<h2 class="text-center">Player Cards</h2>
+						<p class="text-center">Card Count: {playerHand.sumOfCards()}</p>
+					</div>
+					{#each playerHand.cards as carta, i}
+						<Card
+							class={'absolute'}
+							turned={false}
+							style={`bottom: ${i * incrementY + 30}px; left: ${i * incrementX + 15}px;`}
+							color={carta.color}
+							symbol={carta.symbol}
+						/>
+					{/each}
 				{/if}
-
-				{#each playerHand.cards as carta, i}
-					<Card
-						class={'absolute'}
-						turned={false}
-						style={`bottom: ${i * incrementY + 30}px; left: ${i * incrementX}px;`}
-						color={carta.color}
-						symbol={carta.symbol}
-					/>
-				{/each}
 			</div>
 			<div class="relative w-full justify-center">
 				{#if gameStarted}
-					<h2 class="mb-[-60px] text-center">Dealer Cards</h2>
+					<div class="mb-[-60px] text-center">
+						<h2>Dealer Cards</h2>
+						<p>Card Count: {dealerHand.sumOfCards()}</p>
+					</div>
 				{/if}
 
-				{#if gameStand === false && gameStarted === true}
+				{#if decitions === true}
 					<Card
 						class={'absolute'}
 						turned={true}
-						style={`bottom: 30px; left: 0px;`}
+						style={`bottom: 30px; left: 15px;`}
 						color={Color.SPADES}
 						symbol={Carta.PLACEHOLDER}
 					/>
 					<Card
 						class={'absolute'}
 						turned={false}
-						style={`bottom: ${incrementY + 30}px; left: ${incrementX}px;`}
+						style={`bottom: ${incrementY + 30}px; left: ${incrementX + 15}px;`}
 						color={dealerHand.cards[0].color}
 						symbol={dealerHand.cards[0].symbol}
 					/>
@@ -215,7 +233,7 @@
 						<Card
 							class={'absolute'}
 							turned={false}
-							style={`bottom: ${incrementY * i + 30}px; left: ${incrementX * i}px;`}
+							style={`bottom: ${incrementY * i + 30}px; left: ${incrementX * i + 15}px;`}
 							color={carta.color}
 							symbol={carta.symbol}
 						/>
@@ -235,17 +253,17 @@
 					<div
 						class="mx-auto my-4 rounded-md border border-green-500 bg-green-100 p-3 px-6 text-center"
 					>
-						<h2>Congratss!!! you won the pot 🎉</h2>
+						<h2>Congratss!!! you won {totalBetWon} points 🎉</h2>
 						<h3>Try your luck with another game!!</h3>
 					</div>
 				{:else if message === 'neutral' || game.neutral}
 					<div class="mx-auto my-4 rounded-md border bg-white p-3 px-6 text-center">
-						<h2>You gained your bet back!</h2>
+						<h2>You gained {totalBet} back!</h2>
 						<h3>Try again with another game!</h3>
 					</div>
 				{:else if message === 'lost' || game.playerWon === false}
 					<div class="mx-auto my-4 rounded-md border bg-white p-3 px-6 text-center">
-						<h2>You lost your bet :(</h2>
+						<h2>You lost {totalBet} points :(</h2>
 						<h3>Better luck next time..</h3>
 					</div>
 				{/if}
