@@ -51,7 +51,7 @@
 				points: bet[0],
 				gameId: game.id,
 				decition: 'start',
-        currentPoints: points - bet[0]
+        		currentPoints: points - bet[0]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
@@ -116,7 +116,7 @@
 				points: 0,
 				gameId: game.id,
 				decition: decitionToSend,
-        currentPoints: points
+        		currentPoints: puntos
 			}),
 			headers: {
 				'Content-Type': 'application/json'
