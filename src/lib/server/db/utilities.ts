@@ -178,6 +178,13 @@ export const addPoints = async (userId: string, points: number) => {
 		.where(eq(user.id, userId));
 };
 
+export const setPoints = async (userId: string, points: number) => {
+	return await db
+		.update(user)
+		.set({ points: points })
+		.where(eq(user.id, userId));
+};
+
 // jeu roue
 
 // utilities/games.ts

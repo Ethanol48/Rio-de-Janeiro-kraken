@@ -21,7 +21,8 @@ import {
 	setPlayerWonFalse,
 	setNeutral,
 	setStand,
-	addToTotalBet
+	addToTotalBet,
+	setPoints
 } from '$lib/server/db/utilities';
 import { type RequestHandler, json, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -209,6 +210,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			break;
 
 		case Decision.DOUBLE:
+			console.log("\n decition is DOUBLE \n");
 			await reducePoints(GameReq.userId, GameReq.totalbet);
 			canreplay = false;
 			let cardToGiveDouble;
@@ -219,8 +221,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				return fail(500, { message: 'There was an error in our part :(' });
 			}
 
-			addToTotalBet(GameReq.id, GameReq.totalbet);
-			setStand(GameReq.id);
+			await addToTotalBet(GameReq.id, GameReq.totalbet);
+			await setStand(GameReq.id);
 
 			player_cards.cards.push(cardToGiveDouble);
 
@@ -229,21 +231,21 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 				switch (state) {
 					case State.PLAYER_WON:
-						setPlayerWonTrue(GameReq.id);
+						await setPlayerWonTrue(GameReq.id);
 						break;
 
 					case State.NEUTRAL:
-						setNeutral(GameReq.id);
+						await setNeutral(GameReq.id);
 
 						break;
 
 					case State.PLAYER_LOST:
-						setPlayerWonFalse(GameReq.id);
+						await setPlayerWonFalse(GameReq.id);
 						break;
 				}
 			} else {
 				// over 21
-				setPlayerWonFalse(GameReq.id);
+				await setPlayerWonFalse(GameReq.id);
 			}
 
 			data = {
@@ -253,15 +255,20 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	// send the cards as a string
+	
+	const prevPoints = await getPoints(locals.user.id);
+	if (prevPoints === null) {
+		return fail(500, { message: 'There was an error part updating the game :(' });
+	}
 
 	try {
-		changeGameDBState(start, player_cards, dealer_cards, cards, GameReq.id, state);
+		changeGameDBState(start, player_cards, dealer_cards, cards, GameReq.id, state, prevPoints);
 	} catch (e) {
 		return fail(500, { message: 'There was an error in our part updating the game :(' });
 	}
 
 	if (state !== null) {
-		setStand(GameReq.id);
+		await setStand(GameReq.id);
 
 		return json(
 			{
@@ -291,7 +298,8 @@ async function changeGameDBState(
 	dealer_cards: Hand,
 	deck: Card[],
 	gameId: string,
-	state: State | null = null
+	state: State | null = null,
+	prevPoints: number
 ) {
 	const tmp = await GetBlackJackGameById(gameId);
 
@@ -336,23 +344,24 @@ async function changeGameDBState(
 	} else {
 		switch (state) {
 			case State.PLAYER_WON:
-				setPlayerWonTrue(game.id);
+				await setPlayerWonTrue(game.id);
 
 				console.log('totalBet: ', game.totalbet);
+				console.log('prevPoints: ', prevPoints);
 				console.log('the player will win:: ', game.totalbet * 2);
 				// recupere mise + bet
-				addPoints(game.userId, (game.totalbet * 2));
+				await setPoints(game.userId, (prevPoints! + (game.totalbet * 2)));
 				break;
 
 			case State.NEUTRAL:
-				setNeutral(game.id);
+				await setNeutral(game.id);
 
 				// recupere mise
-				addPoints(game.userId, game.totalbet);
+				await setPoints(game.userId, (prevPoints! + game.totalbet));
 				break;
 
 			case State.PLAYER_LOST:
-				setPlayerWonFalse(game.id);
+				await setPlayerWonFalse(game.id);
 				break;
 		}
 
@@ -375,7 +384,7 @@ function dealerPlay(player_hand: Hand, dealer_hand: Hand, deck: Card[]): State {
 	const playerValue = player_hand.sumOfCards();
 	let dealerValue = dealer_hand.sumOfCards();
 
-	console.log('cards of Player:', CardsToString(player_hand.cards));
+	console.log('\ncards of Player:', CardsToString(player_hand.cards));
 
 	console.log('cards of Dealer before:', CardsToString(dealer_hand.cards));
 	console.log('calculating outcome');
