@@ -50,7 +50,8 @@
 			body: JSON.stringify({
 				points: bet[0],
 				gameId: game.id,
-				decition: 'start'
+				decition: 'start',
+        currentPoints: points - bet[0]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
@@ -58,6 +59,7 @@
 		});
 
 		points -= betting_num;
+		puntos -= betting_num;
 
 		const enJson = await resp.json();
 		//console.log(enJson);
@@ -113,7 +115,8 @@
 			body: JSON.stringify({
 				points: 0,
 				gameId: game.id,
-				decition: decitionToSend
+				decition: decitionToSend,
+        currentPoints: points
 			}),
 			headers: {
 				'Content-Type': 'application/json'

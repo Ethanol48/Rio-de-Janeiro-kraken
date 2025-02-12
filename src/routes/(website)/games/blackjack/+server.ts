@@ -61,6 +61,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	let decition_enum: Decision;
 	let points = 0;
+	let prevPoints = 0;
 	let gameId = '';
 
 	try {
@@ -68,6 +69,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		points = req.points;
 		gameId = req.gameId;
+		prevPoints = req.currentPoints;
 		decition_enum = translateDecitionUser(req.decition);
 
 		//console.log("API points: ", points);
@@ -256,10 +258,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	// send the cards as a string
 	
-	const prevPoints = await getPoints(locals.user.id);
-	if (prevPoints === null) {
-		return fail(500, { message: 'There was an error part updating the game :(' });
-	}
+	//const prevPoints = await getPoints(locals.user.id);
+	//if (prevPoints === null) {
+	//	return fail(500, { message: 'There was an error part updating the game :(' });
+	//}
 
 	try {
 		changeGameDBState(start, player_cards, dealer_cards, cards, GameReq.id, state, prevPoints);
@@ -350,14 +352,14 @@ async function changeGameDBState(
 				console.log('prevPoints: ', prevPoints);
 				console.log('the player will win:: ', game.totalbet * 2);
 				// recupere mise + bet
-				await setPoints(game.userId, (prevPoints! + (game.totalbet * 2)));
+				await setPoints(game.userId, (prevPoints + (game.totalbet * 2)));
 				break;
 
 			case State.NEUTRAL:
 				await setNeutral(game.id);
 
 				// recupere mise
-				await setPoints(game.userId, (prevPoints! + game.totalbet));
+				await setPoints(game.userId, (prevPoints + game.totalbet));
 				break;
 
 			case State.PLAYER_LOST:
