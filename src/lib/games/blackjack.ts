@@ -183,7 +183,7 @@ export function createCards(): Card[] {
 		Carta.Jack,
 		Carta.Queen,
 		Carta.King,
-    Carta.Ace
+		Carta.Ace
 	];
 
 	for (let i = 0; i < suits.length; i++) {

@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	const game = await GetBlackJackGameById(params.game_id);
 	if (game !== undefined && game !== null) {
 		game.pile_cards = '';
-		console.log('game: ', game);
+		//console.log('game: ', game);
 
 		if (!(game.firstPlay === true && game.started === false)) {
 			if (game.stand === false && game.ended === false) {

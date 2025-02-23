@@ -50,8 +50,8 @@
 			body: JSON.stringify({
 				points: bet[0],
 				gameId: game.id,
-				decition: 'start',
-        		currentPoints: points - bet[0]
+				decition: 'start'
+				//currentPoints: points - bet[0]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
@@ -88,6 +88,9 @@
 	}
 
 	async function play(decition: Decision) {
+		if (gameStand) return;
+		if (gameEnded) return;
+
 		let decitionToSend: string = '';
 
 		switch (decition) {
@@ -116,7 +119,7 @@
 				points: 0,
 				gameId: game.id,
 				decition: decitionToSend,
-        		currentPoints: puntos
+				currentPoints: puntos
 			}),
 			headers: {
 				'Content-Type': 'application/json'
@@ -196,7 +199,6 @@
 		await wait(1000);
 		window.location.reload();
 	}
-
 
 	// flow of game
 	// place bet, confirm

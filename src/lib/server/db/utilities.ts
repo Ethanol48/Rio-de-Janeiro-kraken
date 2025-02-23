@@ -27,7 +27,13 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	}
 
 	const pile_cards = CardsToString(first_twenty);
-	const values = { id: hash_str, userId: userId, ended: false, pile_cards: pile_cards, createdAt: "" };
+	const values = {
+		id: hash_str,
+		userId: userId,
+		ended: false,
+		pile_cards: pile_cards,
+		createdAt: ''
+	};
 
 	const id = await db.insert(blackjack).values(values).returning({ id: blackjack.id });
 
@@ -47,7 +53,7 @@ export const GetBlackJackGameById = async (gameId: string) => {
 };
 
 export const DoesGameExist = async (gameId: string) => {
-	const result_query = await db.select().from(blackjack).where(eq(blackjack.id, gameId))
+	const result_query = await db.select().from(blackjack).where(eq(blackjack.id, gameId));
 	const theres_result = result_query.length > 0;
 	return theres_result;
 };
@@ -144,17 +150,19 @@ export const getUsername = async (userId: string) => {
 };
 
 export const reducePoints = async (userId: string, points: number) => {
-	if (points < 0) return;
-	console.log('ReducePoints - userId: ', userId);
+	if (points <= 0) return;
+	console.log('reducePoints - userId: ', userId);
 
 	// this wont be null normally, you are only suppose to call this fonction
 	const prevPoints = await getPoints(userId);
-	console.log('ReducePoints - prevPoints: ', prevPoints);
+	if (prevPoints === null) {
+		throw Error('error obtaining points');
+	}
 
 	try {
 		await db
 			.update(user)
-			.set({ points: prevPoints! - points })
+			.set({ points: prevPoints - points })
 			.where(eq(user.id, userId));
 
 		console.log('ReducePoints - prevPoints: ', prevPoints);
@@ -168,21 +176,18 @@ export const reducePoints = async (userId: string, points: number) => {
 export const addPoints = async (userId: string, points: number) => {
 	// this wont be null normally, you are only suppose to call this fonction
 	const prevPoints = await getPoints(userId);
-
-	console.log('prevPoints: ', prevPoints);
-	console.log('points: ', points);
+	if (prevPoints === null) {
+		throw Error('error obtaining points');
+	}
 
 	return await db
 		.update(user)
-		.set({ points: prevPoints! + points })
+		.set({ points: prevPoints + points })
 		.where(eq(user.id, userId));
 };
 
 export const setPoints = async (userId: string, points: number) => {
-	return await db
-		.update(user)
-		.set({ points: points })
-		.where(eq(user.id, userId));
+	return await db.update(user).set({ points: points }).where(eq(user.id, userId));
 };
 
 // jeu roue
@@ -260,6 +265,10 @@ export const setPlayerWonFalse = async (gameId: string) => {
 		.update(blackjack)
 		.set({ playerWon: false, neutral: false })
 		.where(eq(blackjack.id, gameId));
+};
+
+export const setGameEnded = async (gameId: string) => {
+	return await db.update(blackjack).set({ ended: true }).where(eq(blackjack.id, gameId));
 };
 
 export const setNeutral = async (gameId: string) => {

@@ -57,7 +57,9 @@ export const blackjack = sqliteTable('blackjack', {
 	neutral: integer('neutral', { mode: 'boolean' }).default(false),
 	ended: integer('ended', { mode: 'boolean' }).default(false),
 	playerWon: integer('player_won', { mode: 'boolean' }).default(false),
-  createdAt: text('created_at').notNull().default(sql`(current_timestamp)`),
+	createdAt: text('created_at')
+		.notNull()
+		.default(sql`(current_timestamp)`)
 });
 
 export type Session = typeof session.$inferSelect;
