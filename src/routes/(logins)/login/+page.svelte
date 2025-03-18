@@ -18,10 +18,10 @@
 		<Tabs.Trigger value="register">Register</Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="login">
-		<Login {login} {password} />
+		<Login {login} {password} {username}/>
 	</Tabs.Content>
 	<Tabs.Content value="register">
-		<Register {login} {password} />
+		<Register {login} {password} {username} />
 	</Tabs.Content>
 </Tabs.Root>
 
