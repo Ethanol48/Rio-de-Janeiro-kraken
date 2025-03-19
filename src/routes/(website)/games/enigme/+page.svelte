@@ -1,63 +1,64 @@
-<script>
-    import { onMount } from 'svelte';
-    import confetti from 'canvas-confetti';
-    let userInput = '';
-    let message = '';
-    const correctAnswer = 'PA'; // Remplace par la réponse correcte
-  
-    function checkAnswer() {
-      if (userInput.toLowerCase().trim() === correctAnswer.toLowerCase()) {
-        message = '✅ Bonne réponse !';
-        launchConfetti();
-      } else {
-        message = '❌ Mauvaise réponse, réessayez.';
-      }
-    }
-  
-    function launchConfetti() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }
-  </script>
-  
+<script lang="ts">
+  import { Confetti } from "svelte-confetti"
+  import { type PageServerData, type ActionData } from './$types.js';
+
+
+  let { data, form }: { data: PageServerData, form: ActionData } = $props(); 
+  let userInput = '';
+  let confetti = $state(false)
+
+  // Réagit au changement de message pour lancer les confettis
+  if (form?.message && form?.message.includes('Bravo')) {
+   confetti = true;
+  }
+</script>
+
+<form method="POST" action="?/check_result" >
   <div class="container">
     <h1 class="enigme-title">🎭 Énigme du jour</h1>
+
+    {#if !confetti}
     <div class="enigme-box">
-      <p class="enigme-text">Quel est le plus gros skill issue d'EPITA ?</p>
+      <p class="enigme-text">Quel est le code ?</p>
     </div>
-    <div class="input-container">
-      <!-- Input stylisé (inspiré de Uiverse.io par AbanoubMagdy1) -->
-      <div class="wave-group">
-        <input required type="text" class="input" bind:value={userInput} >
-        <span class="bar"></span>
-        <label class="label">
-          <span class="label-char" style="--index: 0">L</span>
-          <span class="label-char" style="--index: 1">e</span>
-          <span class="label-char ml-1" style="--index: 3">c</span>
-          <span class="label-char" style="--index: 4">o</span>
-          <span class="label-char" style="--index: 5">d</span>
-          <span class="label-char" style="--index: 6">e</span>
-        </label>
-      </div>
-      <!-- Bouton stylisé (inspiré de Uiverse.io par adamgiebl) -->
-      <button on:click={checkAnswer}>
-        <div class="svg-wrapper-1">
-          <div class="svg-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-              <path fill="none" d="M0 0h24v24H0z"></path>
-              <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-            </svg>
-          </div>
+
+      <div class="input-container">
+        <div class="wave-group">
+          <input required type="text" class="input" name="userInput" bind:value={userInput}>
+          <span class="bar"></span>
+          <label class="label">
+            <span class="label-char" style="--index: 0">L</span>
+            <span class="label-char" style="--index: 1">e</span>
+            <span class="label-char" style="--index: 3">c</span>
+            <span class="label-char" style="--index: 4">o</span>
+            <span class="label-char" style="--index: 5">d</span>
+            <span class="label-char" style="--index: 6">e</span>
+          </label>
         </div>
-        <span>Valider</span>
-      </button>
-    </div>
-    <p class="message">{message}</p>
+        <button type="submit">Vérifier</button>
+      </div>
+    {/if}
+    {#if form?.message}
+      <p class="message">{form?.message}</p>
+    {/if}
   </div>
-  
+
+  <div style="
+ position: fixed;
+ top: -50px;
+ left: 0;
+ height: 100vh;
+ width: 100vw;
+ display: flex;
+ justify-content: center;
+ overflow: hidden;
+ pointer-events: none;">
+ {#if confetti}
+ <Confetti x={[-5, 5]} y={[0, 0.1]} duration={2000} delay={[0, 2000]} infinite amount={300} fallDistance={"100vh"} />
+ {/if}
+</div>
+</form>
+
   <style>
     @keyframes slideUnderline {
       from { width: 0; }
@@ -68,6 +69,14 @@
       0% { opacity: 0; transform: translateY(-20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+
+    .message {
+    margin-top: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  }
   
     .container {
       display: flex;
@@ -97,7 +106,7 @@
       animation: slideUnderline 1s ease-in-out;
     }
     .enigme-box {
-      border: 2px solid #007BFF;
+      border: 2px solid #6c2a2a;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -156,7 +165,7 @@
     .wave-group .input:valid ~ .label .label-char {
       transform: translateY(-20px);
       font-size: 14px;
-      color: #5264AE;
+      color: #000;
     }
     .wave-group .bar {
       position: relative;
@@ -188,7 +197,7 @@
     button {
       font-family: inherit;
       font-size: 20px;
-      background: royalblue;
+      background: #6c2a2a;
       color: white;
       padding: 0.7em 1em;
       padding-left: 0.9em;

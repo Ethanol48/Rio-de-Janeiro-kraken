@@ -21,6 +21,13 @@
 	<button onclick={() => goTo('/games/blackjack')}>
 		<span class="box">
 			<p>Krak'Jack</p>
+			<p>♣️</p>
+		</span>
+	</button>
+
+	<button onclick={() => goTo('/games/enigme')}>
+		<span class="box">
+			<p>Enigme du jour 🔎</p>
 		</span>
 	</button>
 
