@@ -25,6 +25,7 @@
 		"clsx": "^2.1.1",
 		"concurrently": "^9.1.2",
 		"drizzle-kit": "^0.22.0",
+		"embla-carousel-svelte": "^8.5.2",
 		"formsnap": "^1.0.1",
 		"mode-watcher": "^0.5.1",
 		"prettier": "^3.3.2",
@@ -49,6 +50,7 @@
 		"@tailwindcss/typography": "^0.5.15",
 		"better-sqlite3": "^11.1.2",
 		"drizzle-orm": "^0.33.0",
+		"embla-carousel-autoplay": "^8.5.2",
 		"gsap": "^3.12.7",
 		"js-md5": "^0.8.3",
 		"svelte-radix": "^2.0.1"

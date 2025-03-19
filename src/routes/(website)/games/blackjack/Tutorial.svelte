@@ -2,6 +2,7 @@
   import * as CardUI from "$lib/components/ui/card";
   import Carta  from "./[game_id]/comps/Card.svelte";
   import { Carta as carta, Color as color } from "$lib/games/blackjack";
+  import * as Carousel from "$lib/components/ui/carousel/index.js";
 
   const incrementX = 17;
   const incrementY = 20;
@@ -14,6 +15,10 @@
 </script>
 
 <div class="flex gap-3 mb-6 flex-col md:flex-row md:justify-center  w-[280px]">
+
+  <Carousel.Root class="w-[280px]"  opts={{loop: true}}>
+    <Carousel.Content>
+      <Carousel.Item>
 
   <CardUI.Root class="min-w-[280px] min-h-[280px] w-full h-full">
     <CardUI.Content class="w-full h-full flex flex-col pt-9">
@@ -58,7 +63,11 @@
       <h4 class="text-center mt-3">The point of the game is to have a better <br> hand than the dealer !!</h4>
     </CardUI.Content>
   </CardUI.Root>
-  
+
+
+      </Carousel.Item> 
+      <Carousel.Item>
+
   <CardUI.Root class="min-w-[280px] min-h-[280px]">
     <CardUI.Content class="w-full h-full flex justify-between pt-9">
     
@@ -93,10 +102,23 @@
   </CardUI.Root>
 
 
+      </Carousel.Item>
+    </Carousel.Content>
+
+    <Carousel.Previous />
+  <Carousel.Next />
+  </Carousel.Root>
+
+
+  
+
+<!--
   <CardUI.Root>
     <CardUI.Content class="w-full h-full flex justify-center pt-9">bettin stand double</CardUI.Content>
   </CardUI.Root>
   
+  -->
+
 </div>
 
 
