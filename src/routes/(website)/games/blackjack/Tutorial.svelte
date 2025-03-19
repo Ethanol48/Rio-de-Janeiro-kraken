@@ -4,6 +4,14 @@
   import { Carta as carta, Color as color } from "$lib/games/blackjack";
   import * as Carousel from "$lib/components/ui/carousel/index.js";
 
+  import Autoplay from 'embla-carousel-autoplay'
+  
+  import {type EmblaCarouselType} from 'embla-carousel'
+  import {type CarouselAPI} from '$lib/components/ui/carousel/context.js'
+	import { onMount } from "svelte";
+
+  import { addAutoplayProgressListeners } from "./progressBar.js"
+
   const incrementX = 17;
   const incrementY = 20;
 
@@ -11,12 +19,29 @@
     { symbol: carta.Jack, color: color.DIAMONDS },
     { symbol: carta.King, color: color.SPADES },
     { symbol: carta.Queen, color: color.HEARTS },
-  ]
+  ];
+
+
+  let emblaApi : CarouselAPI | undefined = $state(undefined);
+  let plugins = [Autoplay({ playOnInit: true, delay: 7000, stopOnInteraction: false })]
+  let progressNode: HTMLElement;
+
+  
+  $effect.pre(() => {
+      console.log("pre")
+      if (!emblaApi || emblaApi === undefined) return;
+      if (!progressNode) return;
+  
+      console.log("aljsfkjhdk")
+      addAutoplayProgressListeners(emblaApi, progressNode);
+  })
+
+
 </script>
 
 <div class="flex gap-3 mb-6 flex-col md:flex-row md:justify-center  w-[280px]">
 
-  <Carousel.Root class="w-[280px]"  opts={{loop: true}}>
+  <Carousel.Root class="w-[280px]" opts={{loop: true}} bind:api={emblaApi} {plugins}>
     <Carousel.Content>
       <Carousel.Item>
 
@@ -71,9 +96,8 @@
   <CardUI.Root class="min-w-[280px] min-h-[280px]">
     <CardUI.Content class="w-full h-full flex justify-between pt-9">
     
-      <div class="flex flex-col items-center w-1/2 h-full">
+      <div class="flex flex-col items-center w-1/2">
         <div class="relative w-full h-full flex flex-col justify-between">
-
           {#each cartasExponer as cartita, i}
             <Carta
               class={"absolute"}
@@ -85,10 +109,9 @@
         </div>
         <p class="typography text-center ">
           Any card higher than <strong>10</strong> 
-          it's value is <strong>10</strong>
+          has a value of <strong>10</strong>
         </p>
       </div>
-
 
       <div class="flex flex-col justify-between items-center">
         <h4 class="typography mb-3 text-center">The ace is a joker!!</h4>
@@ -107,10 +130,15 @@
 
     <Carousel.Previous />
   <Carousel.Next />
+
+  <div class="mt-4 flex justify-center">
+    <div bind:this={progressNode} class="embla__progress embla__progress--hidden">
+      <div class="embla__progress__bar"></div>
+    </div>
+  </div>
+
   </Carousel.Root>
-
-
-  
+ 
 
 <!--
   <CardUI.Root>
@@ -122,3 +150,72 @@
 </div>
 
 
+<style>
+
+:root {
+  --brand-alternative: rgb(19, 120, 134);
+  --background-site: rgb(249, 249, 249);
+  --background-code: rgb(244, 244, 244);
+  --text-body: hsl(350 90% 80%);
+  --text-comment: rgb(99, 94, 105);
+  --text-high-contrast: rgb(49, 49, 49);
+  --text-medium-contrast: rgb(99, 94, 105);
+  --text-low-contrast: rgb(116, 109, 118);
+}
+
+
+.embla {
+  max-width: 48rem;
+  margin: auto;
+  --slide-height: 19rem;
+  --slide-spacing: 1rem;
+  --slide-size: 70%;
+}
+
+.embla__progress {
+  border-radius: 1.8rem;
+  /* box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast); */
+  background-color: var(--background-site);
+  position: relative;
+  height: 0.6rem;
+  justify-self: flex-end;
+  align-self: center;
+  width: 13rem;
+  max-width: 90%;
+  overflow: hidden;
+}
+.embla__progress__bar {
+  background-color: var(--text-body);
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: -100%;
+}
+
+.embla__progress {
+  justify-self: center;
+  transition: opacity 0.3s ease-in-out;
+  width: 8rem;
+}
+.embla__progress--hidden {
+  opacity: 0;
+}
+.embla__progress__bar {
+  animation-name: autoplay-progress;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+.embla__progress--hidden .embla__progress__bar {
+  animation-play-state: paused;
+}
+@keyframes autoplay-progress {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+  </style>
