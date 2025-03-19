@@ -217,7 +217,7 @@
 				{#if gameStarted}
 					<div class="mb-[-60px]">
 						<h2 class="text-center">Player Cards</h2>
-						<p class="text-center">Card Count: {playerHand.sumOfCards()}</p>
+						<p class="text-center">Card Count: <strong>{playerHand.sumOfCards()}</strong></p>
 					</div>
 					{#each playerHand.cards as carta, i}
 						<Card
@@ -234,7 +234,7 @@
 				{#if gameStarted}
 					<div class="mb-[-60px] text-center">
 						<h2>Dealer Cards</h2>
-						<p>Card Count: {dealerHand.sumOfCards()}</p>
+						<p>Card Count: <strong>{dealerHand.sumOfCards()}</strong></p>
 					</div>
 				{/if}
 

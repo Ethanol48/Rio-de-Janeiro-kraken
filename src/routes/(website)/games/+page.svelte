@@ -21,7 +21,6 @@
 	<button onclick={() => goTo('/games/blackjack')}>
 		<span class="box">
 			<p>Krak'Jack</p>
-			<p>♠️</p>
 		</span>
 	</button>
 

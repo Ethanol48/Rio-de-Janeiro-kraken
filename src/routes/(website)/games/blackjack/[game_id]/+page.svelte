@@ -6,9 +6,6 @@
 	let { data } = $props();
 
 	const puntos = data.points;
-	console.log('dealer cards: ', data.game?.dealerCards);
-	console.log('game ended: ', data.game?.ended);
-	console.log('playerWon?? from game object: ', data.game?.playerWon);
 </script>
 
 {#if data.game !== undefined && data.game !== null}

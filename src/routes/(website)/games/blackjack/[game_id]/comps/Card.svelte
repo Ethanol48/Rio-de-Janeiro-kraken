@@ -11,7 +11,7 @@
 		turned = false,
 		class: classes = '',
 		style: styles = ''
-	}: { color: Color; symbol: Carta; class: any; style: any; turned: Boolean } = $props();
+	}: { color: Color; symbol: Carta; class?: any; style?: any; turned?: Boolean } = $props();
 
 	let simbolo = symbolToString(symbol);
 </script>
