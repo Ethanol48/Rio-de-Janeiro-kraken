@@ -42,7 +42,7 @@
           <label class="label">
             <span class="label-char" style="--index: 0">L</span>
             <span class="label-char" style="--index: 1">e</span>
-            <span class="label-char" style="--index: 3">c</span>
+            <span class="label-char  ml-1" style="--index: 3">c</span>
             <span class="label-char" style="--index: 4">o</span>
             <span class="label-char" style="--index: 5">d</span>
             <span class="label-char" style="--index: 6">e</span>
@@ -53,8 +53,12 @@
       </div>
       
     {/if}
-    {#if form?.message}
-      <p class="message">{form?.message}</p>
+    {#if form?.message && form?.message.includes('Bravo')}
+      
+      <p class="message" style="color: green;">{form?.message}</p>
+    {:else}
+    
+    <p class="message" style="color: red;">{form?.message}</p>
     {/if}
   </div>
 
