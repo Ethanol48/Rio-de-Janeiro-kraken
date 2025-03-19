@@ -1,28 +1,29 @@
-import { addPoints } from '$lib/server/db/utilities';
+import { addPoints, enigme_check, enigme_get_question, enigme_vainqueur, getUsername } from '$lib/server/db/utilities';
+import { date } from 'drizzle-orm/mysql-core';
 import type { Actions, PageServerLoad } from './$types';
+import { user } from '$lib/server/db/schema';
 
-const liste_enigme = [
-  [2, 19, "Coucou toi c'est l'enigme1", "PA", 5],
-  [2, 20, "Coucou toi c'est l'enigme2", "PA", 5],
-  [2, 21, "Coucou toi c'est l'enigme3", "PA", 5],
-  [2, 22, "Coucou toi c'est l'enigme4", "PA", 5],
-  [2, 23, "Coucou toi c'est l'enigme5", "PA", 5],
-  [2, 24, "Coucou toi c'est l'enigme6", "PA", 5],
-  [2, 25, "Coucou toi c'est l'enigme7", "PA", 5]
-];
 
-export const load: PageServerLoad = async (event) => {
-  const Date_actuel = new Date();
-  let reponse = "1";
 
-  liste_enigme.forEach(element => {
-    if (element[0].toString() === Date_actuel.getMonth().toString() && element[1].toString() === Date_actuel.getDate().toString()) {
-      reponse = element[2];
-    }
-  });
-
+export const load: PageServerLoad = async (event) => {  
+  const Day = new Date;
+  let msg="";
+  let check = false;
+  const reponses= await enigme_get_question(Day.getDate(),Day.getMonth());
+  console.log(reponses)
+  if(reponses[1]===true)
+  {   
+    check = true
+     msg=`Le code à été trouvé aujourd\'hui, le gagnant est ${await enigme_vainqueur(Day.getDate(),Day.getMonth())}`
+  }  
+  else{
+    if(reponses[0] !== null){
+      msg = reponses[0]}
+  }
+  console.log(msg)
   return {
-    reponse: reponse,
+    msg,
+    check:check
   };
 };
 
@@ -32,18 +33,25 @@ export const actions: Actions = {
     const userInput = formData.get('userInput');
     let msg = '';
     const Date_actuel = new Date();
+    
+    let username = await getUsername(locals.user?.id);
+    if(userInput !==''){
+      msg = "Veuillez entrez votre réponse";
+    }
+    else{
 
-    liste_enigme.forEach(element => {
-      if (element[0].toString() === Date_actuel.getMonth().toString() && element[1].toString() === Date_actuel.getDate().toString()) {
-        if (userInput === element[3]) {
-          msg = "Bravo, vous avez trouvé la bonne réponse !";
-          addPoints(locals.user!.id, 100);
-        } else {
-          msg = "Désolé, ce n'est pas la bonne réponse. Essayez encore !";
-        }
+    }
+    const resultat = await enigme_check(Date_actuel.getDate(),Date_actuel.getMonth(),userInput,locals.user?.id, username);
+    console.log("monsreuslt" ,resultat)
+    if(resultat[1] ===true)
+      {
+        msg = `Bravo, vous avez trouvé la bonne réponse! Vous avez gagné ${resultat[0]} points`;
+      } 
+      else {
+        msg = "Désolé, ce n'est pas la bonne réponse. Essayez encore !";
       }
-    });
-    console.log(msg)
+    
+   
     return {
       message: msg
     };

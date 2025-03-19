@@ -6,7 +6,10 @@
   let { data, form }: { data: PageServerData, form: ActionData } = $props(); 
   let userInput = '';
   let confetti = $state(false)
-
+  let trouve =  false;
+  function trouverr() {
+     trouve = true
+  }
   // Réagit au changement de message pour lancer les confettis
   if (form?.message && form?.message.includes('Bravo')) {
    confetti = true;
@@ -19,10 +22,20 @@
 
     {#if !confetti}
     <div class="enigme-box">
-      <p class="enigme-text">Quel est le code ?</p>
+      <p class="enigme-text">
+        {#if data.check === true}
+          {data.msg}
+          {trouverr()}
+        {:else}
+        {data.msg}
+        {/if}
+        
+        
+      </p>
     </div>
-
+     
       <div class="input-container">
+        {#if !trouve}
         <div class="wave-group">
           <input required type="text" class="input" name="userInput" bind:value={userInput}>
           <span class="bar"></span>
@@ -36,7 +49,9 @@
           </label>
         </div>
         <button type="submit">Vérifier</button>
+        {/if}
       </div>
+      
     {/if}
     {#if form?.message}
       <p class="message">{form?.message}</p>

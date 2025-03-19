@@ -50,7 +50,7 @@
 					<Dialog.Title>Voici tes informations confidentielles</Dialog.Title>
 					<Dialog.Description>
 						<br /><br />
-						Username : {data.usename}
+						Username : {data.username}
 						<br /><br />
 						Email: {data.user?.login}
 						<br /><br />

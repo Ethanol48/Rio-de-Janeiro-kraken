@@ -1,8 +1,10 @@
 import { db } from '.';
-import { blackjack, user } from './schema';
+import { blackjack, enigme, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
+import { number } from 'zod';
+import { point } from 'drizzle-orm/pg-core';
 
 export const leaderBoard = async () => {
 	return await db
@@ -289,3 +291,75 @@ export const addToTotalBet = async (gameId: string, points: number) => {
 		.set({ totalbet: game!.totalbet + points })
 		.where(eq(blackjack.id, gameId));
 };
+
+
+// enigme
+
+
+
+export const enigme_get_question = async (day: number, month: number) => {
+	let check = await enigme_is_recuperer(day,month);
+
+	const result_query = await db
+		.select({question :enigme.question})
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+	if (result_query.length ===0){
+		check = false;
+	}
+	const result = [result_query[0].question,check]
+	return result;
+};
+// 
+
+export const enigme_get_reponse = async (day: number, month: number) => {
+	const result_query = await db
+		.select({reponse :enigme.reponse})
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+	
+	return result_query[0].reponse;
+};
+// 
+
+
+export const enigme_check  = async (day: number, month: number, reponse:string, user_id:string, username:string ) => {
+	let reponse_enigme = await enigme_get_reponse(day,month);
+	if(reponse_enigme !== null && reponse_enigme === reponse){
+		const result_query = await db
+			.select({points :enigme.points})
+			.from(enigme)
+			.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+		await addPoints(user_id,result_query[0].points);
+		await db
+			.update(enigme).set({is_recuperer :true}).where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+		await db
+			.update(enigme).set({user_victory :username}).where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+		console.log("okpouraenigme")
+		return [ result_query[0].points, true];
+	}
+	else{
+		return[0 , false];
+	}
+};
+
+export const enigme_is_recuperer  = async (day: number, month: number) => {
+	
+	const result_query = await db
+		.select({is_recuperer :enigme.is_recuperer})
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+		return result_query[0].is_recuperer;
+
+};
+
+export const enigme_vainqueur  = async (day: number, month: number) => {
+	
+	const result_query = await db
+		.select({user_victory :enigme.user_victory})
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+		return result_query[0].user_victory;
+
+};
+// 

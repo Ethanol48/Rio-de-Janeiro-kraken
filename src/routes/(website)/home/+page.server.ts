@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { addPoints, foundedButton, setButton } from '$lib/server/db/utilities';
+import { addPoints, foundedButton, getPoints, getUsername, setButton } from '$lib/server/db/utilities';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -11,10 +11,14 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const claimed = await foundedButton(event.locals.user.id);
-
+	const username = await getUsername(event.locals.user.id)
+	const points = await getPoints(event.locals.user.id)
 	return {
 		user: event.locals.user,
-		claimed: claimed
+		claimed: claimed,
+		username: username,
+		points:points
+
 	};
 };
 

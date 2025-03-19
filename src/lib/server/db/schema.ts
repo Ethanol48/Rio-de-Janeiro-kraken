@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
+import { boolean } from 'drizzle-orm/mysql-core';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
@@ -62,7 +63,20 @@ export const blackjack = sqliteTable('blackjack', {
 		.default(sql`(current_timestamp)`)
 });
 
+
+export const enigme = sqliteTable('enigme', {
+	id: text('id').primaryKey(),
+	question: text('question').notNull(),
+	reponse: text('reponse').notNull(),
+	date_month: integer('date_month').notNull(),
+	date_day: integer('date_day').notNull(),
+	is_recuperer: integer('is_recuperer', { mode: 'boolean' }).default(false),
+	points:integer('points').notNull().default(0),
+	user_victory:text('user_victory').notNull().default('None'),
+});
+
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Order = typeof ordrer.$inferSelect;
 export type Stock = typeof stock.$inferSelect;
+export type Enigme = typeof enigme.$inferSelect;
