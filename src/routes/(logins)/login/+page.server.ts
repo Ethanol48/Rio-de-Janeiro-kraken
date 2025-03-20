@@ -24,9 +24,9 @@ export const actions: Actions = {
 		const login = formData.get('login');
 		const password = formData.get('password');
 
-		if (!validateEmail(login)) {
+		if (!validateEmail(login) && !validateUsername(login)) {
 			return fail(400, {
-				message: 'Invalid username (min 3, max 20 characters, alphanumeric only)'
+				message: 'Invalid Email or Username (min 3, max 60 characters)'
 			});
 		}
 
@@ -38,22 +38,38 @@ export const actions: Actions = {
 		const results = await db.select().from(table.user).where(eq(table.user.login, login));
 
 		const existingUser = results.at(0);
-		if (!existingUser) {
-			return fail(400, { message: 'Incorrect email or password' });
-		}
 
-		const validPassword = await verify(existingUser.passwordHash, password, {
+		const results2 = await db.select().from(table.user).where(eq(table.user.username, login));
+		const existingUser2 = results2.at(0);
+
+		let existingUserss;
+		if(!existingUser2 && !existingUser)
+			return fail(400, { message: 'Incorrect email/username or password' });
+
+		if(!existingUser && existingUser2){
+			existingUserss = existingUser2
+		}
+		else{
+
+			existingUserss = existingUser
+		}	
+
+
+		
+		const validPassword = await verify(existingUserss!.passwordHash, password, {
 			memoryCost: 19456,
 			timeCost: 2,
 			outputLen: 32,
 			parallelism: 1
 		});
 		if (!validPassword) {
-			return fail(400, { message: 'Incorrect email or password' });
+			return fail(400, { message: 'Incorrect email/username or password' });
 		}
+		
 
+		
 		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, existingUser.id);
+		const session = await auth.createSession(sessionToken, existingUserss!.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
 		return redirect(302, '/home');
@@ -84,11 +100,20 @@ export const actions: Actions = {
 			usernameStr = username.toString();
 		}
 
+		
+
 		const results = await db.select().from(table.user).where(eq(table.user.login, login));
 
 		const existingUser = results.at(0);
 		if (existingUser) {
 			return fail(400, { message: 'This email has already been used !' });
+		}
+
+		const results2 = await db.select().from(table.user).where(eq(table.user.username, username));
+
+		const existingUsername = results2.at(0);
+		if (existingUsername) {
+			return fail(400, { message: 'This username has already been used !' });
 		}
 
 		const userId = generateUserId();
