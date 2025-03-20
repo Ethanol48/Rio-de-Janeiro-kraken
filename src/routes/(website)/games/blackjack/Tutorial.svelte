@@ -28,14 +28,11 @@
 
   
   $effect.pre(() => {
-      console.log("pre")
       if (!emblaApi || emblaApi === undefined) return;
       if (!progressNode) return;
   
-      console.log("aljsfkjhdk")
       addAutoplayProgressListeners(emblaApi, progressNode);
   })
-
 
 </script>
 
@@ -101,7 +98,7 @@
           {#each cartasExponer as cartita, i}
             <Carta
               class={"absolute"}
-              style={`bottom: ${incrementY * i + 10}px; left: ${incrementX * i + 20}px;`}
+              style={`bottom: ${incrementY * i + 0}px; left: ${incrementX * i + 10}px;`}
               color={cartita.color}
               symbol={cartita.symbol}
              />
@@ -161,15 +158,6 @@
   --text-high-contrast: rgb(49, 49, 49);
   --text-medium-contrast: rgb(99, 94, 105);
   --text-low-contrast: rgb(116, 109, 118);
-}
-
-
-.embla {
-  max-width: 48rem;
-  margin: auto;
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-size: 70%;
 }
 
 .embla__progress {
