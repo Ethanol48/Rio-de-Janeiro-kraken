@@ -24,11 +24,13 @@ export const actions: Actions = {
 		const login = formData.get('login');
 		const password = formData.get('password');
 
-		if (!validateUsername(login)) {
+		if (!validateEmail(login)) {
 			return fail(400, {
 				message: 'Invalid username (min 3, max 20 characters, alphanumeric only)'
 			});
 		}
+
+		
 		if (!validatePassword(password)) {
 			return fail(400, { message: 'Invalid password (min 6, max 255 characters)' });
 		}
@@ -62,13 +64,18 @@ export const actions: Actions = {
 		const username = formData.get('username');
 		const password = formData.get('password');
 
-		if (!validateUsername(login)) {
+		if (!validateEmail(login)) {
 			console.log('invalid user: ', login);
-			return fail(400, { message: 'Invalid email' });
+			return fail(400, { message: 'Invalid email ! Email must be less than 60 and greater than 2' });
 		}
 		if (!validatePassword(password)) {
-			return fail(400, { message: 'Invalid password' });
+			return fail(400, { message: 'Invalid password ! Password must be less than 255 and greater than 6' });
 		}
+
+		if (!validateUsername(username)) {
+			return fail(400, { message: 'Invalid Username ! Password must be less than 60 and greater than 2' });
+		}
+
 
 		let usernameStr: string;
 		if (username === null) {
@@ -127,12 +134,20 @@ function generateUserId() {
 
 const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
 
-function validateUsername(username: unknown): username is string {
+function validateEmail(username: unknown): username is string {
 	return (
 		typeof username === 'string' &&
 		username.length >= 3 &&
 		username.length <= 60 &&
 		regex.test(username)
+	);
+}
+
+function validateUsername(username: unknown): username is string {
+	return (
+		typeof username === 'string' &&
+		username.length >= 3 &&
+		username.length <= 20
 	);
 }
 
