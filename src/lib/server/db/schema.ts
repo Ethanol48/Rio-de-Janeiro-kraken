@@ -23,19 +23,19 @@ export const session = sqliteTable('session', {
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
-export const ordrer = sqliteTable('ordrer', {
-	userId: text('user_id').primaryKey().notNull(),
-	cereal: integer('nb_cereal').default(0),
-	pate: integer('nb_pate').default(0),
-	nb_kebab: integer('nb_kebab').default(0),
-	nb_chocolat: integer('nb_chocolat').default(0),
-	nb_billet: integer('nb_billet').default(0)
-});
 
-export const stock = sqliteTable('stock', {
-	id: integer('id').primaryKey(),
+export const orders = sqliteTable('orders', {
+  id: text('id').primaryKey(),
+	userId: text('user_id').notNull(),
+  productId: text('product_id').notNull(),
+  claimed: integer('claimed', { mode: 'boolean' }).default(false)
+})
+
+export const items = sqliteTable('stock', {
+	id: text('id').primaryKey(),
+	item: text('name').unique().notNull(),
+	desc: text('desc').notNull(),
 	stock: integer('stock').default(0),
-	item: text('item')
 });
 
 export const blackjack = sqliteTable('blackjack', {

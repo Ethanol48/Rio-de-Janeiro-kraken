@@ -1,5 +1,5 @@
 import { db } from '.';
-import { blackjack, enigme, user } from './schema';
+import { blackjack, enigme, items, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
@@ -13,6 +13,25 @@ export const leaderBoard = async () => {
 		.orderBy(desc(user.points))
 		.limit(20);
 };
+
+export const BuyItem = async (userId: string, itemId: string): Promise<bool> => {
+  const stock = await GetItem(itemId);
+
+  return false;
+}
+
+
+export const GetItem = async (itemId: string): Promise<{present: boolean, stock: number}> => {
+  const stock = await db
+    .select({ stock: items.stock })
+    .from(items)
+    .where(eq(items.id, itemId))
+
+  return {
+    present: true,
+    stock: 0
+  }
+}
 
 export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	const str = userId + Date.now().toString();
