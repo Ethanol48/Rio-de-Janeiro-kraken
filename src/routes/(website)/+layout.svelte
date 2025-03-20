@@ -3,6 +3,14 @@
 	import type { LayoutServerData } from './$types';
 	import userIcon from '$lib/svgs/userIcon.svg';
 
+
+	import { onMount } from 'svelte';
+	
+	let isMenuOpen = $state(false);
+
+	function toggleMenu() {
+		isMenuOpen = !isMenuOpen;
+	}
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
 </script>
 
@@ -27,27 +35,61 @@
 </div>
 
 <div class="absolute left-3 top-3">
-	<nav class="rounded p-3 shadow">
+	<!-- Icône de menu burger affichée sur mobile -->
+	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110" onclick={toggleMenu}>
+		☰
+	</button>
+
+	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
+	{#if isMenuOpen}
+		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 
+		            animate-slide-down sm:hidden">
+			<Button href="/home">🏠 Home</Button>
+			<Button href="/leaderboard">📜 Leaderboard</Button>
+			<Button href="/games">🕹️ Games</Button>
+			<Button href="/shop">🎁 SHOP</Button>
+		</div>
+	{/if}
+
+	<!-- Navigation affichée sur les grands écrans -->
+	<nav class="hidden sm:block rounded p-3 shadow">
 		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 sm:max-w-xl sm:flex-row">
 			<Button href="/home">
 				<p class="ml-[-1px] text-xl">🏠</p>
-				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Home</p>
+				<p class="hidden sm:inline">• Home</p>
 			</Button>
 			<Button href="/leaderboard">
 				<p class="ml-[-1px] text-xl">📜</p>
-				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Leaderboard</p>
+				<p class="hidden sm:inline">• Leaderboard</p>
 			</Button>
 			<Button href="/games">
 				<p class="ml-[-1px] text-xl">🕹️</p>
-				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• Games</p>
+				<p class="hidden sm:inline">• Games</p>
 			</Button>
 			<Button href="/shop">
 				<p class="ml-[-1px] text-xl">🎁</p>
-				<p class="invisible h-0 w-0 sm:visible sm:h-fit sm:w-fit">• SHOP</p>
+				<p class="hidden sm:inline">• SHOP</p>
 			</Button>
 		</div>
 	</nav>
 </div>
 <!-- else content here -->
 
+
+<style>
+	@keyframes slide-down {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-slide-down {
+		animation: slide-down 0.2s ease-out;
+	}
+</style>
 {@render children()}

@@ -205,6 +205,12 @@
 			width: 90vw;
 			height: 90vw;
 		}
+		.wheel{
+			
+			margin-top: 10%;
+		}
+
+		
 		/* Ajustement de la taille de la flèche si besoin */
 		.arrow {
 			width: 20%;
