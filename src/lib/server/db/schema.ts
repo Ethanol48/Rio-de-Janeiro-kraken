@@ -1,6 +1,5 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
-import { boolean } from 'drizzle-orm/mysql-core';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
@@ -26,8 +25,12 @@ export const session = sqliteTable('session', {
 
 export const orders = sqliteTable('orders', {
   id: text('id').primaryKey(),
-	userId: text('user_id').notNull(),
-  productId: text('product_id').notNull(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id),
+  productId: text('product_id')
+    .notNull()
+    .references(() => items.id),
   claimed: integer('claimed', { mode: 'boolean' }).default(false)
 })
 
@@ -77,6 +80,6 @@ export const enigme = sqliteTable('enigme', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
-export type Order = typeof ordrer.$inferSelect;
-export type Stock = typeof stock.$inferSelect;
+export type Orders = typeof orders.$inferSelect;
+export type Items = typeof items.$inferSelect;
 export type Enigme = typeof enigme.$inferSelect;
