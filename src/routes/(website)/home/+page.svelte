@@ -64,6 +64,39 @@
 		</Dialog.Root>
 	{/if}
 
+  {#if !(noUser || claimed)}
+	<div class="invisible-custom absolute bottom-4 left-5">
+		<Dialog.Root>
+			<Dialog.Trigger>
+				<Button class="cursor-pointer" size="sm">Secret</Button>
+			</Dialog.Trigger>
+
+			<Dialog.Content class="justify-center sm:max-w-[425px]">
+				<Dialog.Header>
+					<Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
+					<Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
+				</Dialog.Header>
+				<div class="flex justify-center">
+					<form method="POST" action="?/foundButton">
+						<Button
+							type="submit"
+							disabled={data.claimed}
+							class="mt-2 rounded bg-primary p-2 text-white"
+						>
+							{#if data.claimed}
+								Déjà réclamé 🎉
+							{:else}
+								Réclamer
+							{/if}
+						</Button>
+					</form>
+				</div>
+			</Dialog.Content>
+		</Dialog.Root>
+	</div>
+{/if}
+
+
 	<Dialog.Root>
 		<Dialog.Trigger>
 			<Button class="cursor-pointer" size="sm">❔ • Informations</Button>
