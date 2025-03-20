@@ -38,6 +38,7 @@ export const items = sqliteTable('stock', {
 	id: text('id').primaryKey(),
 	item: text('name').unique().notNull(),
 	desc: text('desc').notNull(),
+  price: integer('price').notNull(),
 	stock: integer('stock').default(0),
 });
 
