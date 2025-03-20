@@ -34,8 +34,8 @@ export const actions: Actions = {
 		}
 
 		try {
-			setButton(userId);
-			addPoints(userId, 5);
+			await setButton(userId);
+			await addPoints(userId, 5);
 			return { success: true };
 		} catch (e) {
 			return fail(500, { message: 'an error ocurred' });

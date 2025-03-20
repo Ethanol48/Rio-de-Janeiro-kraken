@@ -172,6 +172,13 @@
 </div>
 
 <style lang="scss">
+	div.invisible-custom {
+		opacity: 0;
+		* {
+			opacity: 0;
+		}
+	}
+
 	.header {
 		display: flex;
 		justify-content: center;
