@@ -1,6 +1,10 @@
 <script lang="ts">
   import { Confetti } from "svelte-confetti"
   import { type PageServerData, type ActionData } from './$types.js';
+  
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+  import { Button } from '$lib/components/ui/button';
+
 
 
   let { data, form }: { data: PageServerData, form: ActionData } = $props(); 
@@ -50,6 +54,36 @@
         </div>
         <button type="submit">Vérifier</button>
         {/if}
+      </div>
+
+      <br>
+      <div style="margin-left: 2%;">
+        <Dialog.Root>
+          <Dialog.Trigger>
+            <Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>L'énigme du jour 🔎</Dialog.Title>
+              <Dialog.Description>
+                <br>
+                🌟 Tu te crois malin ? 🌟<br><br>
+                Alors prouve-le ! 🧠💡 Une énigme t’attend… Un mot de passe est caché à EPITA ! 🔎✨<br><br>
+                Ta mission : le retrouver grâce à l’énigme… 📜🔐<br>
+
+                ⚠️ Mais attention ! Chaque jour, il change de campus ! 🎭 <br>
+                📍 Un jour à Villejuif, un autre au Kremlin-Bicêtre… Sauras-tu suivre la piste ? 👀👣
+                <br><br>
+                🚀 Le plus rapide gagne les points ! 🏆 Donc sois prêt, fonce et décroche la victoire ! 🔥
+                  <br><br>
+                🍀 Bonne chance ! 🍀
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Close>
+              <Button class="mt-2">Fermer</Button>
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Root>
       </div>
       
     {/if}

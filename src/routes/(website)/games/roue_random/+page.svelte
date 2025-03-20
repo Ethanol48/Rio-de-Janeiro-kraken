@@ -114,45 +114,56 @@
 		</div>
 	{/if}
 </div>
-
 <style>
+	/* Conteneur principal centré */
 	.container {
+		top: -20%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		padding: 2rem;
+		/* Pour laisser de l'espace en haut si une barre est présente en enfant */
+		padding-top: 4rem;
+		box-sizing: border-box;
 	}
 
+	/* Cadre de la roue en taille fixe max mais adaptatif */
 	.wheel-frame {
 		position: relative;
-		width: 500px;
-		height: 500px;
+		/* Utilisation d'unités viewport pour s'adapter aux petits écrans */
+		width: 90vw;
+		max-width: 500px;
+		height: 90vw;
+		max-height: 500px;
 	}
 
+	/* La roue occupe tout le cadre */
 	.wheel {
-		width: 80%;
-		height: 80%;
-		margin-left: 15%;
-		margin-right: auto;
-		margin-top: 20%;
+		display: block;
+		width: 100%;
+		height: 100%;
 		transition: transform 0.1s;
 	}
 
+	/* La flèche est positionnée par-dessus, centrée horizontalement */
 	.arrow {
 		position: absolute;
-		top: 100px;
-		left: 55%;
+		/* Placer la flèche légèrement au-dessus du centre */
+		top: 0%;
+		left: 50%;
 		transform: translateX(-50%);
-		width: 60px;
+		/* Taille relative à la largeur du conteneur */
+		width: 15%;
 		z-index: 2;
 	}
 
+	/* Bouton principal */
 	button {
 		padding: 1rem 2rem;
 		font-size: 1.1rem;
 		background: #e74c3c;
 		color: white;
-		margin-left: 2%;
+		margin-top: 1.5rem;
 		border: none;
 		border-radius: 8px;
 		cursor: pointer;
@@ -163,6 +174,7 @@
 		transform: scale(1.05);
 	}
 
+	/* Styles pour les messages d'erreur et résultats */
 	.error-box {
 		margin-top: 1rem;
 		padding: 1rem;
@@ -179,5 +191,29 @@
 		color: #2e7d32;
 		border: 1px solid #2e7d32;
 		border-radius: 8px;
+	}
+
+	/* Adaptation pour les petits écrans */
+	@media (max-width: 667px) {
+		/* On augmente le padding pour compenser la barre si nécessaire */
+		.container {
+			padding: 1rem;
+			padding-top: 4rem;
+		}
+		/* La roue reste de la même taille relative (90vw) mais le max-width est naturellement inférieur */
+		.wheel-frame {
+			width: 90vw;
+			height: 90vw;
+		}
+		/* Ajustement de la taille de la flèche si besoin */
+		.arrow {
+			width: 20%;
+			top: 5%;
+		}
+		/* Bouton et autres éléments restent lisibles */
+		button {
+			font-size: 1rem;
+			padding: 0.8rem 1.5rem;
+		}
 	}
 </style>
