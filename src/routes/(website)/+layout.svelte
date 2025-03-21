@@ -34,7 +34,7 @@
 
 <div class="absolute left-3 top-3">
 	<!-- Icône de menu burger affichée sur mobile -->
-	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110" onclick={toggleMenu}>
+	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleMenu}>
 		☰
 	</button>
 

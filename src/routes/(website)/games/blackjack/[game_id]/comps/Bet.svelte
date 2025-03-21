@@ -2,6 +2,9 @@
 	import { Slider } from '$lib/components/ui/slider';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
+  
+  import { Input } from "$lib/components/ui/input/index.js";
+	import { point } from 'drizzle-orm/pg-core';
 
 	// how to bind the value to the outside
 	let {
@@ -9,10 +12,13 @@
 		value = $bindable([0]),
 		startGameFunc
 	}: { points: number; value: number[]; startGameFunc: MouseEventHandler<HTMLElement> } = $props();
+
+  let increment10 = Math.ceil(points / 10);
+  let increment33 = Math.ceil(points / 3);
 </script>
 
 <div class="flex flex-col">
-	<div class="flex w-[300px] flex-col justify-center gap-6 rounded-xl bg-pink-50 p-6 shadow">
+	<div class="flex w-fit flex-col justify-center gap-6 rounded-xl bg-pink-50 p-6 shadow">
 		<div class="flex flex-row justify-between">
 			<h3 class="typography">Place your bet</h3>
 			<p>{value} points</p>
@@ -24,6 +30,37 @@
 			<p>{points}</p>
 		</div>
 
+
+		<div class="flex flex-row justify-between gap-2">
+			<Button
+				size="default"
+				class=""
+				onclick={() => {
+					value = [value[0] - increment33];
+				}}>- 33%</Button
+			>
+			<Button
+				size="default"
+				class=""
+				onclick={() => {
+					value = [value[0] - increment10];
+				}}>- 10%</Button
+			>
+			<Button
+				size="default"
+				class=""
+				onclick={() => {
+					value = [value[0] + increment10];
+				}}>+ 10%</Button
+			>
+			<Button
+				size="default"
+				class=""
+				onclick={() => {
+					value = [value[0] + increment33];
+				}}>+ 33%</Button
+			>
+		</div>
 		<div class="flex flex-row justify-around gap-3">
 			<Button
 				size="lg"

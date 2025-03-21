@@ -21,8 +21,6 @@
 		game: NonNullable<PageServerData['game']>;
 	} = $props();
 
-	console.log('carts of dealer: ', dealerHand.cards.length);
-
 	let bet = $state([0]);
 	let betting_num = $derived(bet[0]);
 	let dealerHandLength = $state(dealerHand.cards.length);
@@ -39,7 +37,6 @@
 	let decitions = $derived(gameStarted === true && gameEnded === false);
 	let message = $state('');
 	let totalBet = $state(game.totalbet);
-	let submitted21 = $state(false);
 
 	async function startGame() {
 		betting = false;
@@ -62,7 +59,6 @@
 		puntos -= betting_num;
 
 		const enJson = await resp.json();
-		//console.log(enJson);
 
 		if (resp.status === 400 || resp.status === 401) {
 			toast.error(enJson.message);
@@ -81,13 +77,11 @@
 		game.ended = false;
 
 		if (playerHand.sumOfCards() === 21) {
-			// TODO: ad toast
-
-			play(Decision.STAND);
+			play(Decision.STAND, true);
 		}
 	}
 
-	async function play(decition: Decision) {
+	async function play(decition: Decision, blackjack: boolean = false) {
 		if (gameStand) return;
 		if (gameEnded) return;
 
@@ -129,9 +123,8 @@
 		points -= betting_num;
 
 		const enJson = await resp.json();
-		//console.log('enJson: ', enJson);
 
-		if (resp.status === 400 || resp.status === 401) {
+		if (resp.status === 400 || resp.status === 401 && !blackjack) {
 			toast.error(enJson.message);
 			return;
 		}
@@ -145,7 +138,7 @@
 		dealerHandLength = dealerHand.cards.length;
 
 		if (playerHand.sumOfCards() === 21) {
-			play(Decision.STAND);
+			play(Decision.STAND, true);
 		}
 
 		await wait(300);
@@ -193,7 +186,6 @@
 		const resp = await fetch('/games/blackjack', { method: 'GET' });
 		const id = await resp.json();
 
-		console.log('id: ', id);
 		goto(`/games/blackjack/${id.id}`);
 
 		await wait(1000);
