@@ -1,6 +1,5 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
-import { boolean } from 'drizzle-orm/mysql-core';
 
 export const user = sqliteTable('user', {
 	id: text('id').primaryKey(),
@@ -23,19 +22,24 @@ export const session = sqliteTable('session', {
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
-export const ordrer = sqliteTable('ordrer', {
-	userId: text('user_id').primaryKey().notNull(),
-	cereal: integer('nb_cereal').default(0),
-	pate: integer('nb_pate').default(0),
-	nb_kebab: integer('nb_kebab').default(0),
-	nb_chocolat: integer('nb_chocolat').default(0),
-	nb_billet: integer('nb_billet').default(0)
-});
 
-export const stock = sqliteTable('stock', {
-	id: integer('id').primaryKey(),
+export const orders = sqliteTable('orders', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id),
+  productId: text('product_id')
+    .notNull()
+    .references(() => items.id),
+  claimed: integer('claimed', { mode: 'boolean' }).default(false)
+})
+
+export const items = sqliteTable('stock', {
+	id: text('id').primaryKey(),
+	item: text('name').unique().notNull(),
+	desc: text('desc').notNull(),
+  price: integer('price').notNull(),
 	stock: integer('stock').default(0),
-	item: text('item')
 });
 
 export const blackjack = sqliteTable('blackjack', {
@@ -77,6 +81,6 @@ export const enigme = sqliteTable('enigme', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
-export type Order = typeof ordrer.$inferSelect;
-export type Stock = typeof stock.$inferSelect;
+export type Orders = typeof orders.$inferSelect;
+export type Items = typeof items.$inferSelect;
 export type Enigme = typeof enigme.$inferSelect;

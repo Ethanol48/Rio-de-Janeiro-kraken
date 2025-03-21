@@ -1,10 +1,8 @@
 import { db } from '.';
-import { blackjack, enigme, user } from './schema';
+import { blackjack, enigme, items, orders, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
-import { number } from 'zod';
-import { point } from 'drizzle-orm/pg-core';
 
 export const leaderBoard = async () => {
 	return await db
@@ -173,6 +171,24 @@ export const reducePoints = async (userId: string, points: number) => {
 	} catch (e) {
 		console.error(e);
 	}
+};
+
+
+export const removePoints = async (userId: string, points: number) => {
+	// this wont be null normally, you are only suppose to call this fonction
+	const prevPoints = await getPoints(userId);
+	if (prevPoints === null) {
+		throw Error('error obtaining points');
+	}
+
+  if (prevPoints - points < 0) {
+    throw Error('ilegal operation: negative points are not allowed')
+  }
+
+	return await db
+		.update(user)
+		.set({ points: prevPoints - points })
+		.where(eq(user.id, userId));
 };
 
 export const addPoints = async (userId: string, points: number) => {
@@ -362,4 +378,73 @@ export const enigme_vainqueur  = async (day: number, month: number) => {
 		return result_query[0].user_victory;
 
 };
-// 
+
+
+export const GetItem = async (itemId: string): Promise<{present: boolean, stock: number, price: number}> => {
+  const stock = await db
+    .select({ stock: items.stock, price: items.price })
+    .from(items)
+    .where(eq(items.id, itemId))
+
+  let realStock = 0;
+  let price = 0;
+  let present = false;
+
+  if (stock.at(0)?.stock !== null) {
+    realStock = stock.at(0)!.stock!;
+    present = true;
+    price = stock.at(0)!.price
+  }
+
+  return {
+    present: present,
+    stock: realStock,
+    price: price,
+  }
+}
+
+export const BuyItem = async (userId: string, itemId: string): Promise<boolean> => {
+  const item = await GetItem(itemId);
+
+  if (!item.present) {
+    console.error("tried to buy an item that doesn't exist");
+    return false;
+
+  } else {
+    if (item.stock > 0) {
+
+      // take points from user
+      try {
+        await removePoints(userId, item.price);
+      } catch (e) {
+
+        // negative points or other
+        throw e + " contact with the website administrators";
+      }
+
+      try {
+        // update stock of item
+        await db
+        .update(items)
+        .set({ stock: item.stock - 1 })
+        .where(eq(items.id, itemId))
+
+      } catch (e) {
+        // race condition
+        throw e + " contact with the website administrators";
+      }
+
+      // I hate js, whys isn't it golang????
+    
+      const id = crypto.randomUUID();
+        
+      await db
+        .insert(orders)
+        .values({ id: id, userId: userId, productId: itemId, claimed: false });
+    
+    }
+  }
+
+
+  return true;
+}
