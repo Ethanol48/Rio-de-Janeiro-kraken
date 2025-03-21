@@ -414,7 +414,6 @@ export const GetNameItem = async (product_id : string) => {
 		.select({item : items.item})
 		.from(items)
 		.where(eq(items.id,product_id ))
-
 		return result_db[0].item
 }
 
