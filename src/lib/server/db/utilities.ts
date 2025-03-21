@@ -411,7 +411,7 @@ export const OrderSend = async (userid : string) => {
 
 export const GetNameItem = async (product_id : string) => {
 	const result_db = await db
-		.select({item : items.item})
+		.select({item : items.name})
 		.from(items)
 		.where(eq(items.id,product_id ))
 		return result_db[0].item
@@ -428,22 +428,23 @@ export const GetListOrder = async () => {
 export const GetOrdersOfUser = async(userId: string) => {
   const joined = await db
     .select({
-      product: items.item,
+      product: items.name,
       claimed: user.claimedOrders,
     })
     .from(orders)
     .leftJoin(user, eq(user.id, orders.userId))
     .leftJoin(items, eq(items.id, orders.productId))
+    .where(eq(orders.userId, userId))
 
   return joined
 }
 
 
-export const GetPendingOrders = async(userId: string) => {
+export const GetPendingOrders = async() => {
   const joined = await db
     .select({
       username: user.username,
-      product: items.item,
+      product: items.name,
     })
     .from(orders)
     .leftJoin(user, eq(user.id, orders.userId))
