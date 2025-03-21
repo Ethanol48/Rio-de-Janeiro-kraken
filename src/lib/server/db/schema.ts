@@ -8,7 +8,7 @@ export const user = sqliteTable('user', {
 	passwordHash: text('passwordHash').notNull(),
 	points: integer('points').default(10),
   claimedOrders: integer('claimed_orders', { mode: 'boolean' }),
-	isAdmin: integer('is_admin', { mode: 'boolean' }).default(false),
+	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false),
 });
 
 export const session = sqliteTable('session', {

@@ -1,5 +1,15 @@
+import { isUserAdmin } from '$lib/server/db/utilities';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
-	return { user: event.locals.user };
+
+  let admin = false;
+  if (event.locals.user !== null) {
+    admin = await isUserAdmin(event.locals.user.id);
+  }
+
+	return { 
+    user: event.locals.user,
+    admin: admin
+  };
 };

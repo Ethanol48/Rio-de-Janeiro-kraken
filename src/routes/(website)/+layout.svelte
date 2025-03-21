@@ -3,14 +3,12 @@
 	import type { LayoutServerData } from './$types';
 	import userIcon from '$lib/svgs/userIcon.svg';
 
-
-	import { onMount } from 'svelte';
-	
 	let isMenuOpen = $state(false);
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
+
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
 </script>
 
@@ -70,6 +68,13 @@
 				<p class="ml-[-1px] text-xl">🎁</p>
 				<p class="hidden sm:inline">• SHOP</p>
 			</Button>
+
+      {#if data.admin}
+        <Button href="/shop_commande">
+          <p class="ml-[-1px] text-xl">📬</p>
+          <p class="hidden sm:inline">• Orders</p>
+        </Button>
+      {/if}
 		</div>
 	</nav>
 </div>

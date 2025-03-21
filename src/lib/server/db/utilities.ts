@@ -178,7 +178,7 @@ export const setButton = async (userId: string) => {
 	return await db.update(games).set({ button: true }).where(eq(games.userId, userId));
 };
 
-export const isUserAdmin = async (userId: string) => {
+export const isUserAdmin = async (userId: string): Promise<boolean> => {
 	const query = await db
 		.select({ admin: user.isAdmin })
 		.from(user)
@@ -188,7 +188,7 @@ export const isUserAdmin = async (userId: string) => {
   
   if (result === undefined) {
     console.error("isUserAdmin: No user was found? error reading db?")
-    throw new Error("An error has ocurred, contact with the website administrators")
+    return false;
 
   } else {
     return result.admin
