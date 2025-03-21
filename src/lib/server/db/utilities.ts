@@ -1,5 +1,5 @@
 import { db } from '.';
-import { blackjack, enigme, items, orders, user } from './schema';
+import { blackjack, enigme, games, items, orders, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
@@ -11,6 +11,10 @@ export const leaderBoard = async () => {
 		.orderBy(desc(user.points))
 		.limit(20);
 };
+
+
+
+// blackjack
 
 export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	const str = userId + Date.now().toString();
@@ -32,7 +36,6 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 		userId: userId,
 		ended: false,
 		pile_cards: pile_cards,
-		createdAt: ''
 	};
 
 	const id = await db.insert(blackjack).values(values).returning({ id: blackjack.id });
@@ -81,18 +84,6 @@ export const isGameOnGoing = async (userId: string) => {
 	return { game: true, data: await GetBlackJackGame(userId) };
 };
 
-// TODO: Done
-//export const addBetToGame = async (gameId: string, points: number) => {
-//  // this wont be null normally, you are only suppose to call this fonction
-//  const game = await GetBlackJackGame(gameId);
-//
-//
-//  return await db
-//    .update(blackjack)
-//    .set({ points: game! + points })
-//    .where(eq(blackjack.id, gameId));
-//};
-
 export const isGameOfUser = async (gameId: string, userId: string) => {
 	const result_query = await db
 		.select({ gameUserId: blackjack.userId })
@@ -103,36 +94,88 @@ export const isGameOfUser = async (gameId: string, userId: string) => {
 	return gameUserId === userId;
 };
 
-export const foundedSecret = async (userId: string) => {
-  //  TODO:  REFACTOR
-	const result_query = await db
-		.select({ foundedSecret: user.foundSecret })
-		.from(user)
-		.where(eq(user.id, userId));
+export const setPlayerWonTrue = async (gameId: string) => {
+	return await db
+		.update(blackjack)
+		.set({ playerWon: true, neutral: false })
+		.where(eq(blackjack.id, gameId));
+};
 
-	const claimed = result_query[0].foundedSecret;
-	return claimed;
+export const setPlayerWonFalse = async (gameId: string) => {
+	return await db
+		.update(blackjack)
+		.set({ playerWon: false, neutral: false })
+		.where(eq(blackjack.id, gameId));
+};
+
+export const setGameEnded = async (gameId: string) => {
+	return await db.update(blackjack).set({ ended: true }).where(eq(blackjack.id, gameId));
+};
+
+export const setNeutral = async (gameId: string) => {
+	return await db
+		.update(blackjack)
+		.set({ playerWon: false, neutral: true })
+		.where(eq(blackjack.id, gameId));
+};
+
+export const setStand = async (gameId: string) => {
+	return await db.update(blackjack).set({ stand: true }).where(eq(blackjack.id, gameId));
+};
+
+export const addToTotalBet = async (gameId: string, points: number) => {
+	const game = await GetBlackJackGameById(gameId);
+	return await db
+		.update(blackjack)
+		.set({ totalbet: game!.totalbet + points })
+		.where(eq(blackjack.id, gameId));
+};
+
+
+// other games
+
+export const foundedSecret = async (userId: string): Promise<boolean> => {
+  //  TODO:  REFACTOR  // DONE
+	const result_query = await db
+		.select({ foundedSecret: games.foundSecret })
+		.from(games)
+		.where(eq(games.userId, userId));
+
+	const claimed = result_query.at(0);
+
+  if (claimed === undefined) {
+    console.error("foundedSecret: claimed value is undefined")
+    throw new Error("An error has ocurred, contact with the website administrators")
+  }
+
+	return claimed.foundedSecret;
 };
 
 export const setFoundedSecret = async (userId: string) => {
-  // TODO: REFACTOR
-	return await db.update(user).set({ foundSecret: true }).where(eq(user.id, userId));
+  // TODO: REFACTOR // DONE
+	return await db.update(games).set({ foundSecret: true }).where(eq(games.userId, userId));
 };
 
 export const foundedButton = async (userId: string) => {
-  // TODO: REFACTOR
+  // TODO: REFACTOR // DONE
 	const result_query = await db
-		.select({ button: user.button })
-		.from(user)
-		.where(eq(user.id, userId));
+		.select({ button: games.button })
+		.from(games)
+		.where(eq(games.userId, userId));
 
-	const claimed = result_query[0].button;
-	return claimed;
+	const claimed = result_query.at(0);
+
+  if (claimed === undefined) {
+    console.error("foundedButton: claimed value is undefined")
+    throw new Error("An error has ocurred, contact with the website administrators")
+  }
+    
+	return claimed.button;
 };
 
 export const setButton = async (userId: string) => {
-  // TODO: REFACTOR
-	return await db.update(user).set({ button: true }).where(eq(user.id, userId));
+  // TODO: REFACTOR // DONE
+	return await db.update(games).set({ button: true }).where(eq(games.userId, userId));
 };
 
 export const getPoints = async (userId: string) => {
@@ -179,7 +222,9 @@ export const reducePoints = async (userId: string, points: number) => {
 
 
 export const removePoints = async (userId: string, points: number) => {
-	// this wont be null normally, you are only suppose to call this fonction
+  // try to prevent fuck ups
+  if (points < 0) points = - points;
+  
 	const prevPoints = await getPoints(userId);
 	if (prevPoints === null) {
 		throw Error('error obtaining points');
@@ -219,10 +264,11 @@ export const setPoints = async (userId: string, points: number) => {
 // Vérifie si l'utilisateur peut jouer
 export const canUserSpin = async (userId: string) => {
   // TODO: REFACTOR
+  // DONE
 	const result = await db
-		.select({ last_spin: user.last_spin })
-		.from(user)
-		.where(eq(user.id, userId));
+		.select({ last_spin: games.last_spin })
+		.from(games)
+		.where(eq(games.userId, userId));
 
 	const lastSpin = result[0]?.last_spin;
 
@@ -244,74 +290,42 @@ export const canUserSpin = async (userId: string) => {
 
 // Met à jour le dernier spin et ajoute les points
 export const processSpin = async (userId: string, points: number) => {
+  // TODO: REFACTOR
+  // DONE
 	const now = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+  await addPoints(userId, points);
+
 	return db
-		.update(user)
-		.set({
-			points: sql`${user.points} + ${points}`,
-			last_spin: now // Timestamp actuel en secondes
-		})
-		.where(eq(user.id, userId));
+		.update(games)
+		.set({	
+      last_spin: now // Timestamp actuel en secondes
+    })
+		.where(eq(games.userId, userId));
 };
 
 // jeu du krak'rose
 
 export const Combiendefoisjouer = async (userId: string) => {
   // TODO: REFACTOR
+  // DONE
 	const result_query = await db
-		.select({ numberofplaytoday: user.numberofplaytoday })
-		.from(user)
-		.where(eq(user.id, userId));
+		.select({ numberofplaytoday: games.numberofplaytoday })
+		.from(games)
+		.where(eq(games.userId, userId));
 
 	const points = result_query[0].numberofplaytoday;
 	return points;
 };
 
 export const Addplaynumber = async (userId: string) => {
+  // TODO: REFACTOR
 	// this wont be null normally, you are only suppose to call this fonction
 	const prevPoints = await Combiendefoisjouer(userId);
 
 	return await db
-		.update(user)
+		.update(games)
 		.set({ numberofplaytoday: prevPoints! + 1 })
-		.where(eq(user.id, userId));
-};
-
-export const setPlayerWonTrue = async (gameId: string) => {
-	return await db
-		.update(blackjack)
-		.set({ playerWon: true, neutral: false })
-		.where(eq(blackjack.id, gameId));
-};
-
-export const setPlayerWonFalse = async (gameId: string) => {
-	return await db
-		.update(blackjack)
-		.set({ playerWon: false, neutral: false })
-		.where(eq(blackjack.id, gameId));
-};
-
-export const setGameEnded = async (gameId: string) => {
-	return await db.update(blackjack).set({ ended: true }).where(eq(blackjack.id, gameId));
-};
-
-export const setNeutral = async (gameId: string) => {
-	return await db
-		.update(blackjack)
-		.set({ playerWon: false, neutral: true })
-		.where(eq(blackjack.id, gameId));
-};
-
-export const setStand = async (gameId: string) => {
-	return await db.update(blackjack).set({ stand: true }).where(eq(blackjack.id, gameId));
-};
-
-export const addToTotalBet = async (gameId: string, points: number) => {
-	const game = await GetBlackJackGameById(gameId);
-	return await db
-		.update(blackjack)
-		.set({ totalbet: game!.totalbet + points })
-		.where(eq(blackjack.id, gameId));
+		.where(eq(games.userId, userId));
 };
 
 
@@ -323,7 +337,7 @@ export const enigme_get_question = async (day: number, month: number) => {
 	let check = await enigme_is_recuperer(day,month);
 
 	const result_query = await db
-		.select({question :enigme.question})
+		.select({question : enigme.question})
 		.from(enigme)
 		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
 	if (result_query.length ===0){
@@ -410,6 +424,34 @@ export const GetListOrder = async () => {
 		.from(orders)
 
 		return result_db
+}
+
+export const GetOrdersOfUser = async(userId: string) => {
+  const joined = await db
+    .select({
+      product: items.item,
+      claimed: user.claimedOrders,
+    })
+    .from(orders)
+    .leftJoin(user, eq(user.id, orders.userId))
+    .leftJoin(items, eq(items.id, orders.productId))
+
+  return joined
+}
+
+
+export const GetPendingOrders = async(userId: string) => {
+  const joined = await db
+    .select({
+      username: user.username,
+      product: items.item,
+    })
+    .from(orders)
+    .leftJoin(user, eq(user.id, orders.userId))
+    .leftJoin(items, eq(items.id, orders.productId))
+    .groupBy(orders.userId)
+
+  return joined
 }
 
 

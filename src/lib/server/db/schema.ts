@@ -7,6 +7,10 @@ export const user = sqliteTable('user', {
 	username: text('username').notNull(),
 	passwordHash: text('passwordHash').notNull(),
 	points: integer('points').default(10),
+  claimedOrders: integer('claimed_points', { mode: 'boolean' }),
+	isAdmin: integer('is_admin', { mode: 'boolean' }).default(false),
+
+
 	foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
 	button: integer('button', { mode: 'boolean' }).default(false),
 	last_spin: integer('last_spin').default(0),
@@ -25,11 +29,11 @@ export const session = sqliteTable('session', {
 
 export const games = sqliteTable('games', {
   userId: text('user_id').primaryKey(),
-	foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
-	button: integer('button', { mode: 'boolean' }).default(false),
-	last_spin: integer('last_spin').default(0),
-	numberofplaytoday: integer('numberofplaytoday').default(0),
-	lastdayplayed_gobelet: text('lastdayplayed_gobelet').default('')
+	foundSecret: integer('foundSecret', { mode: 'boolean' }).notNull().default(false),
+	button: integer('button', { mode: 'boolean' }).notNull().default(false),
+	last_spin: integer('last_spin').notNull().default(0),
+	numberofplaytoday: integer('numberofplaytoday').notNull().default(0),
+	lastdayplayed_gobelet: text('lastdayplayed_gobelet').notNull().default('')
 })
 
 export const orders = sqliteTable('orders', {
@@ -62,18 +66,18 @@ export const blackjack = sqliteTable('blackjack', {
 	playerCards: text('player_cards').notNull().default(''),
 	dealerCards: text('dealer_cards').notNull().default(''),
 	pile_cards: text('pile_cards').notNull(),
-
 	totalbet: integer('total_bet').notNull().default(0),
-
 	stand: integer('stand', { mode: 'boolean' }).default(false),
 	started: integer('started', { mode: 'boolean' }).default(false),
 	firstPlay: integer('first_play', { mode: 'boolean' }).default(true),
 	neutral: integer('neutral', { mode: 'boolean' }).default(false),
 	ended: integer('ended', { mode: 'boolean' }).default(false),
 	playerWon: integer('player_won', { mode: 'boolean' }).default(false),
-	createdAt: text('created_at')
+	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.default(sql`(current_timestamp)`)
+		.default(
+    sql`(strftime('%s', 'now'))`
+  ),
 });
 
 
@@ -96,3 +100,4 @@ export type User = typeof user.$inferSelect;
 export type Orders = typeof orders.$inferSelect;
 export type Items = typeof items.$inferSelect;
 export type Enigme = typeof enigme.$inferSelect;
+export type Games = typeof games.$inferSelect;
