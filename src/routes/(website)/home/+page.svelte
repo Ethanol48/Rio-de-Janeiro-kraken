@@ -5,6 +5,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
 	import Custom from '$lib/components/custom-sonner.svelte';
+	import MadeWithLove from '$lib/components/MadeWithLove.svelte';
 
 	let { data } = $props();
 
@@ -162,11 +163,10 @@
 						target="_blank"
 						rel="noopener noreferrer">Kraken - EPITA</a
 					>
+
+          <MadeWithLove class={"pt-3 pb-2"} />
 				</Dialog.Description>
 			</Dialog.Header>
-			<Dialog.Close>
-				<Button class="mt-2">Fermer</Button>
-			</Dialog.Close>
 		</Dialog.Content>
 	</Dialog.Root>
 </div>

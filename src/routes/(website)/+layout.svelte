@@ -81,6 +81,9 @@
 <!-- else content here -->
 
 
+{@render children()}
+
+
 <style>
 	@keyframes slide-down {
 		from {
@@ -97,4 +100,3 @@
 		animation: slide-down 0.2s ease-out;
 	}
 </style>
-{@render children()}

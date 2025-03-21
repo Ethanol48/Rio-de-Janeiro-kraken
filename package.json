@@ -45,6 +45,7 @@
 		"zod": "^3.24.1"
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-free": "^6.7.2",
 		"@node-rs/argon2": "^1.1.0",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
