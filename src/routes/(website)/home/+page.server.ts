@@ -13,12 +13,12 @@ export const load: PageServerLoad = async (event) => {
 	const claimed = await foundedButton(event.locals.user.id);
 	const username = await getUsername(event.locals.user.id)
 	const points = await getPoints(event.locals.user.id)
+
 	return {
 		user: event.locals.user,
 		claimed: claimed,
 		username: username,
 		points:points
-
 	};
 };
 

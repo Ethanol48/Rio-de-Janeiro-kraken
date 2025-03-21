@@ -104,6 +104,7 @@ export const isGameOfUser = async (gameId: string, userId: string) => {
 };
 
 export const foundedSecret = async (userId: string) => {
+  //  TODO:  REFACTOR
 	const result_query = await db
 		.select({ foundedSecret: user.foundSecret })
 		.from(user)
@@ -114,10 +115,12 @@ export const foundedSecret = async (userId: string) => {
 };
 
 export const setFoundedSecret = async (userId: string) => {
+  // TODO: REFACTOR
 	return await db.update(user).set({ foundSecret: true }).where(eq(user.id, userId));
 };
 
 export const foundedButton = async (userId: string) => {
+  // TODO: REFACTOR
 	const result_query = await db
 		.select({ button: user.button })
 		.from(user)
@@ -128,6 +131,7 @@ export const foundedButton = async (userId: string) => {
 };
 
 export const setButton = async (userId: string) => {
+  // TODO: REFACTOR
 	return await db.update(user).set({ button: true }).where(eq(user.id, userId));
 };
 
@@ -214,6 +218,7 @@ export const setPoints = async (userId: string, points: number) => {
 
 // Vérifie si l'utilisateur peut jouer
 export const canUserSpin = async (userId: string) => {
+  // TODO: REFACTOR
 	const result = await db
 		.select({ last_spin: user.last_spin })
 		.from(user)
@@ -252,6 +257,7 @@ export const processSpin = async (userId: string, points: number) => {
 // jeu du krak'rose
 
 export const Combiendefoisjouer = async (userId: string) => {
+  // TODO: REFACTOR
 	const result_query = await db
 		.select({ numberofplaytoday: user.numberofplaytoday })
 		.from(user)

@@ -23,6 +23,15 @@ export const session = sqliteTable('session', {
 });
 
 
+export const games = sqliteTable('games', {
+  userId: text('user_id').primaryKey(),
+	foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
+	button: integer('button', { mode: 'boolean' }).default(false),
+	last_spin: integer('last_spin').default(0),
+	numberofplaytoday: integer('numberofplaytoday').default(0),
+	lastdayplayed_gobelet: text('lastdayplayed_gobelet').default('')
+})
+
 export const orders = sqliteTable('orders', {
   id: text('id').primaryKey(),
   userId: text('user_id')
