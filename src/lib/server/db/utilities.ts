@@ -380,6 +380,34 @@ export const enigme_vainqueur  = async (day: number, month: number) => {
 };
 
 
+export const OrderSend = async (userid : string) => {
+	const result_db = await db
+		.select({productid : orders.productId})
+		.from(orders)
+		.where(eq(orders.userId,userid ))
+
+		return result_db
+}
+
+export const GetNameItem = async (product_id : string) => {
+	const result_db = await db
+		.select({item : items.item})
+		.from(items)
+		.where(eq(items.id,product_id ))
+
+		return result_db[0].item
+}
+
+export const GetListOrder = async () => {
+	const result_db = await db
+		.select({userid: orders.userId, itemid: orders.productId, claimed: orders.claimed, })
+		.from(orders)
+
+		return result_db
+}
+
+
+
 export const GetItem = async (itemId: string): Promise<{present: boolean, stock: number, price: number}> => {
   const stock = await db
     .select({ stock: items.stock, price: items.price })

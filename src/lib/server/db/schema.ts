@@ -79,6 +79,9 @@ export const enigme = sqliteTable('enigme', {
 	user_victory:text('user_victory').notNull().default('None'),
 });
 
+
+
+
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Orders = typeof orders.$inferSelect;
