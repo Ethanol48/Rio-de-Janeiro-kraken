@@ -7,15 +7,8 @@ export const user = sqliteTable('user', {
 	username: text('username').notNull(),
 	passwordHash: text('passwordHash').notNull(),
 	points: integer('points').default(10),
-  claimedOrders: integer('claimed_points', { mode: 'boolean' }),
+  claimedOrders: integer('claimed_orders', { mode: 'boolean' }),
 	isAdmin: integer('is_admin', { mode: 'boolean' }).default(false),
-
-
-	foundSecret: integer('foundSecret', { mode: 'boolean' }).default(false),
-	button: integer('button', { mode: 'boolean' }).default(false),
-	last_spin: integer('last_spin').default(0),
-	numberofplaytoday: integer('numberofplaytoday').default(0),
-	lastdayplayed_gobelet: text('lastdayplayed_gobelet').default('')
 });
 
 export const session = sqliteTable('session', {
@@ -28,7 +21,7 @@ export const session = sqliteTable('session', {
 
 
 export const games = sqliteTable('games', {
-  userId: text('user_id').primaryKey(),
+  userId: text('user_id').primaryKey().references(() => user.id),
 	foundSecret: integer('foundSecret', { mode: 'boolean' }).notNull().default(false),
 	button: integer('button', { mode: 'boolean' }).notNull().default(false),
 	last_spin: integer('last_spin').notNull().default(0),

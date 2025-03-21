@@ -74,6 +74,7 @@ export const actions: Actions = {
 
 		return redirect(302, '/home');
 	},
+
 	register: async (event) => {
 		const formData = await event.request.formData();
 		const login = formData.get('login');
@@ -129,6 +130,11 @@ export const actions: Actions = {
 			await db
 				.insert(table.user)
 				.values({ id: userId, login: login, username: usernameStr, passwordHash: passwordHash });
+
+      // generate games db
+      await db
+        .insert(table.games)
+        .values({ userId: userId })
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);

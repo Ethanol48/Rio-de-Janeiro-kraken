@@ -1,19 +1,28 @@
-import {  GetItem, GetListOrder, GetNameItem, getUsername, OrderSend } from '$lib/server/db/utilities';
+import {  GetItem, GetListOrder, GetNameItem, getUsername, isUserAdmin, OrderSend } from '$lib/server/db/utilities';
 import { date } from 'drizzle-orm/mysql-core';
 import type { Actions, PageServerLoad } from './$types';
 import { user } from '$lib/server/db/schema';
 import { redirect } from '@sveltejs/kit';
 import type { List } from '$lib/components/ui/tabs';
+import { LOGIN_REDIRECT } from '$lib/constants';
 
 
 
-export const load: PageServerLoad = async (event) => {  
 
-  if (event.locals.user?.id != "s7bgztrttrr5jtp2m6crtv7y"){
+export const load: PageServerLoad = async ({ locals }) => {  
+	if (locals.user === null) {
+		return redirect(302, LOGIN_REDIRECT);
+	}
+
+  const admin = await isUserAdmin(locals.user.id);
+  
+  if (!admin) {
     return redirect(302, '/home');
   }
+
   const ListOrder =await GetListOrder();
   let list_result = [];
+
   async function GetListResult(userid : string,itemid : string,claimed: boolean | null) {
     return [await getUsername(userid), await GetNameItem(itemid),1,claimed]
   }

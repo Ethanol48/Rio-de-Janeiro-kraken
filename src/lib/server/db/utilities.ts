@@ -178,6 +178,23 @@ export const setButton = async (userId: string) => {
 	return await db.update(games).set({ button: true }).where(eq(games.userId, userId));
 };
 
+export const isUserAdmin = async (userId: string) => {
+	const query = await db
+		.select({ admin: user.isAdmin })
+		.from(user)
+		.where(eq(user.id, userId))
+
+  const result = query.at(0)
+  
+  if (result === undefined) {
+    console.error("isUserAdmin: No user was found? error reading db?")
+    throw new Error("An error has ocurred, contact with the website administrators")
+
+  } else {
+    return result.admin
+  }
+};
+
 export const getPoints = async (userId: string) => {
 	const result_query = await db
 		.select({ points: user.points })
@@ -516,11 +533,9 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
         
       await db
         .insert(orders)
-        .values({ id: id, userId: userId, productId: itemId, claimed: false });
-    
+        .values({ id: id, userId: userId, productId: itemId, claimed: false });  
     }
   }
-
 
   return true;
 }
