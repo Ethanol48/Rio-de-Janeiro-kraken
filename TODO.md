@@ -1,6 +1,8 @@
 # TODO:
 
 - [ ] Store 
-    - [ ] UI to show what items have being bought
-    - [ ] Buy items API
+    - [x] UI to show what items have being bought
+    - [x] Buy items API
     - [ ] Dialog
+        - [ ] Desc
+        - [ ] Before vs After
