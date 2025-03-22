@@ -1,5 +1,5 @@
 import { db } from '.';
-import { blackjack, enigme, games, items, orders, user } from './schema';
+import { blackjack, enigme, games, items, items, orders, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
@@ -471,7 +471,13 @@ export const GetPendingOrders = async() => {
   return joined
 }
 
+export const GetItems = async () => {
+  const query = await db
+    .select()
+    .from(items)
 
+  return query
+}
 
 export const GetItem = async (itemId: string): Promise<{present: boolean, stock: number, price: number}> => {
   const stock = await db

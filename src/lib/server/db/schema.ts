@@ -6,8 +6,8 @@ export const user = sqliteTable('user', {
 	login: text('login').notNull().unique(),
 	username: text('username').notNull(),
 	passwordHash: text('passwordHash').notNull(),
-	points: integer('points').default(10),
-  claimedOrders: integer('claimed_orders', { mode: 'boolean' }),
+	points: integer('points').notNull().default(10),
+  claimedOrders: integer('claimed_orders', { mode: 'boolean' }).notNull().default(false),
 	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false),
 });
 
@@ -47,7 +47,7 @@ export const items = sqliteTable('stock', {
 	name: text('name').unique().notNull(),
 	desc: text('desc').notNull(),
   price: integer('price').notNull(),
-	stock: integer('stock').default(0),
+	stock: integer('stock').notNull().default(0),
 });
 
 export const blackjack = sqliteTable('blackjack', {
