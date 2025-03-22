@@ -1,7 +1,16 @@
 <script lang="ts">
-	import type { PageServerData } from './$types';
+	import { toast } from 'svelte-sonner';
+	import type { PageProps } from './$types';
 	import Item from './comps/Item.svelte';
-	let { data }: { data: PageServerData } = $props();
+	let { data, form }: PageProps = $props();
+
+  $effect(() => {
+    if (form?.success === true) {
+      toast.success("The item has successfully being bought")
+    } else if (form?.error.length > 0) {
+      toast.error(form?.error);
+    }
+  })
 </script>
 
 <title>Krak'n Roses - Shop</title>

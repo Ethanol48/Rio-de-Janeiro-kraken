@@ -3,9 +3,13 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import type { Items } from '$lib/server/db/schema';
-	import type { LayoutData } from '../../$types';
+	import type { PageData } from '../$types';
+	import { enhance } from '$app/forms';
 
-	let { user, item }: { user: LayoutData['user']; item: Items } = $props();
+
+	let { user, item }: { user: PageData['user']; item: Items} = $props();
+
+
 </script>
 
 <Dialog.Root>
@@ -28,7 +32,12 @@
 			</div>
 		</div>
 		<Dialog.Footer>
-			<Button type="submit">Confirm purchase</Button>
+      {#if user !== null}
+        <form action="/shop" method="POST" use:enhance>
+          <input type="text" value={item.id} name="itemId" class="hidden">
+          <Button type="submit">Confirm purchase</Button>
+        </form>
+      {/if}
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
