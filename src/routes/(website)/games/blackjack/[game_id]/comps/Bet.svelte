@@ -18,7 +18,7 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="flex w-fit flex-col justify-center gap-6 rounded-xl bg-pink-50 p-6 shadow">
+	<div class="flex w-fit flex-col justify-center gap-6 rounded-xl bg-primary-foreground p-6 shadow">
 		<div class="flex flex-row justify-between">
 			<h3 class="typography">Place your bet</h3>
 			<p>{value} points</p>

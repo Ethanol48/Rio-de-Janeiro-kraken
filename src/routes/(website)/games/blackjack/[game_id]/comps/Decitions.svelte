@@ -9,7 +9,7 @@
 		$props();
 </script>
 
-<div class="flex w-[230px] flex-col justify-center gap-6 rounded-xl bg-pink-50 p-3 shadow">
+<div class="flex w-[230px] flex-col justify-center gap-6 rounded-xl bg-primary-foreground p-3 shadow">
 	<div class="flex flex-col justify-center gap-5">
 		<h3 class="typography text-center">Take an action</h3>
 

@@ -1,4 +1,5 @@
 import { isUserAdmin } from '$lib/server/db/utilities';
+import { setContext } from 'svelte';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
@@ -8,7 +9,7 @@ export const load: LayoutServerLoad = async (event) => {
     admin = await isUserAdmin(event.locals.user.id);
   }
 
-	return { 
+  return {
     user: event.locals.user,
     admin: admin
   };

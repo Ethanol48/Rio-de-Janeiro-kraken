@@ -52,25 +52,25 @@
 	<!-- Navigation affichée sur les grands écrans -->
 	<nav class="hidden sm:block rounded p-3 shadow">
 		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 sm:max-w-xl sm:flex-row">
-			<Button href="/home">
+			<Button href="/home" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🏠</p>
 				<p class="hidden sm:inline">• Home</p>
 			</Button>
-			<Button href="/leaderboard">
+			<Button href="/leaderboard" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">📜</p>
 				<p class="hidden sm:inline">• Leaderboard</p>
 			</Button>
-			<Button href="/games">
+			<Button href="/games" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🕹️</p>
 				<p class="hidden sm:inline">• Games</p>
 			</Button>
-			<Button href="/shop">
+			<Button href="/shop" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🎁</p>
 				<p class="hidden sm:inline">• SHOP</p>
 			</Button>
 
       {#if data.admin}
-        <Button href="/shop_commande">
+        <Button href="/shop_commande" class="bg-primary/80">
           <p class="ml-[-1px] text-xl">📬</p>
           <p class="hidden sm:inline">• Orders</p>
         </Button>

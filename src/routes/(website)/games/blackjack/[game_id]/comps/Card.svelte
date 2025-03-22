@@ -26,7 +26,7 @@
 >
 	{#if !turned}
 		<div
-			class={'relative flex h-[100px] w-[70px] flex-col items-center justify-center rounded border border-black bg-white p-2 align-middle'}
+			class={'relative flex h-[100px] w-[70px] flex-col items-center justify-center rounded border border-black bg-[#ffffff] p-2 align-middle'}
 		>
 			<div class="absolute left-2 top-2 flex flex-row items-center">
 				{#if color === Color.HEARTS}

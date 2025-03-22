@@ -67,13 +67,13 @@
           <h4 class="typography text-center">Dealer cards</h4>
           <Carta
             class={"absolute"}
-            style={`bottom: 40px; left: 20px;`}
+            style={`bottom: 40px; left: 20px; background-color: #ffffff;`}
             color={color.SPADES}
             symbol={carta.Seven}
           />
           <Carta
             class={"absolute"}
-            style={`bottom: ${incrementY + 40}px; left: ${incrementX + 20}px;`}
+            style={`bottom: ${incrementY + 40}px; left: ${incrementX + 20}px; background-color: #ffffff;`}
             color={color.HEARTS}
             symbol={carta.Jack}
           />
@@ -153,7 +153,7 @@
   --brand-alternative: rgb(19, 120, 134);
   --background-site: rgb(249, 249, 249);
   --background-code: rgb(244, 244, 244);
-  --text-body: hsl(350 90% 80%);
+  --text-body: hsl(140 90% 10%);
   --text-comment: rgb(99, 94, 105);
   --text-high-contrast: rgb(49, 49, 49);
   --text-medium-contrast: rgb(99, 94, 105);
