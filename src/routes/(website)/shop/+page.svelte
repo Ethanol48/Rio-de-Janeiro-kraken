@@ -5,19 +5,14 @@
 </script>
 
 <title>Krak'n Roses - Shop</title>
-<div class="grid grid-cols-1 place-items-center gap-32">
-	<div class="flex h-[40vw] w-2/4 flex-col justify-center gap-3 text-center">
+<div class="flex flex-col gap-2 justify-center">
+	<div class="flex h-[20vw] flex-col justify-center gap-3 text-center">
 		<h1 class="typography mb-3 text-lg text-gray-900">SHOP</h1>
-
-		<h3 style="text-align: center; font-size:20px">
-			Un shop arrivent dès mercredi matin! <br /><br />De nombreuses récompenses seront disponibles
-			alors préparez vos points car les stocks sont limités ! 🎁
-		</h3>
 	</div>
 
-	<div class="grid w-3/4 grid-cols-1 place-items-center gap-3 sm:grid-cols-2 xl:grid-cols-3">
+	<div class="flex gap-6  flex-wrap justify-center">
 		{#each data.items as item}
-			<Item {item} />
+			<Item user={data.user} {item} />
 		{/each}
 	</div>
 </div>

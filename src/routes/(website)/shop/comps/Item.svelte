@@ -7,7 +7,7 @@
 	let { item, user }: { user: LayoutData['user']; item: Items } = $props();
 </script>
 
-<Card.Root class="w-[30vw] min-w-[200px]">
+<Card.Root class="w-[30vw] min-w-[200px] max-w-[300px]">
 	<Card.Header>
 		<h2 class="typography">{item.name}</h2>
 	</Card.Header>

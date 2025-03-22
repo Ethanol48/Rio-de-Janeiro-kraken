@@ -1,11 +1,6 @@
-- Black Jack
+# TODO:
 
-- Simulate deck
-
-- Bets
-
-  - Double
-
-- Give cards
-  - to Dealer
-  - to Player
+- [ ] Store 
+    - [ ] UI to show what items have being bought
+    - [ ] Buy items API
+    - [ ] Dialog

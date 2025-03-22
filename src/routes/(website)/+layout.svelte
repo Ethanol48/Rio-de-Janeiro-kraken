@@ -42,10 +42,10 @@
 	{#if isMenuOpen}
 		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 
 		            animate-slide-down sm:hidden">
-			<Button href="/home">🏠 Home</Button>
-			<Button href="/leaderboard">📜 Leaderboard</Button>
-			<Button href="/games">🕹️ Games</Button>
-			<Button href="/shop">🎁 SHOP</Button>
+			<Button class="bg-primary/80"  href="/home">🏠 Home</Button>
+			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
+			<Button class="bg-primary/80" href="/games">🕹️ Games</Button>
+			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
 		</div>
 	{/if}
 
