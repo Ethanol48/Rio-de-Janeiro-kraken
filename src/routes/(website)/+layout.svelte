@@ -46,7 +46,11 @@
 			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
 			<Button class="bg-primary/80" href="/games">🕹️ Games</Button>
 			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
+			{#if data.admin}
+				<Button class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
+			{/if}
 		</div>
+
 	{/if}
 
 	<!-- Navigation affichée sur les grands écrans -->
