@@ -32,15 +32,15 @@
 	{/if}
 </div>
 
-<div class="absolute left-3 top-3">
+<div class="absolute left-3 top-3 z-10 ">
 	<!-- Icône de menu burger affichée sur mobile -->
-	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleMenu}>
+	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110 " style="font-size: 2rem;" onclick={toggleMenu}>
 		☰
 	</button>
 
 	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
 	{#if isMenuOpen}
-		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 
+		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd]
 		            animate-slide-down sm:hidden">
 			<Button class="bg-primary/80"  href="/home">🏠 Home</Button>
 			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
