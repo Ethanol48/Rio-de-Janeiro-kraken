@@ -66,7 +66,8 @@ CREATE TABLE `user` (
 	`username` text NOT NULL,
 	`passwordHash` text NOT NULL,
 	`points` integer DEFAULT 10 NOT NULL,
-	`claimed_orders` integer DEFAULT false NOT NULL,
+	`want_to_claim` integer DEFAULT false NOT NULL,
+  `claimed_orders` integer DEFAULT false NOT NULL,
 	`is_admin` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint
