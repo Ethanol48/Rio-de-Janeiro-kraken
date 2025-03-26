@@ -20,23 +20,20 @@
 		<Dialog.Header>
 			<Dialog.Title>Buying</Dialog.Title>
 			<Dialog.Description>
-				Make changes to your profile here. Click save when you're done.
-			</Dialog.Description>
+          
+      </Dialog.Description>
 		</Dialog.Header>
-		<div class="grid gap-4 py-4">
-			<div class="grid grid-cols-4 items-center gap-4">
-				<Label for="name" class="text-right">Name</Label>
-			</div>
-			<div class="grid grid-cols-4 items-center gap-4">
-				<Label for="username" class="text-right">Username</Label>
-			</div>
-		</div>
+
+
+
 		<Dialog.Footer>
       {#if user !== null}
         <form action="/shop" method="POST" use:enhance>
           <input type="text" value={item.id} name="itemId" class="hidden">
           <Button type="submit">Confirm purchase</Button>
         </form>
+      {:else}
+        <Button href="/login">Log-in</Button>
       {/if}
 		</Dialog.Footer>
 	</Dialog.Content>

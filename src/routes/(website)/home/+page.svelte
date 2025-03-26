@@ -1,26 +1,25 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
-	import Custom from '$lib/components/custom-sonner.svelte';
 	import MadeWithLove from '$lib/components/MadeWithLove.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	let noUser = data.user === null;
 	let claimed = data.claimed === true;
 
-	const submitFoundButton: SubmitFunction = () => {
-		toast.custom(Custom, { componentProps: { texto: 'Points réclamés', emoji: ' 🎉' } });
-	};
+
+  if (form?.success === true) {
+		toast.success('Points réclamés    🎉');
+  }
 </script>
 
 <title>Krak'n Roses - Home</title>
 <div class="header">
 	<img src="/kraken.png" alt="Logo" class="logo animate-fade-in" />
 </div>
+
 <br /><br />
 
 {#if data.user !== null}
@@ -40,7 +39,7 @@
 
 <br />
 <br />
-<div class="button-group animate-fade-in">
+<div class="mt-[20px] flex gap-[10px] justify-center animate-fade-in">
 	{#if data.user !== null}
 		<Dialog.Root>
 			<Dialog.Trigger>
@@ -79,11 +78,7 @@
 				</Dialog.Header>
 				<div class="flex justify-center">
 					<form method="POST" action="?/foundButton">
-						<Button
-							type="submit"
-							disabled={data.claimed}
-							class="mt-2 rounded bg-primary p-2 text-white"
-						>
+						<Button type="submit" disabled={data.claimed} class="mt-2 rounded bg-primary p-2 text-white">
 							{#if data.claimed}
 								Déjà réclamé 🎉
 							{:else}
@@ -218,10 +213,4 @@
 		animation: slide-in 3s ease-out;
 	}
 
-	.button-group {
-		display: flex;
-		gap: 10px;
-		justify-content: center;
-		margin-top: 20px;
-	}
 </style>
