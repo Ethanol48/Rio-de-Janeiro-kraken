@@ -22,7 +22,7 @@
 
 <form method="POST" action="?/check_result" >
   <div class="container">
-    <h1 class="enigme-title">🎭 Énigme du jour</h1>
+    <h1 class="enigme-title after:bg-primary">🎭 Énigme du jour</h1>
 
     {#if !confetti}
     <div class="enigme-box">
@@ -155,11 +155,10 @@
       bottom: -5px;
       width: 100%;
       height: 4px;
-      background-color: #6c2a2a;
       animation: slideUnderline 1s ease-in-out;
     }
     .enigme-box {
-      border: 2px solid #6c2a2a;
+      border: 2px solid #32881d;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -194,14 +193,14 @@
       display: block;
       width: 100%;
       border: none;
-      border-bottom: 1px solid #515151;
+      border-bottom: 1px solid #000000;
       background: transparent;
     }
     .wave-group .input:focus {
       outline: none;
     }
     .wave-group .label {
-      color: #999;
+      color: #000000;
       font-size: 18px;
       font-weight: normal;
       position: absolute;
@@ -250,7 +249,7 @@
     button {
       font-family: inherit;
       font-size: 20px;
-      background: #6c2a2a;
+      background-color: hsl(var(--primary) / var(--tw-bg-opacity, 1));
       color: white;
       padding: 0.7em 1em;
       padding-left: 0.9em;
