@@ -2,39 +2,74 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { LayoutServerData } from './$types';
 	import userIcon from '$lib/svgs/userIcon.svg';
+	import userInventory from '$lib/svgs/inventory.png';
 
 	let isMenuOpen = $state(false);
+	let isUserMenuOpen = $state(false);
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
 
+	function toggleUserMenu() {
+		isUserMenuOpen = !isUserMenuOpen;
+	}
+
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
+	
 </script>
 
-<div class="absolute right-5 top-5 flex h-fit w-fit">
+<!-- Partie droite : Affichage sur grands écrans -->
+<div class="absolute right-5 top-5 hidden sm:flex flex-col items-end">
 	{#if data.user === null}
 		<Button size="lg" href="/login">Log in</Button>
 	{:else}
-		<div>
-			<div class="flex flex-col justify-center">
-				<div class="mb-2 rounded bg-primary p-4 text-center text-white">
-					<div class="flex flex-row">
-						<img src={userIcon} class="mr-2 h-6 w-6" alt="" />
-						<div>
-							{data.user.username}
-						</div>
-					</div>
-				</div>
-				<Button size="lg" href="/signout">Sign out</Button>
+		<div class="flex flex-col justify-center gap-2">
+			<div class="mb-2 rounded bg-primary p-4 text-center text-white flex flex-row items-center">
+				<img src={userIcon} class="mr-2 h-6 w-6" alt="" />
+				<div>{data.user.username}</div>
 			</div>
+			<Button href="/inventory" class="mb-2 rounded bg-primary p-4 text-center text-white flex flex-row items-center">
+				<img src={userInventory} class="mr-2 h-6 w-6" alt="" />
+				<div>My Inventory</div>
+			</Button>
+			<Button size="lg" href="/signout">Sign out</Button>
 		</div>
 	{/if}
 </div>
 
+<!-- Partie droite sur mobile : bouton pour afficher/cacher la liste déroulante -->
+<div class="absolute right-3 top-3 z-10 sm:hidden">
+	{#if data.user !== null}
+		<!-- Bouton avec l'icône utilisateur -->
+		<button class="p-2 rounded transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleUserMenu}>
+			<img src={userIcon} class="h-6 w-6" alt="Menu utilisateur" />
+		</button>
+
+		{#if isUserMenuOpen}
+			<!-- Liste déroulante pour mobile -->
+			<div class="absolute right-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd]
+			            animate-slide-down">
+				<div class="rounded bg-primary p-4 text-center text-white">
+					{data.user.username}
+				</div>
+				<Button class="bg-primary/80" href="/inventory">
+					<div class="flex flex-row items-center">
+						<div>My Inventory</div>
+					</div>
+				</Button>
+				<Button size="lg" href="/signout">Sign out</Button>
+			</div>
+		{/if}
+	{:else}
+		<Button size="lg" href="/login">Log in</Button>
+	{/if}
+</div>
+
+<!-- Partie gauche inchangée -->
 <div class="absolute left-3 top-3 z-10 ">
 	<!-- Icône de menu burger affichée sur mobile -->
-	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110 " style="font-size: 2rem;" onclick={toggleMenu}>
+	<button class="sm:hidden p-2 rounded transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleMenu}>
 		☰
 	</button>
 
@@ -50,7 +85,6 @@
 				<Button class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
 			{/if}
 		</div>
-
 	{/if}
 
 	<!-- Navigation affichée sur les grands écrans -->
@@ -72,21 +106,18 @@
 				<p class="ml-[-1px] text-xl">🎁</p>
 				<p class="hidden sm:inline">• SHOP</p>
 			</Button>
-
-      {#if data.admin}
-        <Button href="/shop_commande" class="bg-primary/80">
-          <p class="ml-[-1px] text-xl">📬</p>
-          <p class="hidden sm:inline">• Orders</p>
-        </Button>
-      {/if}
+			{#if data.admin}
+				<Button href="/shop_commande" class="bg-primary/80">
+					<p class="ml-[-1px] text-xl">📬</p>
+					<p class="hidden sm:inline">• Orders</p>
+				</Button>
+			{/if}
 		</div>
 	</nav>
 </div>
-<!-- else content here -->
 
-
+<!-- Contenu principal -->
 {@render children()}
-
 
 <style>
 	@keyframes slide-down {

@@ -7,6 +7,17 @@ async function GetListResult(userid: string, itemid: string, claimed: boolean | 
 }
 
 
+/*
+
+Pour celui qui lira ce code, je suis d'accord, c'est pas du tout le plus optimisé, mais j'avais la flemme de refléchir 
+à optimisé à 23h50 et j'ai une flemme immense de le refaire en dictionnaire, 
+
+Mais en tout cas, ca marche :)
+
+ArmandMS
+
+*/
+
 async function GetData() {
 
   const ListOrder = await GetListOrder();
@@ -61,20 +72,12 @@ async function GetData() {
           list_result.push([el_ListOrder.userid, [[el_ListOrder.itemid, 1]]])
         }
         else {
-
           list_result.forEach(el_ListResult => {
             if (el_ListResult[0] === el_UserId) {
               AddItem(el_ListResult[1], el_ListOrder.itemid);
-
-
             }
-
           });
-
-
         }
-
-
       }
     })
   });

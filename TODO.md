@@ -6,3 +6,9 @@
     - [ ] Dialog
         - [ ] Desc
         - [ ] Before vs After
+- [ ] Inventory
+    - [ ] Decide button for claim
+- [ ] Games
+    - [ ] Roue
+        - [ ] Regler la roue
+- [ ] Changer le texte pour le bon thème

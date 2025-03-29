@@ -30,8 +30,7 @@
     formData.append('user', item.user);
     try {
       const data =await fetch('?/hasClaimed', { method: 'POST', body: formData });
-      const reponse = await data.json();
-      
+      window.location.reload();
     } catch (error) {
       console.error('Erreur réseau:', error);
     }
@@ -43,6 +42,8 @@
     formData.append('user', item.user);
     try {
       await fetch('?/DisClaimed', { method: 'POST', body: formData });
+      
+      window.location.reload();
     } catch (error) {
       console.error('Erreur réseau:', error);
     }
