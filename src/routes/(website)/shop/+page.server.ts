@@ -9,9 +9,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 
 export const actions: Actions = {
-	default: async ({ locals, request }) => {
-		if (locals.user === null) return fail(401, { error: 'You need to be authenticated' });
-		const userId = locals.user.id;
+  default: async ({ locals, request }) => {
+    if (locals.user === null) return fail(401, { error: 'You need to be authenticated' });
+    const userId = locals.user.id;
 
     let itemId: string | undefined = "";
 
@@ -19,22 +19,22 @@ export const actions: Actions = {
     itemId = data.get("itemId")?.toString();
 
     if (itemId === null || itemId === "" || itemId === undefined) {
-      return fail(401, { error: "The request was malformed, the field itemId was not especified" }) ;
+      return fail(401, { error: "The request was malformed, the field itemId was not especified" });
     }
 
     const priceItem = (await GetItem(itemId)).price;
     const pointsUser = await getPoints(userId);
     if (pointsUser < priceItem) {
-			return fail(500, { error: 'You are too poor to buy this' });
+      return fail(500, { error: 'You are too poor to buy this' });
     }
 
-		try {
-      
-      BuyItem(userId, itemId)
-			return { success: true };
+    try {
 
-		} catch (e) {
-			return fail(500, { error: 'an error ocurred' });
-		}
-	}
+      BuyItem(userId, itemId)
+      return { success: true };
+
+    } catch (e) {
+      return fail(500, { error: 'an error ocurred' });
+    }
+  }
 };
