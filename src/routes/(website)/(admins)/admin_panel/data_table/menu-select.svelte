@@ -2,7 +2,18 @@
 	import { Ellipsis } from '@lucide/svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
-	export let id: string;
+	import { writable, type Writable } from 'svelte/store';
+
+	let { selected }: { selected: Writable<any> } = $props();
+	let processed = $derived.by(() => {
+		let temp: string[] = [];
+
+		selected.subscribe((value) => {
+			temp = Object.keys(value);
+		});
+
+		return temp;
+	});
 </script>
 
 <DropdownMenu.Root>
@@ -15,12 +26,7 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>Actions</DropdownMenu.Label>
-			<DropdownMenu.Item on:click={() => navigator.clipboard.writeText(id)}>
-				Copy payment ID
-			</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => console.log(processed)}>Delete users</DropdownMenu.Item>
 		</DropdownMenu.Group>
-		<DropdownMenu.Separator />
-		<DropdownMenu.Item>View customer</DropdownMenu.Item>
-		<DropdownMenu.Item>View payment details</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
