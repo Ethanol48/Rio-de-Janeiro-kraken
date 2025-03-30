@@ -16,11 +16,10 @@
 	}
 
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
-	
 </script>
 
 <!-- Partie droite : Affichage sur grands écrans -->
-<div class="absolute right-5 top-5 hidden sm:flex flex-col items-end">
+<div class="absolute right-5 top-5 hidden md:flex flex-col items-end z-10">
 	{#if data.user === null}
 		<Button size="lg" href="/login">Log in</Button>
 	{:else}
@@ -39,7 +38,7 @@
 </div>
 
 <!-- Partie droite sur mobile : bouton pour afficher/cacher la liste déroulante -->
-<div class="absolute right-3 top-3 z-10 sm:hidden">
+<div class="absolute right-3 top-3 z-10 md:hidden ">
 	{#if data.user !== null}
 		<!-- Bouton avec l'icône utilisateur -->
 		<button class="p-2 rounded transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleUserMenu}>
@@ -48,12 +47,11 @@
 
 		{#if isUserMenuOpen}
 			<!-- Liste déroulante pour mobile -->
-			<div class="absolute right-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd]
-			            animate-slide-down">
+			<div class="absolute right-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd] animate-slide-down">
 				<div class="rounded bg-primary p-4 text-center text-white">
 					{data.user.username}
 				</div>
-				<Button class="bg-primary/80" href="/inventory">
+				<Button class="bg-primary" href="/inventory">
 					<div class="flex flex-row items-center">
 						<div>My Inventory</div>
 					</div>
@@ -67,17 +65,16 @@
 </div>
 
 <!-- Partie gauche inchangée -->
-<div class="absolute left-3 top-3 z-10 ">
+<div class="absolute left-3 top-3 z-10">
 	<!-- Icône de menu burger affichée sur mobile -->
-	<button class="sm:hidden p-2 rounded transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleMenu}>
+	<button class="md:hidden p-2 rounded transition-transform hover:scale-110" style="font-size: 2rem;" onclick={toggleMenu}>
 		☰
 	</button>
 
 	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
 	{#if isMenuOpen}
-		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd]
-		            animate-slide-down sm:hidden">
-			<Button class="bg-primary/80"  href="/home">🏠 Home</Button>
+		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd] animate-slide-down md:hidden">
+			<Button class="bg-primary/80" href="/home">🏠 Home</Button>
 			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
 			<Button class="bg-primary/80" href="/games">🕹️ Games</Button>
 			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
@@ -88,28 +85,28 @@
 	{/if}
 
 	<!-- Navigation affichée sur les grands écrans -->
-	<nav class="hidden sm:block rounded p-3 shadow">
-		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 sm:max-w-xl sm:flex-row">
+	<nav class="hidden md:block rounded p-3 shadow">
+		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 md:max-w-xl md:flex-row">
 			<Button href="/home" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🏠</p>
-				<p class="hidden sm:inline">• Home</p>
+				<p class="hidden md:inline">• Home</p>
 			</Button>
 			<Button href="/leaderboard" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">📜</p>
-				<p class="hidden sm:inline">• Leaderboard</p>
+				<p class="hidden md:inline">• Leaderboard</p>
 			</Button>
 			<Button href="/games" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🕹️</p>
-				<p class="hidden sm:inline">• Games</p>
+				<p class="hidden md:inline">• Games</p>
 			</Button>
 			<Button href="/shop" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🎁</p>
-				<p class="hidden sm:inline">• SHOP</p>
+				<p class="hidden md:inline">• SHOP</p>
 			</Button>
 			{#if data.admin}
 				<Button href="/shop_commande" class="bg-primary/80">
 					<p class="ml-[-1px] text-xl">📬</p>
-					<p class="hidden sm:inline">• Orders</p>
+					<p class="hidden md:inline">• Orders</p>
 				</Button>
 			{/if}
 		</div>

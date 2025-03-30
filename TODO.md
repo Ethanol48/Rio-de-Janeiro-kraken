@@ -10,5 +10,6 @@
     - [ ] Decide button for claim
 - [ ] Games
     - [ ] Roue
-        - [ ] Regler la roue
+        - [x] refaire le backend
+        - [ ] Refaire le css des message
 - [ ] Changer le texte pour le bon thème

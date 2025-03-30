@@ -4,7 +4,9 @@
 	import fleche from '$lib/images/fleche.png';
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { type PageServerData, type ActionData } from './$types.js';
 
+	let { data, form }: { data: PageServerData, form: ActionData } = $props(); 
 	const SEGMENTS = 5;
 	const SEGMENT_NAMES = [
 		'2 points',
@@ -18,30 +20,23 @@
 	let intromsg = true;
 	let result: string | null = null;
 	let errorMessage: string | null = null;
+	let afficher = $state(false);
+	
 	let wheelElement: HTMLImageElement;
-
-	async function spinWheel() {
+	import { enhance } from '$app/forms';
+    let message = '';
+	
+		
+	
+	function spinWheel() {
+		
 		intromsg = false;
 		if (spinning) return;
 		spinning = true;
-		errorMessage = null; // Réinitialiser le message d'erreur
-
+		errorMessage = null;
 		try {
-			// Appel de l'API
-			const response = await fetch('/games/roue_random/api/spin');
-			const data = await response.json();
-
-			if (!response.ok) {
-				// Si l'utilisateur ne peut pas jouer
-				if (response.status === 403) {
-					errorMessage = data.error; // Afficher le message d'erreur
-				} else {
-					throw new Error(`Erreur HTTP : ${response.status}`);
-				}
-				return;
-			}
-			// Si l'utilisateur peut jouer
-			const { segment } = data;
+			if (form === null) return "";
+			const segment  = form.segment;
 
 			// Calcul de la rotation
 			const targetRotation = segment * 72 + 360 * 8; // 8 tours
@@ -52,15 +47,21 @@
 				ease: 'power3.out',
 				onComplete: () => {
 					spinning = false;
-					result = SEGMENT_NAMES[segment]; // Afficher le résultat
+					result = form.message;
+					afficher= true;
 				}
 			});
+			 
+			
 		} catch (error) {
 			console.error('Erreur:', error);
 			errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
 			spinning = false;
 		}
-	}
+		return "";
+	} 
+
+	
 </script>
 
 <title>Krak'n Roses - RoueChanceuse</title>
@@ -96,23 +97,30 @@
 			</Dialog.Root>
 		</div>
 	{/if}
+	<form method="POST" use:enhance action="?/LaunchRoue">
+		<br />
+		<button type="submit" disabled={spinning}>
+			{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
+		</button>
 
-	<br />
-	<button on:click={spinWheel} disabled={spinning}>
-		{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
-	</button>
+		{#if form?.status === 'failure'}
+			<div class="error-box">
+				{form.message}
+			</div>
+		{/if}
 
-	{#if errorMessage}
-		<div class="error-box">
-			{errorMessage}
-		</div>
-	{/if}
+		{#if form?.status === 'success' }
+			{spinWheel()}
 
-	{#if result}
-		<div class="result-box">
-			Félicitations, vous avez gagné <strong>{result}</strong>
-		</div>
-	{/if}
+		{/if}
+
+		{#if afficher}
+			<div class="result-box">
+				Félicitations, vous avez gagné <strong>{form!.message}</strong>
+			</div>
+		{/if}
+
+	</form>
 </div>
 <style>
 	/* Conteneur principal centré */
@@ -145,7 +153,7 @@
 		width: 100%;
 		height: 100%;
 		transition: transform 0.1s;
-		z-index: -1;
+		z-index: 1;
 	}
 
 	/* La flèche est positionnée par-dessus, centrée horizontalement */
@@ -157,7 +165,7 @@
 		transform: translateX(-50%);
 		/* Taille relative à la largeur du conteneur */
 		width: 15%;
-		z-index: -1;
+		z-index: 1;
 		
 	}
 
@@ -210,15 +218,19 @@
 			height: 90vw;
 		}
 		.wheel{
-			
+			width: 80%;
+			height: 80%;
+			margin-left: 10%;
 			margin-top: 10%;
 		}
 
 		
 		/* Ajustement de la taille de la flèche si besoin */
 		.arrow {
-			width: 20%;
-			top: 5%;
+			width: 10%;
+			height: 10%;
+			margin-left: 0%;
+			top: 10%;
 		}
 		/* Bouton et autres éléments restent lisibles */
 		button {

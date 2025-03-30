@@ -13,7 +13,7 @@
 </script>
 
 <!-- Container principal qui s’adapte à toute la page -->
-<div class="flex flex-col items-center justify-center w-full min-h-screen p-4">
+<div class="flex flex-col items-center justify-center w-full min-h-screen p-4 ">
 	<!-- Box principale -->
 	<div class="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-xl shadow-xl p-6">
 	  
