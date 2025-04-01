@@ -10,11 +10,13 @@ RUN npm install
 COPY . .
 
 ENV NODE_ENV=production
+ENV DATABASE_URL="local.db"
 
 RUN touch local.db
+RUN npm run db:migrate
 RUN npm run db:push
 RUN npm run build
 
-EXPOSE 4173
+EXPOSE 3000
 
-ENTRYPOINT ["npm", "run", "preview", "--", "--host"]
+ENTRYPOINT ["node", "build"]

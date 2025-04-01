@@ -1,86 +1,85 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { sql } from 'drizzle-orm';
+import { pgTable, varchar, boolean, integer, timestamp } from 'drizzle-orm/pg-core';
 
-export const user = sqliteTable('user', {
-	id: text('id').primaryKey(),
-	login: text('login').notNull().unique(),
-	username: text('username').notNull(),
-	passwordHash: text('passwordHash').notNull(),
+export const user = pgTable('user', {
+	id: varchar('id').primaryKey(),
+	login: varchar('login').notNull().unique(),
+	username: varchar('username').notNull(),
+	passwordHash: varchar('passwordHash').notNull(),
 	points: integer('points').notNull().default(10),
-	claimedOrders: integer('claimed_orders', { mode: 'boolean' }).notNull().default(false),
-	wantToClaim: integer('want_to_claim', { mode: 'boolean' }).notNull().default(false),
-	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false)
+	claimedOrders: boolean('claimed_orders').notNull().default(false),
+	wantToClaim: boolean('want_to_claim').notNull().default(false),
+	isAdmin: boolean('is_admin').notNull().default(false)
 });
 
-export const session = sqliteTable('session', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
+export const session = pgTable('session', {
+	id: varchar('id').primaryKey(),
+	userId: varchar('user_id')
 		.notNull()
 		.references(() => user.id),
-	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
+	expiresAt: integer('expires_at').notNull()
 });
 
-export const games = sqliteTable('games', {
-	userId: text('user_id')
+export const games = pgTable('games', {
+	userId: varchar('user_id')
 		.primaryKey()
 		.references(() => user.id),
-	foundSecret: integer('foundSecret', { mode: 'boolean' }).notNull().default(false),
-	button: integer('button', { mode: 'boolean' }).notNull().default(false),
+	foundSecret: boolean('foundSecret').notNull().default(false),
+	button: boolean('button').notNull().default(false),
 	last_spin: integer('last_spin').notNull().default(0),
 	numberofplaytoday: integer('numberofplaytoday').notNull().default(0),
-	lastdayplayed_gobelet: text('lastdayplayed_gobelet').notNull().default('')
+	lastdayplayed_gobelet: varchar('lastdayplayed_gobelet').notNull().default('')
 });
 
-export const orders = sqliteTable('orders', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
+export const orders = pgTable('orders', {
+	id: varchar('id').primaryKey(),
+	userId: varchar('user_id')
 		.notNull()
 		.references(() => user.id),
-	productId: text('product_id')
+	productId: varchar('product_id')
 		.notNull()
 		.references(() => items.id)
 });
 
-export const items = sqliteTable('stock', {
-	id: text('id').primaryKey(),
-	name: text('name').unique().notNull(),
-	desc: text('desc').notNull(),
+export const items = pgTable('stock', {
+	id: varchar('id').primaryKey(),
+	name: varchar('name').unique().notNull(),
+	desc: varchar('desc').notNull(),
 	price: integer('price').notNull(),
 	stock: integer('stock').notNull().default(0)
 });
 
-export const blackjack = sqliteTable('blackjack', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
+export const blackjack = pgTable('blackjack', {
+	id: varchar('id').primaryKey(),
+	userId: varchar('user_id')
 		.notNull()
 		.references(() => user.id),
 
 	// safe the cards as a string?
 	// {Color}{symbol/number};{Carta};{Carta}
-	playerCards: text('player_cards').notNull().default(''),
-	dealerCards: text('dealer_cards').notNull().default(''),
-	pile_cards: text('pile_cards').notNull(),
+	playerCards: varchar('player_cards').notNull().default(''),
+	dealerCards: varchar('dealer_cards').notNull().default(''),
+	pile_cards: varchar('pile_cards').notNull(),
 	totalbet: integer('total_bet').notNull().default(0),
-	stand: integer('stand', { mode: 'boolean' }).default(false),
-	started: integer('started', { mode: 'boolean' }).default(false),
-	firstPlay: integer('first_play', { mode: 'boolean' }).default(true),
-	neutral: integer('neutral', { mode: 'boolean' }).default(false),
-	ended: integer('ended', { mode: 'boolean' }).default(false),
-	playerWon: integer('player_won', { mode: 'boolean' }).default(false),
-	createdAt: integer('created_at', { mode: 'timestamp' })
+	stand: boolean('stand').default(false),
+	started: boolean('started').default(false),
+	firstPlay: boolean('first_play').default(true),
+	neutral: boolean('neutral').default(false),
+	ended: boolean('ended').default(false),
+	playerWon: boolean('player_won').default(false),
+	createdAt: timestamp('created_at')
 		.notNull()
-		.default(sql`(strftime('%s', 'now'))`)
+		.defaultNow()
 });
 
-export const enigme = sqliteTable('enigme', {
-	id: text('id').primaryKey(),
-	question: text('question').notNull(),
-	reponse: text('reponse').notNull(),
+export const enigme = pgTable('enigme', {
+	id: varchar('id').primaryKey(),
+	question: varchar('question').notNull(),
+	reponse: varchar('reponse').notNull(),
 	date_month: integer('date_month').notNull(),
 	date_day: integer('date_day').notNull(),
-	is_recuperer: integer('is_recuperer', { mode: 'boolean' }).default(false),
+	is_recuperer: boolean('is_recuperer').default(false),
 	points: integer('points').notNull().default(0),
-	user_victory: text('user_victory').notNull().default('None')
+	user_victory: varchar('user_victory').notNull().default('None')
 });
 
 export type Session = typeof session.$inferSelect;
