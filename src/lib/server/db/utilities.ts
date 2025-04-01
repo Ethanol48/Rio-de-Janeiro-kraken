@@ -1,5 +1,5 @@
 import { db } from '.';
-import { blackjack, enigme, games, items, items, orders, user } from './schema';
+import { blackjack, enigme, games, items, orders, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
