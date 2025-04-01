@@ -9,10 +9,9 @@
 	let noUser = data.user === null;
 	let claimed = data.claimed === true;
 
-
-  if (form?.success === true) {
+	if (form?.success === true) {
 		toast.success('Points réclamés    🎉');
-  }
+	}
 </script>
 
 <title>Krak'n Roses - Home</title>
@@ -39,7 +38,7 @@
 
 <br />
 <br />
-<div class="mt-[20px] flex gap-[10px] justify-center animate-fade-in">
+<div class="animate-fade-in mt-[20px] flex justify-center gap-[10px]">
 	{#if data.user !== null}
 		<Dialog.Root>
 			<Dialog.Trigger>
@@ -64,34 +63,37 @@
 		</Dialog.Root>
 	{/if}
 
-  {#if !(noUser || claimed)}
-	<div class="invisible-custom absolute bottom-4 left-5">
-		<Dialog.Root>
-			<Dialog.Trigger>
-				<Button class="cursor-pointer" size="sm">Secret</Button>
-			</Dialog.Trigger>
+	{#if !(noUser || claimed)}
+		<div class="invisible-custom absolute bottom-4 left-5">
+			<Dialog.Root>
+				<Dialog.Trigger>
+					<Button class="cursor-pointer" size="sm">Secret</Button>
+				</Dialog.Trigger>
 
-			<Dialog.Content class="justify-center sm:max-w-[425px]">
-				<Dialog.Header>
-					<Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
-					<Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
-				</Dialog.Header>
-				<div class="flex justify-center">
-					<form method="POST" action="?/foundButton">
-						<Button type="submit" disabled={data.claimed} class="mt-2 rounded bg-primary p-2 text-white">
-							{#if data.claimed}
-								Déjà réclamé 🎉
-							{:else}
-								Réclamer
-							{/if}
-						</Button>
-					</form>
-				</div>
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-{/if}
-
+				<Dialog.Content class="justify-center sm:max-w-[425px]">
+					<Dialog.Header>
+						<Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
+						<Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
+					</Dialog.Header>
+					<div class="flex justify-center">
+						<form method="POST" action="?/foundButton">
+							<Button
+								type="submit"
+								disabled={data.claimed}
+								class="mt-2 rounded bg-primary p-2 text-white"
+							>
+								{#if data.claimed}
+									Déjà réclamé 🎉
+								{:else}
+									Réclamer
+								{/if}
+							</Button>
+						</form>
+					</div>
+				</Dialog.Content>
+			</Dialog.Root>
+		</div>
+	{/if}
 
 	<Dialog.Root>
 		<Dialog.Trigger>
@@ -159,7 +161,7 @@
 						rel="noopener noreferrer">Kraken - EPITA</a
 					>
 
-          <MadeWithLove class={"pt-3 pb-2"} />
+					<MadeWithLove class={'pb-2 pt-3'} />
 				</Dialog.Description>
 			</Dialog.Header>
 		</Dialog.Content>
@@ -212,5 +214,4 @@
 	.animate-slide-in {
 		animation: slide-in 3s ease-out;
 	}
-
 </style>

@@ -114,6 +114,7 @@
 		</div>
 	{/if}
 </div>
+
 <style>
 	/* Conteneur principal centré */
 	.container {
@@ -139,7 +140,6 @@
 
 	/* La roue occupe tout le cadre */
 	.wheel {
-		
 		position: absolute;
 		display: block;
 		width: 100%;
@@ -158,7 +158,6 @@
 		/* Taille relative à la largeur du conteneur */
 		width: 15%;
 		z-index: -1;
-		
 	}
 
 	/* Bouton principal */
@@ -209,12 +208,10 @@
 			width: 90vw;
 			height: 90vw;
 		}
-		.wheel{
-			
+		.wheel {
 			margin-top: 10%;
 		}
 
-		
 		/* Ajustement de la taille de la flèche si besoin */
 		.arrow {
 			width: 20%;

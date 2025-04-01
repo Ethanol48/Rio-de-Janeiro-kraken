@@ -3,38 +3,35 @@ import { BuyItem, GetItem, GetItems, getPoints } from '$lib/server/db/utilities'
 import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
-  const items = await GetItems();
-  return { user: locals.user, items: items };
+	const items = await GetItems();
+	return { user: locals.user, items: items };
 };
 
-
 export const actions: Actions = {
-  default: async ({ locals, request }) => {
-    if (locals.user === null) return fail(401, { error: 'You need to be authenticated' });
-    const userId = locals.user.id;
+	default: async ({ locals, request }) => {
+		if (locals.user === null) return fail(401, { error: 'You need to be authenticated' });
+		const userId = locals.user.id;
 
-    let itemId: string | undefined = "";
+		let itemId: string | undefined = '';
 
-    const data = await request.formData();
-    itemId = data.get("itemId")?.toString();
+		const data = await request.formData();
+		itemId = data.get('itemId')?.toString();
 
-    if (itemId === null || itemId === "" || itemId === undefined) {
-      return fail(401, { error: "The request was malformed, the field itemId was not especified" });
-    }
+		if (itemId === null || itemId === '' || itemId === undefined) {
+			return fail(401, { error: 'The request was malformed, the field itemId was not especified' });
+		}
 
-    const priceItem = (await GetItem(itemId)).price;
-    const pointsUser = await getPoints(userId);
-    if (pointsUser < priceItem) {
-      return fail(500, { error: 'You are too poor to buy this' });
-    }
+		const priceItem = (await GetItem(itemId)).price;
+		const pointsUser = await getPoints(userId);
+		if (pointsUser < priceItem) {
+			return fail(500, { error: 'You are too poor to buy this' });
+		}
 
-    try {
-
-      BuyItem(userId, itemId)
-      return { success: true };
-
-    } catch (e) {
-      return fail(500, { error: 'an error ocurred' });
-    }
-  }
+		try {
+			BuyItem(userId, itemId);
+			return { success: true };
+		} catch (e) {
+			return fail(500, { error: 'an error ocurred' });
+		}
+	}
 };

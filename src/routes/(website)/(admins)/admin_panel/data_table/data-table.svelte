@@ -24,39 +24,16 @@
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
-	import MenuSelect from './menu-select.svelte';
+	import MenuSelect from './MenuSelect.svelte';
 	import EditableCell from './EditableCell.svelte';
+	import { type User } from '$lib/server/db/schema';
+	import CheckboxCell from './CheckboxCell.svelte';
 
-	type Payment = {
-		id: string;
-		points: number;
-		email: string;
-		status: 'pending' | 'processing' | 'success' | 'failed';
-	};
+	type UserTable = Omit<User, 'passwordHash'>;
 
-	const data: Payment[] = $state([
-		{
-			id: 'm5gr84i9',
-			points: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84dddi9',
-			points: 190,
-			status: 'success',
-			email: 'abc@yahoo.com'
-		},
-		{
-			id: 'otro',
-			points: 120,
-			status: 'success',
-			email: 'efg@gmail.com'
-		}
-		// ...
-	]);
+	let { users }: { users: UserTable[] } = $props();
 
-	const table = createTable(readable(data), {
+	const table = createTable(readable(users), {
 		page: addPagination(),
 		sort: addSortBy(),
 		filter: addTableFilter({
@@ -66,22 +43,26 @@
 		select: addSelectedRows()
 	});
 
-	type Item = $$Generic;
-
-	const updateData = (rowDataId: BodyRow<Item>, columnId: DataColumn<Item>, newValue: unknown) => {
+	const updateData = (
+		rowDataId: BodyRow<UserTable>,
+		columnId: DataColumn<UserTable>,
+		newValue: any
+	) => {
 		if (columnId.id === 'points') {
 			console.log('Changing points!!!');
 		}
 
-		console.log('Calling updateData');
-
-		console.log('rowDataId: ', rowDataId);
-		console.log('columnId: ', columnId);
-		console.log('newValue: ', newValue);
+		fetch(
+			'/admin_panel?' +
+				new URLSearchParams({ operation: columnId, value: newValue, userId: rowDataId }).toString(),
+			{
+				method: 'POST'
+			}
+		);
 		// Handle any server-synchronization.
 	};
 
-	const EditableCellLabel: DataLabel<Payment> = ({ column, row, value }) =>
+	const EditableCellLabel: DataLabel<UserTable> = ({ column, row, value }) =>
 		createRender(EditableCell, { row, column, value, onUpdateValue: updateData });
 
 	const columns = table.createColumns([
@@ -112,20 +93,21 @@
 			}
 		}),
 		table.column({
-			accessor: 'status',
-			header: 'Status',
+			accessor: 'username',
+			header: 'Username',
 			plugins: {
 				sort: {
-					disable: true
+					disable: false
 				},
 				filter: {
-					exclude: true
+					exclude: false
 				}
 			}
 		}),
+
 		table.column({
-			accessor: 'email',
-			header: 'Email',
+			accessor: 'login',
+			header: 'Login',
 			plugins: {
 				sort: {
 					disable: false
@@ -148,11 +130,65 @@
 				}
 			}
 		}),
+
+		table.column({
+			accessor: 'wantToClaim',
+			header: 'Requested order',
+			cell: ({ value }) => {
+				return createRender(CheckboxCell, { checked: value });
+			},
+			plugins: {
+				sort: {
+					disable: false
+				},
+				filter: {
+					exclude: true
+				}
+			}
+		}),
+
+		table.column({
+			accessor: 'claimedOrders',
+			header: 'Claimed order',
+			cell: ({ value }) => {
+				return createRender(CheckboxCell, { checked: value });
+			},
+			plugins: {
+				sort: {
+					disable: false
+				},
+				filter: {
+					exclude: true
+				}
+			}
+		}),
+
+		table.column({
+			accessor: 'isAdmin',
+			header: 'Admin',
+			cell: ({ value }) => {
+				return createRender(CheckboxCell, { checked: value });
+			},
+			plugins: {
+				sort: {
+					disable: false
+				},
+				filter: {
+					exclude: true
+				}
+			}
+		}),
+
 		table.column({
 			accessor: ({ id }) => id,
 			header: '',
-			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value });
+			cell: (item) => {
+				return createRender(DataTableActions, {
+					id: item.value,
+					row: item.row
+					//rowState: item.row.state?.data,
+					//rowIndex: item.row.id
+				});
 			},
 			plugins: {
 				sort: {
@@ -177,7 +213,16 @@
 	const { selectedDataIds } = pluginStates.select;
 
 	const ids = flatColumns.map((col) => col.id);
-	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
+	const hideIdsStart = ['wantToClaim', 'claimedOrders'];
+
+	let hideForId = $state(
+		Object.fromEntries(
+			ids.map((id) => {
+				if (hideIdsStart.includes(id)) return [id, false];
+				else return [id, true];
+			})
+		)
+	);
 
 	$effect(() => {
 		$hiddenColumnIds = Object.entries(hideForId)
@@ -185,14 +230,14 @@
 			.map(([id]) => id);
 	});
 
-	const hidableCols = ['status', 'points'];
+	const hidableCols = ['login', 'points', 'username', 'claimedOrders', 'wantToClaim'];
 </script>
 
 <div class="flex w-8/12 flex-col">
 	<div class="flex items-center py-4">
 		<Input
 			class="max-w-sm"
-			placeholder="Filter by email..."
+			placeholder="Filter by email and login..."
 			type="text"
 			bind:value={$filterValue}
 		/>
@@ -231,12 +276,7 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-										{#if cell.id === 'points'}
-											<Button variant="ghost" on:click={props.sort.toggle}>
-												<Render of={cell.render()} />
-												<ArrowUpDown class={'ml-2 h-4 w-4'} />
-											</Button>
-										{:else if cell.id === 'email'}
+										{#if cell.id === 'points' || cell.id === 'login' || cell.id === 'username'}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
 												<ArrowUpDown class={'ml-2 h-4 w-4'} />

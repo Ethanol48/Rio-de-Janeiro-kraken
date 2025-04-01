@@ -2,8 +2,8 @@
 	import { Slider } from '$lib/components/ui/slider';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
-  
-  import { Input } from "$lib/components/ui/input/index.js";
+
+	import { Input } from '$lib/components/ui/input/index.js';
 	import { point } from 'drizzle-orm/pg-core';
 
 	// how to bind the value to the outside
@@ -13,8 +13,8 @@
 		startGameFunc
 	}: { points: number; value: number[]; startGameFunc: MouseEventHandler<HTMLElement> } = $props();
 
-  let increment10 = Math.ceil(points / 10);
-  let increment33 = Math.ceil(points / 3);
+	let increment10 = Math.ceil(points / 10);
+	let increment33 = Math.ceil(points / 3);
 </script>
 
 <div class="flex flex-col">
@@ -29,7 +29,6 @@
 			<Slider bind:value max={points} step={1} />
 			<p>{points}</p>
 		</div>
-
 
 		<div class="flex flex-row justify-between gap-2">
 			<Button

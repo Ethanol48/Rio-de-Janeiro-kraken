@@ -32,17 +32,23 @@
 	{/if}
 </div>
 
-<div class="absolute left-3 top-3 z-10 ">
+<div class="absolute left-3 top-3 z-10">
 	<!-- Icône de menu burger affichée sur mobile -->
-	<button class="sm:hidden p-2 rounded  transition-transform hover:scale-110 " style="font-size: 2rem;" onclick={toggleMenu}>
+	<button
+		class="rounded p-2 transition-transform hover:scale-110 sm:hidden"
+		style="font-size: 2rem;"
+		onclick={toggleMenu}
+	>
 		☰
 	</button>
 
 	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
 	{#if isMenuOpen}
-		<div class="absolute left-3 top-12 flex flex-col gap-2 p-3 rounded shadow-md backdrop-blur-md/50 bg-[#f2eeeedd]
-		            animate-slide-down sm:hidden">
-			<Button class="bg-primary/80"  href="/home">🏠 Home</Button>
+		<div
+			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#f2eeeedd] p-3
+		            shadow-md sm:hidden"
+		>
+			<Button class="bg-primary/80" href="/home">🏠 Home</Button>
 			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
 			<Button class="bg-primary/80" href="/games">🕹️ Games</Button>
 			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
@@ -50,11 +56,10 @@
 				<Button class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
 			{/if}
 		</div>
-
 	{/if}
 
 	<!-- Navigation affichée sur les grands écrans -->
-	<nav class="hidden sm:block rounded p-3 shadow">
+	<nav class="hidden rounded p-3 shadow sm:block">
 		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 sm:max-w-xl sm:flex-row">
 			<Button href="/home" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🏠</p>
@@ -73,20 +78,18 @@
 				<p class="hidden sm:inline">• SHOP</p>
 			</Button>
 
-      {#if data.admin}
-        <Button href="/shop_commande" class="bg-primary/80">
-          <p class="ml-[-1px] text-xl">📬</p>
-          <p class="hidden sm:inline">• Orders</p>
-        </Button>
-      {/if}
+			{#if data.admin}
+				<Button href="/shop_commande" class="bg-primary/80">
+					<p class="ml-[-1px] text-xl">📬</p>
+					<p class="hidden sm:inline">• Orders</p>
+				</Button>
+			{/if}
 		</div>
 	</nav>
 </div>
 <!-- else content here -->
 
-
 {@render children()}
-
 
 <style>
 	@keyframes slide-down {

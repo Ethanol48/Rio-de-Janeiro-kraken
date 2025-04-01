@@ -124,7 +124,7 @@
 
 		const enJson = await resp.json();
 
-		if (resp.status === 400 || resp.status === 401 && !blackjack) {
+		if (resp.status === 400 || (resp.status === 401 && !blackjack)) {
 			toast.error(enJson.message);
 			return;
 		}
