@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   database:
     image: postgres:16
@@ -29,7 +27,7 @@ services:
       - .:/app
     ports:
       - "3000:3000"
-    command: ["sh", "-c", "export DATABASE_URL='postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_DB}:5432/${POSTGRES_DB}  sleep 5 && npm install && npm run db:migrate && npm run build && node build"]
+    command: ["sh", "-c", "export DATABASE_URL='postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_DB}:5432/${POSTGRES_DB}' && npm install && npm run db:push && npm run db:migrate && npm run build && node build"]
 
 volumes:
   pg_data:
