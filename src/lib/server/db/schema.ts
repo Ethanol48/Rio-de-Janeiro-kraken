@@ -16,7 +16,8 @@ export const session = pgTable('session', {
 	userId: varchar('user_id')
 		.notNull()
 		.references(() => user.id),
-	expiresAt: integer('expires_at').notNull()
+	expiresAt: timestamp('expires_at').notNull()
+	//expiresAt: integer('expires_at').notNull()
 });
 
 export const games = pgTable('games', {

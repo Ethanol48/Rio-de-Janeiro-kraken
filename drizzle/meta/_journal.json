@@ -1,20 +1,20 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1742646670121,
-			"tag": "0001_init",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1742647722672,
-			"tag": "0001_seed-stock",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1743610343470,
+      "tag": "0000_free_whirlwind",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1743610362690,
+      "tag": "0001_seed-stock",
+      "breakpoints": true
+    }
+  ]
 }

@@ -108,6 +108,7 @@ export const actions: Actions = {
 		const results2 = await db.select().from(table.user).where(eq(table.user.username, username));
 
 		const existingUsername = results2.at(0);
+
 		if (existingUsername) {
 			return fail(400, { message: 'This username has already been used !' });
 		}
