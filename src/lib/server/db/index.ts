@@ -7,7 +7,7 @@ const {Pool} = pkg;
 if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
 const pool = new Pool({
-  connectionString: url
+  connectionString: env.DATABASE_URL
 });
 
 
