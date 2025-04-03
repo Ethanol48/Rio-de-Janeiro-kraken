@@ -16,6 +16,18 @@ async function GetListResult(userid: string, itemid: string, claimed: boolean | 
 	return [await getUsername(userid), await GetNameItem(itemid), 1, claimed];
 }
 
+/*
+
+Pour celui qui lira ce code, je suis d'accord, c'est pas du tout le plus optimisé, mais j'avais la flemme de refléchir 
+à optimisé à 23h50 et j'ai une flemme immense de le refaire en dictionnaire, 
+
+Mais en tout cas, ca marche :)
+
+ArmandMS
+
+*/
+
+
 async function GetData() {
 	const ListOrder = await GetListOrder();
 

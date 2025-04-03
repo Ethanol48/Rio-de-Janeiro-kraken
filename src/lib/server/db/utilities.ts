@@ -1,5 +1,5 @@
 import { db } from '.';
-import { blackjack, enigme, games, items, items, orders, user } from './schema';
+import { blackjack, enigme, games, items, orders, user } from './schema';
 import { count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
@@ -195,6 +195,15 @@ export const getPoints = async (userId: string) => {
 		.where(eq(user.id, userId));
 
 	return result_query.at(0)!.points;
+};
+
+export const getIfClaimed = async (userId: string) => {
+	const result_query = await db
+		.select({ claimedOrders: user.claimedOrders })
+		.from(user)
+		.where(eq(user.id, userId));
+
+	return result_query.at(0)!.claimedOrders;
 };
 
 export const getUsername = async (userId: string) => {
@@ -471,6 +480,19 @@ export const GetOrdersOfUser = async (userId: string) => {
 		.select({
 			product: items.name,
 			claimed: user.claimedOrders
+		})
+		.from(orders)
+		.leftJoin(user, eq(user.id, orders.userId))
+		.leftJoin(items, eq(items.id, orders.productId))
+		.where(eq(orders.userId, userId));
+
+	return joined;
+};
+export const GetOrdersOfUserWithDesc = async (userId: string) => {
+	const joined = await db
+		.select({
+			product: items.name,
+			itemsDesc: items.desc
 		})
 		.from(orders)
 		.leftJoin(user, eq(user.id, orders.userId))

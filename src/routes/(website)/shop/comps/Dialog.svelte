@@ -6,6 +6,7 @@
 	import { enhance } from '$app/forms';
 
 	let { user, item }: { user: PageData['user']; item: Items } = $props();
+	let { user, item }: { user: PageData['user']; item: Items } = $props();
 </script>
 
 <Dialog.Root>

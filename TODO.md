@@ -6,3 +6,10 @@
   - [ ] Dialog
     - [ ] Desc
     - [ ] Before vs After
+- [ ] Inventory
+  - [ ] Decide button for claim
+- [ ] Games
+  - [ ] Roue
+    - [x] refaire le backend
+    - [ ] Refaire le css des message
+- [ ] Changer le texte pour le bon thème
