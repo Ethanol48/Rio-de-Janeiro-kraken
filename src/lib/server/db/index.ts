@@ -4,9 +4,7 @@ import pkg from 'pg';
 
 const {Pool} = pkg;
 
-//if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
-
-const url = "postgresql://user:password@localhost:5432/mydatabase";
+if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
 const pool = new Pool({
   connectionString: url
