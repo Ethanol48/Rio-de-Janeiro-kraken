@@ -10,11 +10,11 @@ RUN npm install
 
 COPY . .
 
-ENV DATABASE_URL=postgresql://myuser:mypassword@localhost:5432/mydatabase
-
+ENV DATABASE_URL=postgresql://user:mypassword@0.0.0.0:5432/mydatabase
 ENV NODE_ENV=production
 
+RUN npm run build
 
 EXPOSE 3000
 
-ENTRYPOINT ["sh", "-c", "npm run build && npm run db:push && node build"]
+ENTRYPOINT ["sh", "-c", " npm run db:push && node build"]
