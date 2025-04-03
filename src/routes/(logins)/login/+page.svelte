@@ -18,7 +18,7 @@
 		<Tabs.Trigger value="register">Register</Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="login">
-		<Login {login} {password} {username}/>
+		<Login {login} {password} {username} />
 	</Tabs.Content>
 	<Tabs.Content value="register">
 		<Register {login} {password} {username} />

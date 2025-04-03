@@ -30,7 +30,6 @@ export const actions: Actions = {
 			});
 		}
 
-		
 		if (!validatePassword(password)) {
 			return fail(400, { message: 'Invalid password (min 6, max 255 characters)' });
 		}
@@ -43,19 +42,15 @@ export const actions: Actions = {
 		const existingUser2 = results2.at(0);
 
 		let existingUserss;
-		if(!existingUser2 && !existingUser)
+		if (!existingUser2 && !existingUser)
 			return fail(400, { message: 'Incorrect email/username or password' });
 
-		if(!existingUser && existingUser2){
-			existingUserss = existingUser2
+		if (!existingUser && existingUser2) {
+			existingUserss = existingUser2;
+		} else {
+			existingUserss = existingUser;
 		}
-		else{
 
-			existingUserss = existingUser
-		}	
-
-
-		
 		const validPassword = await verify(existingUserss!.passwordHash, password, {
 			memoryCost: 19456,
 			timeCost: 2,
@@ -65,9 +60,7 @@ export const actions: Actions = {
 		if (!validPassword) {
 			return fail(400, { message: 'Incorrect email/username or password' });
 		}
-		
 
-		
 		const sessionToken = auth.generateSessionToken();
 		const session = await auth.createSession(sessionToken, existingUserss!.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
@@ -83,16 +76,21 @@ export const actions: Actions = {
 
 		if (!validateEmail(login)) {
 			console.log('invalid user: ', login);
-			return fail(400, { message: 'Invalid email ! Email must be less than 60 and greater than 2' });
+			return fail(400, {
+				message: 'Invalid email ! Email must be less than 60 and greater than 2'
+			});
 		}
 		if (!validatePassword(password)) {
-			return fail(400, { message: 'Invalid password ! Password must be less than 255 and greater than 6' });
+			return fail(400, {
+				message: 'Invalid password ! Password must be less than 255 and greater than 6'
+			});
 		}
 
 		if (!validateUsername(username)) {
-			return fail(400, { message: 'Invalid Username ! Password must be less than 60 and greater than 2' });
+			return fail(400, {
+				message: 'Invalid Username ! Password must be less than 60 and greater than 2'
+			});
 		}
-
 
 		let usernameStr: string;
 		if (username === null) {
@@ -100,8 +98,6 @@ export const actions: Actions = {
 		} else {
 			usernameStr = username.toString();
 		}
-
-		
 
 		const results = await db.select().from(table.user).where(eq(table.user.login, login));
 
@@ -131,10 +127,8 @@ export const actions: Actions = {
 				.insert(table.user)
 				.values({ id: userId, login: login, username: usernameStr, passwordHash: passwordHash });
 
-      // generate games db
-      await db
-        .insert(table.games)
-        .values({ userId: userId })
+			// generate games db
+			await db.insert(table.games).values({ userId: userId });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
@@ -174,11 +168,7 @@ function validateEmail(username: unknown): username is string {
 }
 
 function validateUsername(username: unknown): username is string {
-	return (
-		typeof username === 'string' &&
-		username.length >= 3 &&
-		username.length <= 20
-	);
+	return typeof username === 'string' && username.length >= 3 && username.length <= 20;
 }
 
 function validatePassword(password: unknown): password is string {

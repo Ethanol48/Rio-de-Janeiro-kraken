@@ -6,7 +6,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { type PageServerData, type ActionData } from './$types.js';
 
-	let { data, form }: { data: PageServerData, form: ActionData } = $props(); 
+	let { data, form }: { data: PageServerData; form: ActionData } = $props();
 	const SEGMENTS = 5;
 	const SEGMENT_NAMES = [
 		'2 points',
@@ -21,22 +21,19 @@
 	let result: string | null = null;
 	let errorMessage: string | null = null;
 	let afficher = $state(false);
-	
+
 	let wheelElement: HTMLImageElement;
 	import { enhance } from '$app/forms';
-    let message = '';
-	
-		
-	
+	let message = '';
+
 	function spinWheel() {
-		
 		intromsg = false;
 		if (spinning) return;
 		spinning = true;
 		errorMessage = null;
 		try {
-			if (form === null) return "";
-			const segment  = form.segment;
+			if (form === null) return '';
+			const segment = form.segment;
 
 			// Calcul de la rotation
 			const targetRotation = segment * 72 + 360 * 8; // 8 tours
@@ -48,20 +45,16 @@
 				onComplete: () => {
 					spinning = false;
 					result = form.message;
-					afficher= true;
+					afficher = true;
 				}
 			});
-			 
-			
 		} catch (error) {
 			console.error('Erreur:', error);
 			errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
 			spinning = false;
 		}
-		return "";
-	} 
-
-	
+		return '';
+	}
 </script>
 
 <title>Krak'n Roses - RoueChanceuse</title>
@@ -109,9 +102,8 @@
 			</div>
 		{/if}
 
-		{#if form?.status === 'success' }
+		{#if form?.status === 'success'}
 			{spinWheel()}
-
 		{/if}
 
 		{#if afficher}
@@ -119,9 +111,9 @@
 				Félicitations, vous avez gagné <strong>{form!.message}</strong>
 			</div>
 		{/if}
-
 	</form>
 </div>
+
 <style>
 	/* Conteneur principal centré */
 	.container {
@@ -147,7 +139,6 @@
 
 	/* La roue occupe tout le cadre */
 	.wheel {
-		
 		position: absolute;
 		display: block;
 		width: 100%;
@@ -166,7 +157,6 @@
 		/* Taille relative à la largeur du conteneur */
 		width: 15%;
 		z-index: 1;
-		
 	}
 
 	/* Bouton principal */
@@ -217,14 +207,13 @@
 			width: 90vw;
 			height: 90vw;
 		}
-		.wheel{
+		.wheel {
 			width: 80%;
 			height: 80%;
 			margin-left: 10%;
 			margin-top: 10%;
 		}
 
-		
 		/* Ajustement de la taille de la flèche si besoin */
 		.arrow {
 			width: 10%;

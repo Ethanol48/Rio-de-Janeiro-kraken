@@ -19,7 +19,7 @@
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
 -->
-				<Input bind:value={login} placeholder="email"  style="color: black;" />
+				<Input bind:value={login} placeholder="email" style="color: black;" />
 				<input bind:value={login} class="invisible m-0 h-0 w-0 p-0" name="login" />
 			</label>
 			<label>

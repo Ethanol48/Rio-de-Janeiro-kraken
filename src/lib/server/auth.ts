@@ -26,7 +26,6 @@ export async function createSession(token: string, userId: string) {
 	return session;
 }
 
-
 export async function validateSessionToken(token: string) {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const [result] = await db

@@ -37,7 +37,6 @@
 				<Card.Description class="mb-1 font-bold" style="color: black;">Password</Card.Description>
 			</label>
 
-			
 			<label>
 				<!--
       <Card.Description class="mb-1">Login</Card.Description>
@@ -58,11 +57,14 @@
 					name="password"
 				/>
 			</label>
-			<br>
-			<label >
-				<p><strong style="text-decoration: underline;" >KEEP YOUR PASSWORD SAFE !!</strong> <br>If lost, you will not be able to recover your account</p> 
+			<br />
+			<label>
+				<p>
+					<strong style="text-decoration: underline;">KEEP YOUR PASSWORD SAFE !!</strong> <br />If
+					lost, you will not be able to recover your account
+				</p>
 			</label>
-			<br>
+			<br />
 			<div class="mt-3 flex flex-col gap-3">
 				<button class={claseBoton} formaction="?/register" formmethod="POST">Register</button>
 			</div>

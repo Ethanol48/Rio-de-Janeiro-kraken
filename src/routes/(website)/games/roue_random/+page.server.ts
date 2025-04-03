@@ -20,14 +20,16 @@ export const actions: Actions = {
 			throw redirect(302, '/games');
 		}
 
-		
-
 		const userId = locals.user.id;
 		const { canPlay, nextSpin } = await canUserSpin(userId);
 		if (!canPlay) {
-			return {status:"failure", message: `Attendez encore ${nextSpin?.hours}h ${nextSpin?.minutes}min`, segment :0, points: 0 };
+			return {
+				status: 'failure',
+				message: `Attendez encore ${nextSpin?.hours}h ${nextSpin?.minutes}min`,
+				segment: 0,
+				points: 0
+			};
 		}
-
 
 		// Calcul du résultat du spin
 		const probabilities = [5, 5, 10, 30, 50]; // Probabilités en %
@@ -43,6 +45,11 @@ export const actions: Actions = {
 		}
 		const pointsWon = SEGMENT_POINTS[segment];
 		await processSpin(userId, pointsWon);
-		return { status:"success",message: `Vous avez gagné ${pointsWon} points`, segment:segment, points: pointsWon };
+		return {
+			status: 'success',
+			message: `Vous avez gagné ${pointsWon} points`,
+			segment: segment,
+			points: pointsWon
+		};
 	}
 };
