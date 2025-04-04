@@ -87,7 +87,7 @@
 	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
 	{#if isMenuOpen}
 		<div
-			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#f2eeeedd] p-3 shadow-md md:hidden"
+			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#d8882ddd] p-3 shadow-md md:hidden"
 		>
 			<Button class="bg-primary/80" href="/home">🏠 Home</Button>
 			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
@@ -95,6 +95,7 @@
 			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
 			{#if data.admin}
 				<Button class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
+				<Button class="bg-primary/80" href="/admin_panel">👑 AdminPanel</Button>
 			{/if}
 		</div>
 	{/if}
@@ -121,7 +122,12 @@
 			{#if data.admin}
 				<Button href="/shop_commande" class="bg-primary/80">
 					<p class="ml-[-1px] text-xl">📬</p>
-					<p class="hidden md:inline">• Orders</p>
+					<p class="hi
+					dden md:inline">• Orders</p>
+				</Button>
+				<Button href="/admin_panel" class="bg-primary/80">
+					<p class="ml-[-1px] text-xl">👑</p>
+					<p class="hidden md:inline">• AdminPanel</p>
 				</Button>
 			{/if}
 		</div>
