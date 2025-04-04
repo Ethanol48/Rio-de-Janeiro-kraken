@@ -12,6 +12,7 @@
 	};
 </script>
 
+<title>Samba Dos Krakos - My Inventory</title>
 <!-- Container principal qui s’adapte à toute la page -->
 <div class="flex min-h-screen w-full flex-col items-center justify-center p-4">
 	<!-- Box principale -->

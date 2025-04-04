@@ -169,7 +169,7 @@
 
 <br /><br /><br />
 
-<title>Krak'n Roses - Krak'Rose</title>
+<title>Samba Dos Krakos - ShuffleCoin</title>
 <div class="container">
 	<div class="cups-container justify-between">
 		{#each cups as cup}
@@ -194,22 +194,22 @@
 			<br />
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+					<Button class="cursor-pointer" size="sm"><b>How to play ❔</b></Button>
 				</Dialog.Trigger>
 				<Dialog.Content>
 					<Dialog.Header>
-						<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+						<Dialog.Title>Shuffle Coin 🪙</Dialog.Title>
 						<Dialog.Description>
 							<br />
-							<b>Ah, tu veux me défier ?</b> Très bien, mais il faudra me donner un point en
-							échange, haha ! <br /><br />
+							<b>Ah, you want to challenge me? </b> Very well, but you will have to give me a point in
+							exchange, haha! <br /><br />
 
-							🌹 Si tu trouves la rose de Cupidon, je te donnerai
-							<b style="text-decoration: underline;">3 points</b> en récompense ! À toi de jouer ! 💪
+							🪙If you find the Gold, I will give you
+							<b style="text-decoration: underline;">3 points</b> as a reward! It's up to you to play! 💪
 						</Dialog.Description>
 					</Dialog.Header>
 					<Dialog.Close>
-						<Button class="mt-2">Fermer</Button>
+						<Button class="mt-2">Close</Button>
 					</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Root>
@@ -242,7 +242,7 @@
 	.rose {
 		width: 50px;
 		height: 50px;
-		background-image: url('/rose.png');
+		background-image: url('/CoinKraken.svg');
 		background-size: cover;
 		position: absolute;
 		bottom: -50px;

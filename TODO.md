@@ -11,5 +11,8 @@
 - [ ] Games
   - [ ] Roue
     - [x] refaire le backend
-    - [ ] Refaire le css des message
+    - [x] Refaire le css des message
+    - [ ] Ajouter le gift secret a l'user
+  - [ ] ShuffleCoin
+    - [ ] Modifer l'api et le mettre en backend 
 - [ ] Changer le texte pour le bon thème

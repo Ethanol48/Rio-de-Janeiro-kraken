@@ -2,7 +2,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { LayoutServerData } from './$types';
 	import userIcon from '$lib/svgs/userIcon.svg';
-	import userInventory from '$lib/svgs/inventory.png';
+	import userInventory from '$lib/svgs/inventory.svg';
 
 	let isMenuOpen = $state(false);
 	let isUserMenuOpen = $state(false);

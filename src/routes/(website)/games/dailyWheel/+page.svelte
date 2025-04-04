@@ -7,14 +7,6 @@
 	import { type PageServerData, type ActionData } from './$types.js';
 
 	let { data, form }: { data: PageServerData; form: ActionData } = $props();
-	const SEGMENTS = 5;
-	const SEGMENT_NAMES = [
-		'2 points',
-		'20 points, INCROYABLE!!🪙',
-		'10 points',
-		'6 points',
-		'4 points'
-	];
 
 	let spinning = false;
 	let intromsg = true;
@@ -50,14 +42,15 @@
 			});
 		} catch (error) {
 			console.error('Erreur:', error);
-			errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
+			errorMessage = 'An error occurred. Please try again later.';
 			spinning = false;
 		}
 		return '';
 	}
 </script>
 
-<title>Krak'n Roses - RoueChanceuse</title>
+<title>Samba Dos Krakos - The Luck Wheel</title>
+
 <div class="container">
 	<div class="wheel-frame">
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />
@@ -65,35 +58,35 @@
 	</div>
 
 	{#if intromsg}
-		<div style="margin-left: 2%;">
+		<div class="dialog-container">
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+					<Button class="cursor-pointer" size="sm"><b>How to play❔</b></Button>
 				</Dialog.Trigger>
-				<Dialog.Content>
+				<Dialog.Content class="dialog-content">
 					<Dialog.Header>
-						<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+						<Dialog.Title>The Lucky Wheel</Dialog.Title>
 						<Dialog.Description>
 							<br />
-							HAHAHA ! Tu viens tenter ta <b>chance</b> ? <br /> <br />
-							Très bien, voici le deal : tu peux gagner d'incroyables <b>récompenses</b>, et
-							peut-être même un cadeau <b>secret</b>... 🎁 Mais attention, tu ne peux jouer qu'une
-							fois toutes les 3 heures.
+							Hahaha! You come to try your <b>luck</b>? <br /><br />
+							Very well, here is the deal: you can win incredible <b>rewards</b>, and
+							maybe even a secret <b>gift</b>... 🎁 But beware, you can only play once
+							every 3 hours.
 							<br /><br />
-							Alors, reviens me voir et tente ta <b>chance</b> ! 🍀
+							So come back to see me and try your <b>luck</b>! 🍀
 						</Dialog.Description>
 					</Dialog.Header>
 					<Dialog.Close>
-						<Button class="mt-2">Fermer</Button>
+						<Button class="mt-2">Close</Button>
 					</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Root>
 		</div>
 	{/if}
-	<form method="POST" use:enhance action="?/LaunchRoue">
-		<br />
+
+	<form method="POST" use:enhance action="?/LaunchRoue" class="form-container">
 		<button type="submit" disabled={spinning}>
-			{spinning ? 'Rotation en cours...' : 'Jouer maintenant'}
+			{spinning ? 'Rotation in progress...' : 'Play'}
 		</button>
 
 		{#if form?.status === 'failure'}
@@ -108,7 +101,7 @@
 
 		{#if afficher}
 			<div class="result-box">
-				Félicitations, vous avez gagné <strong>{form!.message}</strong>
+				<strong>{form!.message}</strong>
 			</div>
 		{/if}
 	</form>
@@ -117,49 +110,64 @@
 <style>
 	/* Conteneur principal centré */
 	.container {
-		top: -20%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
 		padding: 2rem;
-		/* Pour laisser de l'espace en haut si une barre est présente en enfant */
-		padding-top: 4rem;
 		box-sizing: border-box;
+		text-align: center;
 	}
 
-	/* Cadre de la roue en taille fixe max mais adaptatif */
+	/* Cadre de la roue */
 	.wheel-frame {
 		position: relative;
-		/* Utilisation d'unités viewport pour s'adapter aux petits écrans */
 		width: 90vw;
 		max-width: 500px;
 		height: 90vw;
 		max-height: 500px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 2rem;
 	}
 
-	/* La roue occupe tout le cadre */
+	/* La roue */
 	.wheel {
-		position: absolute;
-		display: block;
 		width: 100%;
 		height: 100%;
 		transition: transform 0.1s;
-		z-index: 1;
 	}
 
-	/* La flèche est positionnée par-dessus, centrée horizontalement */
+	/* La flèche centrée */
 	.arrow {
 		position: absolute;
-		/* Placer la flèche légèrement au-dessus du centre */
 		top: 0%;
 		left: 50%;
 		transform: translateX(-50%);
-		/* Taille relative à la largeur du conteneur */
 		width: 15%;
-		z-index: 1;
+		z-index: 2;
 	}
 
-	/* Bouton principal */
+	/* Conteneur du dialogue */
+	.dialog-container {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.dialog-content {
+		text-align: center;
+	}
+
+	/* Formulaire et bouton */
+	.form-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
 	button {
 		padding: 1rem 2rem;
 		font-size: 1.1rem;
@@ -176,52 +184,45 @@
 		transform: scale(1.05);
 	}
 
-	/* Styles pour les messages d'erreur et résultats */
-	.error-box {
-		margin-top: 1rem;
-		padding: 1rem;
-		background: #ffebee;
-		color: #c62828;
-		border: 1px solid #c62828;
-		border-radius: 8px;
-	}
-
+	/* Boîtes de message */
+	.error-box,
 	.result-box {
 		margin-top: 1rem;
 		padding: 1rem;
+		border-radius: 8px;
+		text-align: center;
+		width: 80%;
+		max-width: 400px;
+	}
+
+	.error-box {
+		background: #ffebee;
+		color: #c62828;
+		border: 1px solid #c62828;
+	}
+
+	.result-box {
 		background: #e8f5e9;
 		color: #2e7d32;
 		border: 1px solid #2e7d32;
-		border-radius: 8px;
 	}
 
-	/* Adaptation pour les petits écrans */
+	/* Responsive */
 	@media (max-width: 667px) {
-		/* On augmente le padding pour compenser la barre si nécessaire */
 		.container {
 			padding: 1rem;
-			padding-top: 4rem;
 		}
-		/* La roue reste de la même taille relative (90vw) mais le max-width est naturellement inférieur */
+
 		.wheel-frame {
 			width: 90vw;
 			height: 90vw;
 		}
-		.wheel {
-			width: 80%;
-			height: 80%;
-			margin-left: 10%;
-			margin-top: 10%;
-		}
 
-		/* Ajustement de la taille de la flèche si besoin */
 		.arrow {
 			width: 10%;
-			height: 10%;
-			margin-left: 0%;
-			top: 10%;
+			top: 5%;
 		}
-		/* Bouton et autres éléments restent lisibles */
+
 		button {
 			font-size: 1rem;
 			padding: 0.8rem 1.5rem;
