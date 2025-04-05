@@ -14,6 +14,7 @@
 	function toggleUserMenu() {
 		isUserMenuOpen = !isUserMenuOpen;
 	}
+	
 
 	let { data, children }: { data: LayoutServerData; children: any } = $props();
 </script>
@@ -60,16 +61,16 @@
 				<div class="rounded bg-primary p-4 text-center text-white">
 					{data.user.username}
 				</div>
-				<Button class="bg-primary" href="/inventory">
+				<Button on:click={toggleUserMenu}  class="bg-primary" href="/inventory">
 					<div class="flex flex-row items-center">
 						<div>My Inventory</div>
 					</div>
 				</Button>
-				<Button size="lg" href="/signout">Sign out</Button>
+				<Button on:click={toggleUserMenu} size="lg" href="/signout">Sign out</Button>
 			</div>
 		{/if}
 	{:else}
-		<Button size="lg" href="/login">Log in</Button>
+		<Button on:click={toggleUserMenu} size="lg" href="/login">Log in</Button>
 	{/if}
 </div>
 
@@ -89,13 +90,13 @@
 		<div
 			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#d8882ddd] p-3 shadow-md md:hidden"
 		>
-			<Button class="bg-primary/80" href="/home">🏠 Home</Button>
-			<Button class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
-			<Button class="bg-primary/80" href="/games">🕹️ Games</Button>
-			<Button class="bg-primary/80" href="/shop">🎁 SHOP</Button>
+			<Button on:click={toggleMenu} class="bg-primary/80" href="/home">🏠 Home</Button>
+			<Button on:click={toggleMenu} class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button>
+			<Button on:click={toggleMenu} class="bg-primary/80" href="/games">🕹️ Games</Button>
+			<Button on:click={toggleMenu} class="bg-primary/80" href="/shop">🎁 SHOP</Button>
 			{#if data.admin}
-				<Button class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
-				<Button class="bg-primary/80" href="/admin_panel">👑 AdminPanel</Button>
+				<Button on:click={toggleMenu} class="bg-primary/80" href="/shop_commande">📬 Orders</Button>
+				<Button on:click={toggleMenu} class="bg-primary/80" href="/admin_panel">👑 AdminPanel</Button>
 			{/if}
 		</div>
 	{/if}
@@ -103,29 +104,29 @@
 	<!-- Navigation affichée sur les grands écrans -->
 	<nav class="hidden rounded p-3 shadow md:block">
 		<div class="flex w-fit max-w-20 flex-col flex-wrap gap-2 md:max-w-xl md:flex-row">
-			<Button href="/home" class="bg-primary/80">
+			<Button  href="/home" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🏠</p>
 				<p class="hidden md:inline">• Home</p>
 			</Button>
-			<Button href="/leaderboard" class="bg-primary/80">
+			<Button  href="/leaderboard" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">📜</p>
 				<p class="hidden md:inline">• Leaderboard</p>
 			</Button>
-			<Button href="/games" class="bg-primary/80">
+			<Button  href="/games" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🕹️</p>
 				<p class="hidden md:inline">• Games</p>
 			</Button>
-			<Button href="/shop" class="bg-primary/80">
+			<Button  href="/shop" class="bg-primary/80">
 				<p class="ml-[-1px] text-xl">🎁</p>
 				<p class="hidden md:inline">• SHOP</p>
 			</Button>
 			{#if data.admin}
-				<Button href="/shop_commande" class="bg-primary/80">
+				<Button  href="/shop_commande" class="bg-primary/80">
 					<p class="ml-[-1px] text-xl">📬</p>
 					<p class="hi
 					dden md:inline">• Orders</p>
 				</Button>
-				<Button href="/admin_panel" class="bg-primary/80">
+				<Button  href="/admin_panel" class="bg-primary/80">
 					<p class="ml-[-1px] text-xl">👑</p>
 					<p class="hidden md:inline">• AdminPanel</p>
 				</Button>

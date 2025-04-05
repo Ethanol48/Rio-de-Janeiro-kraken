@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		return redirect(302, '/home');
 	}
 	const items = await GetOrdersOfUserWithDesc(locals.user.id);
-	console.log('item after sql', items);
 	const date = new Date();
 	const jour = date.getTime(); // TODO: choisir plus tard a partir de quel moment on peut reclamer
 	return { user: locals.user, items: items, claimed: await GetWantToClaim(locals.user?.id) };

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { fly, fade } from 'svelte/transition';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+
 
 	// Les données sont fournies par la fonction load du serveur
 	export let data: {
@@ -10,9 +12,10 @@
 		items: Array<{ product: string; itemsDesc: string }>;
 		claimed: any;
 	};
+	let showConfirmation = false;
 </script>
 
-<title>Samba Dos Krakos - My Inventory</title>
+<title>Samba Dos Krakos - Your Inventory</title>
 <!-- Container principal qui s’adapte à toute la page -->
 <div class="flex min-h-screen w-full flex-col items-center justify-center p-4">
 	<!-- Box principale -->
@@ -20,10 +23,11 @@
 		<!-- En-tête -->
 		<div class="mb-6 text-center">
 			<h1 class="text-2xl font-bold text-gray-800 md:text-3xl">
-				Bonjour {data.user.username}, voici ton inventaire
+				Hi {data.user.username}, <br> here is your inventory
 			</h1>
+			<br>
 			<p class="mt-2 text-lg text-gray-600 md:text-xl">
-				Points actuels : {data.user.points}
+				Current points: {data.user.points}
 			</p>
 		</div>
 
@@ -40,22 +44,47 @@
 				</div>
 			{/each}
 		</div>
-
+		{#if data.items.length === 0}
+		
 		<!-- Bouton de réclamation centré -->
 		<div class="mt-6 flex justify-center">
-			<form method="POST" action="?/Claim">
+			
 				<Button
-					type="submit"
+					on:click={() => (showConfirmation = true)}
 					disabled={data.claimed}
 					class="rounded bg-primary p-3 text-lg font-semibold text-white"
 				>
 					{#if data.claimed}
-						Déjà réclamé
+						Already claimed 📦
 					{:else}
-						Réclamer la commande
+						Claim
 					{/if}
 				</Button>
-			</form>
+				{#if showConfirmation}
+				
+				<Dialog.Root open={true} on:openChange={(e) => { if (!e.detail) showConfirmation = false }}>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>Confirm your choice</Dialog.Title>
+							<br>
+							<Dialog.Description>
+								Do you really want to recover your order?
+								<br>
+								<br>
+								<strong style="color: red; text-decoration:underline; font-size:15px">After that, you will no longer be able to recover new gifts!</strong>
+							</Dialog.Description>
+						</Dialog.Header>
+						<Dialog.Footer class="mt-4 flex justify-end gap-2">
+							<Button variant="secondary" on:click={() => showConfirmation = false}>Cancel</Button>
+							<form action="?/Claim" method="post">
+							<Button type="submit">To validate</Button>
+							</form>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+				{/if}
 		</div>
+
+		{/if}
 	</div>
 </div>

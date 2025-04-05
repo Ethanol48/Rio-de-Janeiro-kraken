@@ -17,7 +17,7 @@ export const load: PageServerLoad = async (event) => {
 	console.log(reponses);
 	if (reponses[1] === true) {
 		check = true;
-		msg = `Le code à été trouvé aujourd\'hui, le gagnant est ${await enigme_vainqueur(Day.getDate(), Day.getMonth())}`;
+		msg = `The code was found today, the winner is ${await enigme_vainqueur(Day.getDate(), Day.getMonth())}`;
 	} else {
 		if (reponses[0] !== null) {
 			msg = reponses[0];
@@ -39,7 +39,7 @@ export const actions: Actions = {
 
 		let username = await getUsername(locals.user?.id);
 		if (userInput !== '') {
-			msg = 'Veuillez entrez votre réponse';
+			msg = 'Please enter your answer';
 		} else {
 		}
 		const resultat = await enigme_check(
@@ -51,9 +51,9 @@ export const actions: Actions = {
 		);
 		console.log('monsreuslt', resultat);
 		if (resultat[1] === true) {
-			msg = `Bravo, vous avez trouvé la bonne réponse! Vous avez gagné ${resultat[0]} points`;
+			msg = `Well done, you found the right answer!You have won ${resultat[0]} points`;
 		} else {
-			msg = "Désolé, ce n'est pas la bonne réponse. Essayez encore !";
+			msg = "Sorry, that's not the right answer.Try again!";
 		}
 
 		return {

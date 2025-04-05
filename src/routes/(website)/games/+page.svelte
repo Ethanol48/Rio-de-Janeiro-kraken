@@ -27,7 +27,7 @@
 
 	<button onclick={() => goTo('/games/enigme')}>
 		<span class="box">
-			<p>Enigme du jour 🔎</p>
+			<p> Daily Riddle 🔎</p>
 		</span>
 	</button>
 
