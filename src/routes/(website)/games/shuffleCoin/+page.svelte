@@ -6,17 +6,17 @@
 
 	let cups = [1, 2, 3];
 	let selectedCup: number | null = null;
-	let isAnimating = false;
-	let gameStarted = false;
-	let timeLeft = 30;
-	let msgstart = true;
+	let isAnimating = $state(false);
+	let gameStarted = $state(false);
+	let timeLeft = $state(30);
+	let msgstart = $state(true);
 	let timer;
-	let resultMessage = '';
-	let jeu_a_commencer = false;
-	let showRose = false;
-	let start = false;
-	let button_msg = 'Payer 1 point pour jouer';
-	let showButtons = false;
+	let resultMessage = $state('');
+	let jeu_a_commencer = $state(false);
+	let showRose = $state(false);
+	let start = $state(false);
+	let button_msg = $state('Payer 1 point pour jouer');
+	let showButtons = $state(false);
 
 	let showConfirmation = false;
 	let cupToValidate: number | null = null;
@@ -33,15 +33,6 @@
 		window.addEventListener('resize', updateScreenSize);
 		resetCupsPosition();
 	});
-
-	function onCupClick(cup: number) {
-		if (!gameStarted || isAnimating || selectedCup !== null) return;
-		cupToValidate = cup;
-		//showConfirmation = true;
-
-
-
-	}
 
 	function confirmSelection() {
 		if (cupToValidate !== null) {
@@ -65,27 +56,6 @@
 			resetGame();
 		}
 		msgstart = false;
-
-		// Appel au backend pour retirer 1 point
-		try {
-			const response = await fetch('/games/shuffleCoin/api/removepoint', {
-				method: 'POST'
-			});
-			const data = await response.json();
-			
-			if (data === "None") {
-				resultMessage = "Vous avez déjà joué 15 fois aujourd'hui, attendez demain !";
-				return;
-			}
-			if (data === "NONON") {
-				resultMessage = "Et tes points ils sont où? Reviens quand tu auras assez de points pour me défier";
-				return;
-			}
-		} catch (error) {
-			console.error(error);
-			resultMessage = "Erreur lors du démarrage du jeu";
-			return;
-		}
 
 		gameStarted = true;
 		button_msg = 'Recommencer';
@@ -184,14 +154,18 @@
 		showButtons = false;
 
 		try {
-			const response = await fetch(`/games/shuffleCoin/api/addpoint?`, {
+			const formData = new FormData();
+			formData.append('cup', `${cup}`);
+
+			const response = await fetch(`/games/shuffleCoin`, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ selectedCup: cup })
+				body: formData
 			});
-			const data = await response.json();
+
+			let data = await response.json();
+			// const data = await JSON.parse(actionResponse.data);
+
+			console.log('data: ', data);
 
 			let animationY = isSmallScreen ? -50 : -100;
 			gsap.to(`#cup${cup}`, {
@@ -202,14 +176,23 @@
 					if (data.isWinner) {
 						showRose = true;
 					}
+
 					endGame(data.isWinner);
 				}
 			});
 		} catch (error) {
 			console.error(error);
-			resultMessage = "Erreur lors de la vérification";
+			resultMessage = 'Erreur lors de la vérification';
 			endGame(false);
 		}
+	}
+
+	function onCupClick(cup: number) {
+		if (!gameStarted || isAnimating || selectedCup !== null) return;
+		cupToValidate = cup;
+
+		selectCup(cup);
+		//showConfirmation = true;
 	}
 
 	function endGame(isWinner) {
@@ -257,6 +240,7 @@
 		<div class="message">{resultMessage}</div>
 	{/if}
 
+	<!--
 	{#if showConfirmation}
 		<Dialog.Root open={true} on:openChange={(e) => { if (!e.detail) showConfirmation = false }}>
 			<Dialog.Content>
@@ -273,6 +257,7 @@
 			</Dialog.Content>
 		</Dialog.Root>
 	{/if}
+  -->
 
 	{#if msgstart}
 		<div style="margin-left: 2%;">
@@ -398,7 +383,7 @@
 		background: linear-gradient(82.3deg, rgb(249, 123, 213) 10.8%, rgba(99, 88, 238, 1) 94.3%);
 		transition: all 0.475s;
 	}
-  
+
 	/* Ajustements responsives pour petits écrans */
 	@media (max-width: 518px) {
 		.cup {
