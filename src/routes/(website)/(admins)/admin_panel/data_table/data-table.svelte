@@ -236,7 +236,7 @@
 <div class="flex w-8/12 flex-col">
 	<div class="flex items-center py-4">
 		<Input
-			class="max-w-sm"
+			class="max-w-sm bg-background"
 			placeholder="Filter by email and login..."
 			type="text"
 			bind:value={$filterValue}
@@ -267,7 +267,7 @@
 			</DropdownMenu.Root>
 		</div>
 	</div>
-	<div class="rounded-md border">
+	<div class="rounded-md border bg-background">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
