@@ -41,6 +41,16 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	return id[0].id;
 };
 
+export const CreateEnigme = async(question:string, reponse:string, points:number, day:number, month:number) => {
+	await db.insert(enigme).values({
+		id: crypto.randomUUID(),
+		question: question,
+		reponse: reponse,
+		points: points,
+		date_day: day,
+		date_month: month,
+})};
+
 export const GetBlackJackGame = async (userId: string) => {
 	const result_query = await db.select().from(blackjack).where(eq(blackjack.userId, userId));
 
@@ -206,6 +216,9 @@ export const getIfClaimed = async (userId: string) => {
 	return result_query.at(0)!.claimedOrders;
 };
 
+
+
+
 export const getUsername = async (userId: string) => {
 	const result_query = await db
 		.select({ username: user.username })
@@ -361,6 +374,31 @@ export const enigme_get_question = async (day: number, month: number) => {
 	const result = [result_query[0].question, check];
 	return result;
 };
+
+export const HasEnigme = async (day: number, month: number) => {
+	const result_query = await db
+		.select({ question: enigme.question })
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+	
+	
+	return result_query;
+}
+
+export const ModifiyEnigme = async (question:string, reponse:string, day:number, month:number,points:number) => {
+	return await db.update(enigme)
+		.set({ question: question, reponse: reponse, points: points })
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+};
+export const GetAllEnigme = async () => {
+	const result_query = await db
+		.select({ question: enigme.question , reponse: enigme.reponse, points: enigme.points , month: enigme.date_month, day: enigme.date_day })
+		.from(enigme)
+		
+	
+	
+	return result_query;
+}
 //
 
 export const enigme_get_reponse = async (day: number, month: number) => {

@@ -16,8 +16,7 @@
 
 	let wheelElement: HTMLImageElement;
 	import { enhance } from '$app/forms';
-	let message = '';
-
+	
 	function spinWheel() {
 		intromsg = false;
 		if (spinning) return;
@@ -90,16 +89,17 @@
 		</button>
 
 		{#if form?.status === 'failure'}
+			
 			<div class="error-box">
 				{form.message}
 			</div>
 		{/if}
 
-		{#if form?.status === 'success'}
+		{#if form?.status === 'success' }
 			{spinWheel()}
 		{/if}
 
-		{#if afficher}
+		{#if afficher && form?.status === 'success'}
 			<div class="result-box">
 				<strong>{form!.message}</strong>
 			</div>
