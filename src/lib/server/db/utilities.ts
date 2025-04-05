@@ -41,7 +41,7 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	return id[0].id;
 };
 
-export const CreateEnigme = async(question:string, reponse:string, points:number, day:number, month:number) => {
+export const CreateEnigme = async(question:string, reponse:string, day:number, month:number,points:number,) => {
 	await db.insert(enigme).values({
 		id: crypto.randomUUID(),
 		question: question,
