@@ -20,10 +20,10 @@
 		<!-- En-tête -->
 		<div class="mb-6 text-center">
 			<h1 class="text-2xl font-bold text-gray-800 md:text-3xl">
-				Bonjour {data.user.username}, voici ton inventaire
+				Hi {data.user.username}, here's your inventory:
 			</h1>
-			<p class="mt-2 text-lg text-gray-600 md:text-xl">
-				Points actuels : {data.user.points}
+			<p class="mt-4 text-lg text-gray-600 md:text-xl">
+				Points : {data.user.points}
 			</p>
 		</div>
 
@@ -41,21 +41,27 @@
 			{/each}
 		</div>
 
-		<!-- Bouton de réclamation centré -->
-		<div class="mt-6 flex justify-center">
-			<form method="POST" action="?/Claim">
-				<Button
-					type="submit"
-					disabled={data.claimed}
-					class="rounded bg-primary p-3 text-lg font-semibold text-white"
-				>
-					{#if data.claimed}
-						Déjà réclamé
-					{:else}
-						Réclamer la commande
-					{/if}
-				</Button>
-			</form>
-		</div>
+    {#if data.items.length > 0}
+      <!-- Bouton de réclamation centré -->
+      <div class="mt-6 flex justify-center">
+        <form method="POST" action="?/Claim">
+          <Button
+            type="submit"
+            disabled={data.claimed}
+            class="rounded bg-primary p-3 text-lg font-semibold text-white"
+          >
+            {#if data.claimed}
+              Déjà réclamé
+            {:else}
+              Réclamer la commande
+            {/if}
+          </Button>
+        </form>
+      </div>
+    {:else}
+      <div class="mt-6 flex justify-center">
+        <h4>Go buy something in the Store!!!!</h4>
+      </div>
+    {/if}
 	</div>
 </div>

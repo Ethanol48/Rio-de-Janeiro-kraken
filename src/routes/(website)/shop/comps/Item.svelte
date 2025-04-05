@@ -5,10 +5,11 @@
 	import type { LayoutData } from '../../$types';
 
 	let { item, user }: { user: LayoutData['user']; item: Items } = $props();
+	const comp: boolean = item.id === '3';
 </script>
 
 <Card.Root class="w-[30vw] min-w-[200px] max-w-[300px]">
-	<Card.Header class="justify-between flex flex-row">
+	<Card.Header class="flex flex-row justify-between">
 		<h2 class="typography">{item.name}</h2>
 		<h3 class="font-semibold" class:text-red-500={item.stock <= 5}>{item.stock} left</h3>
 	</Card.Header>
