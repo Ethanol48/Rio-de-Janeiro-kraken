@@ -8,8 +8,9 @@
 </script>
 
 <Card.Root class="w-[30vw] min-w-[200px] max-w-[300px]">
-	<Card.Header>
+	<Card.Header class="justify-between flex flex-row">
 		<h2 class="typography">{item.name}</h2>
+		<h3 class="font-semibold" class:text-red-500={item.stock <= 5}>{item.stock} left</h3>
 	</Card.Header>
 	<Card.Content class="">
 		{item.desc}

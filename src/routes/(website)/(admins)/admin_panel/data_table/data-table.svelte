@@ -310,7 +310,7 @@
 	</div>
 
 	<div class="flex items-center justify-end space-x-4 py-4">
-		<div class="flex-1 text-sm text-muted-foreground">
+		<div class="flex-1 text-sm">
 			{Object.keys($selectedDataIds).length} of{' '}
 			{$rows.length} row(s) selected.
 
