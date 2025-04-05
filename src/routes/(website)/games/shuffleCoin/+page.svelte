@@ -6,43 +6,49 @@
 
 	let cups = [1, 2, 3];
 	let selectedCup: number | null = null;
-	let isAnimating = false;
-	let gameStarted = false;
-	let timeLeft = 30;
-	let msgstart = true;
+	let isAnimating = $state(false);
+	let gameStarted = $state(false);
+	let timeLeft = $state(30);
+	let msgstart = $state(true);
 	let timer;
-	let resultMessage = '';
-	let jeu_a_commencer = false;
-	let winningCup = cups[Math.floor(Math.random() * cups.length)];
-	let showRose = false;
-	let start = false;
-	let button_msg = 'Payer 1 point pour jouer';
+	let resultMessage = $state('');
+	let jeu_a_commencer = $state(false);
+	let showRose = $state(false);
+	let start = $state(false);
+	let button_msg = $state('Payer 1 point pour jouer');
+	let showButtons = $state(false);
+
+	let showConfirmation = false;
+	let cupToValidate: number | null = null;
+
+	let isSmallScreen = false;
+
+	// Vérifier la taille de l'écran
+	function updateScreenSize() {
+		isSmallScreen = window.innerWidth < 518;
+	}
 
 	onMount(() => {
+		updateScreenSize();
+		window.addEventListener('resize', updateScreenSize);
 		resetCupsPosition();
 	});
 
+	function confirmSelection() {
+		if (cupToValidate !== null) {
+			selectCup(cupToValidate);
+			showConfirmation = false;
+		}
+	}
+
 	function resetCupsPosition() {
 		cups.forEach((cup, index) => {
-			gsap.set(`#cup${cup}`, { x: index * 5, y: 0 });
+			// Pour les petits écrans, rapprocher les gobelets (offset réduit)
+			let offset = isSmallScreen ? index * 2 : index * 5;
+			gsap.set(`#cup${cup}`, { x: offset, y: 0 });
 		});
 	}
 
-	async function Checkplay() {
-		const response = await fetch('/games/krakball/api/removepoint');
-		const data = await response.json();
-		console.log(data);
-		if (data === 'None') {
-			resultMessage = "Vous avez déjà jouer 15 fois aujourd'hui, attendais le lendeamin !";
-			return '-1';
-		}
-		if (data === 'NONON') {
-			resultMessage =
-				'Et tes points ils sont où?\n Reviens quand tu auras assez de points pour me défier';
-			return '-1';
-		}
-		return '1';
-	}
 	async function startGame() {
 		if (isAnimating) return;
 		if (jeu_a_commencer) {
@@ -51,11 +57,6 @@
 		}
 		msgstart = false;
 
-		const checksipeutjouer = await Checkplay();
-		if (checksipeutjouer == '-1') {
-			return;
-		}
-
 		gameStarted = true;
 		button_msg = 'Recommencer';
 		jeu_a_commencer = true;
@@ -63,57 +64,77 @@
 		resultMessage = '';
 		selectedCup = null;
 		showRose = false;
-		winningCup = cups[Math.floor(Math.random() * cups.length)];
 
-		// Étape 1: Lever les gobelets pour afficher la rose au milieu
-		gsap.to(`#cup${2}`, {
-			y: -100,
-			duration: 0.5,
-			onComplete: () => {
-				start = true;
-				// Afficher la rose au milieu
-				showRose = true;
-
-				// Attendre un moment pour que la rose soit visible
-				setTimeout(() => {
-					start = false;
-					// Cacher la rose
-					showRose = false;
-
-					// Étape 2: Redescendre les gobelets
-					gsap.to(`#cup${2}`, {
-						y: 0,
-						duration: 0.5,
-						onComplete: () => {
-							// Étape 3: Déplacer le premier et le dernier gobelet vers le milieu
-							gsap.to('#cup1', {
-								x: 185,
-								duration: 1
-							});
-							gsap.to('#cup3', {
-								x: -170,
-								duration: 1,
-								onComplete: () => {
-									// Étape 4: Remettre les gobelets à leur place
-									gsap.to('#cup1', {
-										x: 0,
-										duration: 1
-									});
-									gsap.to('#cup3', {
-										x: 20,
-										duration: 1,
-										onComplete: () => {
-											isAnimating = false;
-											startTimer();
-										}
-									});
-								}
-							});
-						}
-					});
-				}, 1000); // Temps pendant lequel la rose est visible (1 seconde)
-			}
-		});
+		// Animation adaptée selon la taille de l'écran
+		if (isSmallScreen) {
+			// Animation pour petits écrans : mouvement réduit
+			gsap.to(`#cup2`, {
+				y: -50,
+				duration: 0.5,
+				onComplete: () => {
+					start = true;
+					showRose = true;
+					setTimeout(() => {
+						start = false;
+						showRose = false;
+						gsap.to(`#cup2`, {
+							y: 0,
+							duration: 0.5,
+							onComplete: () => {
+								gsap.to('#cup1', { x: 90, duration: 1 });
+								gsap.to('#cup3', {
+									x: -90,
+									duration: 1,
+									onComplete: () => {
+										gsap.to('#cup1', { x: 0, duration: 1 });
+										gsap.to('#cup3', {
+											x: 10,
+											duration: 1,
+											onComplete: () => {
+												isAnimating = false;
+												showButtons = true;
+												startTimer();
+											}
+										});
+									}
+								});
+							}
+						});
+					}, 1000);
+				}
+			});
+		} else {
+			// Animation pour écrans normaux
+			gsap.to(`#cup2`, {
+				y: -100,
+				duration: 0.5,
+				onComplete: () => {
+					start = true;
+					showRose = true;
+					setTimeout(() => {
+						start = false;
+						showRose = false;
+						gsap.to('#cup1', { x: 185, duration: 1 });
+						gsap.to('#cup3', {
+							x: -170,
+							duration: 1,
+							onComplete: () => {
+								gsap.to('#cup1', { x: 0, duration: 1 });
+								gsap.to('#cup3', {
+									x: 20,
+									duration: 1,
+									onComplete: () => {
+										isAnimating = false;
+										showButtons = true;
+										startTimer();
+									}
+								});
+							}
+						});
+					}, 1000);
+				}
+			});
+		}
 	}
 
 	function startTimer() {
@@ -127,31 +148,54 @@
 		}, 1000);
 	}
 
-	function selectCup(cup) {
+	async function selectCup(cup) {
 		if (!gameStarted || isAnimating || selectedCup !== null) return;
 		selectedCup = cup;
+		showButtons = false;
 
-		gsap.to(`#cup${cup}`, {
-			y: -100,
-			duration: 0.5,
-			onComplete: () => {
-				if (cup === winningCup) {
-					showRose = true;
-					resultMessage = 'Quoi?? Tu as trouvé la rose ! 🌹 \n Pfff, bon voila tes 3 points';
-				} else {
-					resultMessage = 'Dommage, pas cette fois haha !';
+		try {
+			const formData = new FormData();
+			formData.append('cup', `${cup}`);
+
+			const response = await fetch(`/games/shuffleCoin`, {
+				method: 'POST',
+				body: formData
+			});
+
+			let data = await response.json();
+			// const data = await JSON.parse(actionResponse.data);
+
+			console.log('data: ', data);
+
+			let animationY = isSmallScreen ? -50 : -100;
+			gsap.to(`#cup${cup}`, {
+				y: animationY,
+				duration: 0.5,
+				onComplete: () => {
+					resultMessage = data.message;
+					if (data.isWinner) {
+						showRose = true;
+					}
+
+					endGame(data.isWinner);
 				}
-				endGame(cup === winningCup);
-			}
-		});
+			});
+		} catch (error) {
+			console.error(error);
+			resultMessage = 'Erreur lors de la vérification';
+			endGame(false);
+		}
 	}
 
-	async function endGame(isWinner) {
-		if (isWinner) {
-			const response = await fetch('/games/krakball/api/addpoint');
-			const data = await response.json();
-			console.log(data);
-		}
+	function onCupClick(cup: number) {
+		if (!gameStarted || isAnimating || selectedCup !== null) return;
+		cupToValidate = cup;
+
+		selectCup(cup);
+		//showConfirmation = true;
+	}
+
+	function endGame(isWinner) {
 		gameStarted = false;
 		clearInterval(timer);
 	}
@@ -163,23 +207,30 @@
 		selectedCup = null;
 		resultMessage = '';
 		showRose = false;
+		showButtons = false;
 		resetCupsPosition();
 	}
 </script>
 
 <br /><br /><br />
 
-<title>Samba Dos Krakos - ShuffleCoin</title>
+<title>Krak'n Roses - Krak'Rose</title>
 <div class="container">
 	<div class="cups-container justify-between">
 		{#each cups as cup}
-			<div id="cup{cup}" class="cup" on:click={() => selectCup(cup)}>
+			<div
+				id="cup{cup}"
+				class="cup"
+				on:click={() => onCupClick(cup)}
+				style="pointer-events: {showButtons ? 'auto' : 'none'}"
+			>
 				{#if (selectedCup === cup && showRose) || (2 === cup && showRose && start)}
 					<div class="rose"></div>
 				{/if}
 			</div>
 		{/each}
 	</div>
+
 	<button class="button" on:click={startGame} disabled={isAnimating || gameStarted}>
 		<span class="button-content"> {button_msg} </span>
 	</button>
@@ -189,27 +240,45 @@
 		<div class="message">{resultMessage}</div>
 	{/if}
 
+	<!--
+	{#if showConfirmation}
+		<Dialog.Root open={true} on:openChange={(e) => { if (!e.detail) showConfirmation = false }}>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>Confirmer votre choix</Dialog.Title>
+					<Dialog.Description>
+						Voulez-vous choisir le gobelet numéro <b>{cupToValidate}</b> ?
+					</Dialog.Description>
+				</Dialog.Header>
+				<Dialog.Footer class="mt-4 flex justify-end gap-2">
+					<Button variant="secondary" on:click={() => showConfirmation = false}>Annuler</Button>
+					<Button on:click={confirmSelection}>Valider</Button>
+				</Dialog.Footer>
+			</Dialog.Content>
+		</Dialog.Root>
+	{/if}
+  -->
+
 	{#if msgstart}
 		<div style="margin-left: 2%;">
 			<br />
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button class="cursor-pointer" size="sm"><b>How to play ❔</b></Button>
+					<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
 				</Dialog.Trigger>
 				<Dialog.Content>
 					<Dialog.Header>
-						<Dialog.Title>Shuffle Coin 🪙</Dialog.Title>
+						<Dialog.Title>La Roue Chanceuse</Dialog.Title>
 						<Dialog.Description>
 							<br />
-							<b>Ah, you want to challenge me? </b> Very well, but you will have to give me a point in
-							exchange, haha! <br /><br />
-
-							🪙If you find the Gold, I will give you
-							<b style="text-decoration: underline;">3 points</b> as a reward! It's up to you to play! 💪
+							<b>Ah, tu veux me défier ?</b> Très bien, mais il faudra me donner un point en
+							échange, haha ! <br /><br />
+							🌹 Si tu trouves la rose de Cupidon, je te donnerai
+							<b style="text-decoration: underline;">3 points</b> en récompense ! À toi de jouer ! 💪
 						</Dialog.Description>
 					</Dialog.Header>
 					<Dialog.Close>
-						<Button class="mt-2">Close</Button>
+						<Button class="mt-2">Fermer</Button>
 					</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Root>
@@ -249,18 +318,35 @@
 		left: 50%;
 		transform: translateX(-50%);
 	}
-
+	.cup-buttons {
+		display: flex;
+		gap: 10px;
+		margin-top: 10px;
+	}
+	.cup-button {
+		padding: 8px 16px;
+		background-color: #3d3a4e;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	.cup-button:hover {
+		background-color: #4a4563;
+	}
 	.message {
 		margin-top: 20px;
 		font-size: 20px;
 		color: green;
+		white-space: pre-line;
+		text-align: center;
 	}
 	.timer {
 		margin-top: 10px;
 		font-size: 18px;
 	}
 
-	/* From Uiverse.io by Madflows */
+	/* Bouton style Uiverse.io par Madflows */
 	.button {
 		position: relative;
 		overflow: hidden;
@@ -272,6 +358,7 @@
 		color: #fff;
 		border: none;
 		cursor: pointer;
+		margin-top: 20px;
 	}
 
 	.button:hover::before {
@@ -295,5 +382,19 @@
 		border-radius: inherit;
 		background: linear-gradient(82.3deg, rgb(249, 123, 213) 10.8%, rgba(99, 88, 238, 1) 94.3%);
 		transition: all 0.475s;
+	}
+
+	/* Ajustements responsives pour petits écrans */
+	@media (max-width: 518px) {
+		.cup {
+			width: 100px;
+			height: 100px;
+			margin: 5px;
+		}
+		.rose {
+			width: 35px;
+			height: 35px;
+			bottom: -35px;
+		}
 	}
 </style>
