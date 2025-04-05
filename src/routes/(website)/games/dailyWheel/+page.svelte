@@ -16,7 +16,6 @@
 
 	let wheelElement: HTMLImageElement;
 	import { enhance } from '$app/forms';
-	let message = '';
 
 	function spinWheel() {
 		intromsg = false;
