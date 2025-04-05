@@ -21,10 +21,17 @@ export const actions: Actions = {
 			return fail(401, { error: 'The request was malformed, the field itemId was not especified' });
 		}
 
-		const priceItem = (await GetItem(itemId)).price;
+
+		const item = (await GetItem(itemId));
+    if (item.stock === 0) {
+      return fail(401, { error: 'The are no items left :(' });
+    }
+
+
+
 		const pointsUser = await getPoints(userId);
-		if (pointsUser < priceItem) {
-			return fail(500, { error: 'You are too poor to buy this' });
+		if (pointsUser < item.price) {
+			return fail(401, { error: 'You are too poor to buy this' });
 		}
 
 		try {
