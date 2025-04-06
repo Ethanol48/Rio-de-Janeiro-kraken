@@ -626,3 +626,44 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 export const SetAdminStatus = async (userId: string, value: boolean): Promise<void> => {
 	await db.update(user).set({ isAdmin: value }).where(eq(user.id, userId));
 };
+
+
+
+///
+// jeu des gobelets
+
+export const GetLastDayPlayed = async (user_id : string) => {
+	const joined = await db
+		.select({
+			lastday: games.lastdayplayed_gobelet
+		})
+		.from(games)
+		.where(eq(games.userId, user_id));
+
+	return joined[0].lastday;
+};
+
+export const SetLastDayPlayed = async (user_id : string, date : string) => {
+	return await db
+		.update(games)
+		.set({ lastdayplayed_gobelet : date, numberofplaytoday : 1 })
+		.where(eq(games.userId, user_id));
+};
+
+export const GetNumberOfPlay = async (user_id : string) => {
+	const joined = await db
+		.select({
+			NumberOfPlay: games.numberofplaytoday
+		})
+		.from(games)
+		.where(eq(games.userId, user_id));
+
+	return joined[0].NumberOfPlay;
+};
+
+export const AddNewGameGobelet = async (user_id : string) => {
+	return await db
+		.update(games)
+		.set({ numberofplaytoday : await GetNumberOfPlay(user_id)+1 })
+		.where(eq(games.userId, user_id));
+};

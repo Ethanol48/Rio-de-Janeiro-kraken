@@ -104,7 +104,7 @@
 
 				<Dialog.Footer class="mt-6 flex justify-end gap-2">
 					<Button variant="secondary" on:click={() => showConfirmation = false}>Quitter</Button>
-					<Button type="submit">Créer l'enigme</Button>
+					<Button type="submit">Créer/Modifier l'enigme</Button>
 					
 				</Dialog.Footer>
 

@@ -10,12 +10,12 @@
 	let gameStarted = $state(false);
 	let timeLeft = $state(30);
 	let msgstart = $state(true);
-	let timer;
+	let timer ;
 	let resultMessage = $state('');
 	let jeu_a_commencer = $state(false);
 	let showRose = $state(false);
 	let start = $state(false);
-	let button_msg = $state('Payer 1 point pour jouer');
+	let button_msg = $state('Pay 1 point to play');
 	let showButtons = $state(false);
 
 	let showConfirmation = false;
@@ -58,7 +58,7 @@
 		msgstart = false;
 
 		gameStarted = true;
-		button_msg = 'Recommencer';
+		button_msg = 'Start again';
 		jeu_a_commencer = true;
 		isAnimating = true;
 		resultMessage = '';
@@ -81,14 +81,14 @@
 							y: 0,
 							duration: 0.5,
 							onComplete: () => {
-								gsap.to('#cup1', { x: 90, duration: 1 });
+								gsap.to('#cup1', { x: 110, duration: 1 });
 								gsap.to('#cup3', {
-									x: -90,
+									x: -110,
 									duration: 1,
 									onComplete: () => {
 										gsap.to('#cup1', { x: 0, duration: 1 });
 										gsap.to('#cup3', {
-											x: 10,
+											x: 0,
 											duration: 1,
 											onComplete: () => {
 												isAnimating = false;
@@ -109,29 +109,35 @@
 				y: -100,
 				duration: 0.5,
 				onComplete: () => {
-					start = true;
-					showRose = true;
-					setTimeout(() => {
-						start = false;
-						showRose = false;
-						gsap.to('#cup1', { x: 185, duration: 1 });
+				start = true;
+				showRose = true;
+				setTimeout(() => {
+					start = false;
+					showRose = false;
+					gsap.to(`#cup2`, {
+					y: 0,
+					duration: 0.5,
+					onComplete: () => {
+						gsap.to('#cup1', { x: 180, duration: 1 });
 						gsap.to('#cup3', {
-							x: -170,
+						x: -170,
+						duration: 1,
+						onComplete: () => {
+							gsap.to('#cup1', { x: 0, duration: 1 });
+							gsap.to('#cup3', {
+							x: 20,
 							duration: 1,
 							onComplete: () => {
-								gsap.to('#cup1', { x: 0, duration: 1 });
-								gsap.to('#cup3', {
-									x: 20,
-									duration: 1,
-									onComplete: () => {
-										isAnimating = false;
-										showButtons = true;
-										startTimer();
-									}
-								});
+								isAnimating = false;
+								showButtons = true;
+								startTimer();
 							}
+							});
+						}
 						});
-					}, 1000);
+					}
+					});
+				}, 1000);
 				}
 			});
 		}
@@ -161,12 +167,17 @@
 				method: 'POST',
 				body: formData
 			});
+			
 
 			let data = await response.json();
 			// const data = await JSON.parse(actionResponse.data);
 
 			console.log('data: ', data);
-
+			if (data.success === false){
+				resultMessage = data.message;
+				endGame(false);
+				return;
+			}
 			let animationY = isSmallScreen ? -50 : -100;
 			gsap.to(`#cup${cup}`, {
 				y: animationY,
@@ -264,28 +275,31 @@
 			<br />
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+					<Button class="cursor-pointer" size="sm"><b>How to play ❔</b></Button>
 				</Dialog.Trigger>
 				<Dialog.Content>
 					<Dialog.Header>
-						<Dialog.Title>La Roue Chanceuse</Dialog.Title>
+						<Dialog.Title>Find The Gold 🪙</Dialog.Title>
 						<Dialog.Description>
 							<br />
-							<b>Ah, tu veux me défier ?</b> Très bien, mais il faudra me donner un point en
-							échange, haha ! <br /><br />
-							🌹 Si tu trouves la rose de Cupidon, je te donnerai
-							<b style="text-decoration: underline;">3 points</b> en récompense ! À toi de jouer ! 💪
+							<b>Ah, you want to challenge me 😈?</b> <br> <br>
+							🥇 If you find the gold coin, I will give you
+							<b style="text-decoration: underline;">4 points</b> as a reward 💲!
+							<br>
+							‼️But for information, each game costs 1 point, and you can only play 20 times a day!
+							<br><br>
+							Good luck 🍀! <br />
 						</Dialog.Description>
 					</Dialog.Header>
 					<Dialog.Close>
-						<Button class="mt-2">Fermer</Button>
+						<Button class="mt-2">Close</Button>
 					</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Root>
 		</div>
 	{/if}
 	{#if gameStarted}
-		<div class="timer">Temps restant : {timeLeft} secondes</div>
+		<div class="timer">Remaining time : {timeLeft} seconds</div>
 	{/if}
 </div>
 
@@ -353,9 +367,9 @@
 		height: 3rem;
 		padding: 0 2rem;
 		border-radius: 1.5rem;
-		background: #3d3a4e;
+		background: #ffffff;
 		background-size: 400%;
-		color: #fff;
+		color: #000000;
 		border: none;
 		cursor: pointer;
 		margin-top: 20px;
@@ -380,7 +394,7 @@
 		width: 100%;
 		height: inherit;
 		border-radius: inherit;
-		background: linear-gradient(82.3deg, rgb(249, 123, 213) 10.8%, rgba(99, 88, 238, 1) 94.3%);
+		background: linear-gradient(82.3deg, rgb(212, 103, 31) 10.8%, rgb(255, 255, 255) 94.3%);
 		transition: all 0.475s;
 	}
 

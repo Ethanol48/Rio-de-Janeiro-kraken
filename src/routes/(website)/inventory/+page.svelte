@@ -46,7 +46,8 @@
 		</div>
 		{#if data.items.length === 0}
 		
-		<!-- Bouton de réclamation centré -->
+
+		<!--
 		<div class="mt-6 flex justify-center">
 			
 				<Button
@@ -84,6 +85,7 @@
 				</Dialog.Root>
 				{/if}
 		</div>
+		-->
 
 		{/if}
 	</div>
