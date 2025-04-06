@@ -616,7 +616,7 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 
 			const id = crypto.randomUUID();
 
-			await db.insert(orders).values({ id: id, userId: userId, productId: itemId, claimed: false });
+			await db.insert(orders).values({ id: id, userId: userId, productId: itemId });
 		}
 	}
 

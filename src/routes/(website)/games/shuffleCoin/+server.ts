@@ -3,9 +3,7 @@ import { AddNewGameGobelet, addPoints, GetLastDayPlayed, GetNumberOfPlay, getPoi
 import { type RequestHandler, fail, json } from '@sveltejs/kit';
 
 
-function verifyUserCanPlay(userId: string): boolean {
-  return true;
-}
+
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 
@@ -14,9 +12,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
 
 
-  if (!verifyUserCanPlay(locals.user.id)) {
-    return fail(401, { message: "You cannot play" });
-  }
+  
 
   let form = await request.formData()
   const cup = form.get('cup')
@@ -31,7 +27,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
   if (await getPoints(locals.user.id) < 1) {
     return json({
-      message: "Vous n'avez pas assez de points pour jouer",
+      message: "You're too poor to play this game, you need at least 1 point.",
       isWinner: false,
       cup: cup,
       success: false
@@ -50,7 +46,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   if (await GetLastDayPlayed(locals.user.id) === dateFormat) {
     if(await GetNumberOfPlay(locals.user.id) >= 20) {
       return json({
-        message: "Vous avez déjà joué 20 fois aujourd'hui",
+        message: "You have already played 20 times today 😢",
         isWinner: false,
         cup: cup,
         success: false

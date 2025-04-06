@@ -53,7 +53,7 @@ export const actions: Actions = {
 		}
 		return {
 			status: 'success',
-			message: `You have won ${pointsWon} points !${message}`,
+			message: `You have won ${pointsWon} points ! ${message}`,
 			segment: segment,
 			points: pointsWon
 		};
