@@ -7,16 +7,16 @@
 	}
 </script>
 
-<title>Krak'n Roses - Games</title>
+<title>Samba Dos Krakos - Games</title>
 <h1 class="text-xl">Hi, <b>{data.user.username}</b> !</h1>
 <h2 class="mt-5">There are so many games, choose yours !</h2>
 
 <div class="mt-5 flex w-fit flex-row flex-wrap justify-center gap-2">
-	<button onclick={() => goTo('/games/roue_random')}>
-		<span class="box"> Roue de la Chance 🍀 </span>
+	<button onclick={() => goTo('/games/dailyWheel')}>
+		<span class="box"> Wheel of Fortune 🍀 </span>
 	</button>
-	<button onclick={() => goTo('/games/krakball')}>
-		<span class="box"> Trouve ta Rose 🌹 </span>
+	<button onclick={() => goTo('/games/shuffleCoin')}>
+		<span class="box"> Find the Gold 🪙 </span>
 	</button>
 	<button onclick={() => goTo('/games/blackjack')}>
 		<span class="box">
@@ -27,7 +27,7 @@
 
 	<button onclick={() => goTo('/games/enigme')}>
 		<span class="box">
-			<p>Enigme du jour 🔎</p>
+			<p> Daily Riddle 🔎</p>
 		</span>
 	</button>
 

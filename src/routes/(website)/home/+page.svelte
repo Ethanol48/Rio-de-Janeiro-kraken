@@ -14,7 +14,7 @@
 	}
 </script>
 
-<title>Krak'n Roses - Home</title>
+<title>Samba Dos Krakos - Home</title>
 <div class="header">
 	<img src="/kraken.png" alt="Logo" class="logo animate-fade-in" />
 </div>
@@ -22,18 +22,24 @@
 <br /><br />
 
 {#if data.user !== null}
-	<h1 class="animate-slide-in">Salut, <b>{data.user.username}</b> !</h1>
+	<h1 class="animate-slide-in">Hi, <b>{data.user.username}</b> !</h1>
 	<br />
 	<p style="font-size: 12px;" class="animate-slide-in">
-		Tu as actuellement <b>{data.points}</b> points !
+		You've got <b>{data.points}</b> points! Time to light up the carnival! 🎭🔥
 	</p>
+	<br>
 {/if}
 
-<h1 class="animate-slide-in">Cupidon t’attend… Saura-tu relever le défi ? 🏹</h1>
+<h1 class="animate-slide-in">Are you ready to tear up the dance floor, conquer the samba, and set the party on fire? 💃🕺</h1>
 <p class="animate-slide-in">
-	Plonge dans l’aventure, relève les défis et amuse-toi pour cette <b
-		style="text-decoration: underline;">Saint-Valentin !</b
-	>
+	Show off your best moves, crush the challenges, and soak in the wild vibes of <b
+		style="text-decoration: underline;">Rio</b> ! 🌴🔥
+		<br>
+</p>
+<br>
+
+<p class="animate-slide-in">
+	You in? LET’S GO! 🚀
 </p>
 
 <br />
@@ -42,11 +48,11 @@
 	{#if data.user !== null}
 		<Dialog.Root>
 			<Dialog.Trigger>
-				<Button class="cursor-pointer" size="sm">🪪 • Mon profil</Button>
+				<Button class="cursor-pointer" size="sm">🪪 • My profil</Button>
 			</Dialog.Trigger>
 			<Dialog.Content>
 				<Dialog.Header>
-					<Dialog.Title>Voici tes informations confidentielles</Dialog.Title>
+					<Dialog.Title>Here is your confidential information</Dialog.Title>
 					<Dialog.Description>
 						<br /><br />
 						Username : {data.username}
@@ -57,7 +63,7 @@
 					</Dialog.Description>
 				</Dialog.Header>
 				<Dialog.Close>
-					<Button class="mt-2">Fermer</Button>
+					<Button class="mt-2">Close</Button>
 				</Dialog.Close>
 			</Dialog.Content>
 		</Dialog.Root>
@@ -67,13 +73,13 @@
 		<div class="invisible-custom absolute bottom-4 left-5">
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button class="cursor-pointer" size="sm">Secret</Button>
+					<Button class="cursor-pointer" size="sm">secret</Button>
 				</Dialog.Trigger>
 
 				<Dialog.Content class="justify-center sm:max-w-[425px]">
 					<Dialog.Header>
-						<Dialog.Title>T'as trouver le button secret!!!</Dialog.Title>
-						<Dialog.Description class="text-center">Reclame en ta recompense</Dialog.Description>
+						<Dialog.Title>You have found the secret button !!!</Dialog.Title>
+						<Dialog.Description class="text-center">Claim</Dialog.Description>
 					</Dialog.Header>
 					<div class="flex justify-center">
 						<form method="POST" action="?/foundButton">
@@ -83,9 +89,9 @@
 								class="mt-2 rounded bg-primary p-2 text-white"
 							>
 								{#if data.claimed}
-									Déjà réclamé 🎉
+									Already claimed 🎉
 								{:else}
-									Réclamer
+									Claim
 								{/if}
 							</Button>
 						</form>
@@ -99,31 +105,32 @@
 		<Dialog.Trigger>
 			<Button class="cursor-pointer" size="sm">❔ • Informations</Button>
 		</Dialog.Trigger>
-		<Dialog.Content>
+		<Dialog.Content class="w-10/12">
 			<Dialog.Header>
 				<Dialog.Title>❔ • Informations</Dialog.Title>
 				<Dialog.Description>
 					<br />
-					Dans le royaume de l'amour, <b style="text-decoration: underline;">Cupidon</b> a décidé de
-					vous mettre à l’épreuve. <br />
-					Différents mini-jeux ont été créés pour tester vos capacités et déterminer si vous êtes l’élu
-					! <br /> <br />
+					
+					<strong style="font-size: 15px; text-align:center">🎭🔥 Rio Carnival: The Quest for the Golden Mask! 🔥🎭</strong>
+					<br><br>
+					In the electrifying streets of Rio, where samba beats fill the air and confetti rains from the sky, an ancient legend comes to life…
 
-					🎯 Votre <b>mission</b> ? Gagnez un maximum de points à travers les mini-jeux,
-					échangez-les dans le shop contre des récompenses et tentez de décrocher une place pour la
-					soirée Krak’n Roses ! <br /> <br />
+					<br><br>
+					🌟 The Golden Mask, the ultimate symbol of the carnival, has vanished! Only those who prove their skill, daring, and festive spirit can uncover its secret and claim the spotlight.
+					<br><br>
+					🎯 Your mission? Shine in the mini-games, rack up as many points as possible, and trade them in for dazzling rewards in the shop. Every challenge conquered brings you closer to the crown of the carnival!
+					<br><br>
+					🎭 But beware… Rumor has it the Golden Mask is hidden somewhere within the games, waiting to be found by the ultimate party legend. Can you crack the mystery and become Rio’s next carnival icon?
+					<br><br>
+					
+					
+					✨ <b style="text-decoration: underline; font-size:15px"
+						>Good luck—let the carnival begin!</b> ✨
 
-					💘 Mais ce n’est pas tout… Cupidon a perdu l’une de ses flèches dans les jeux. Serez-vous
-					capable de découvrir sa cachette <b>secrète</b> ? <br /> <br />
-
-					✨
-					<b style="text-decoration: underline; font-size:20px"
-						>Bonne chance et que les jeux commencent !</b
-					> ✨
 				</Dialog.Description>
 			</Dialog.Header>
 			<Dialog.Close>
-				<Button class="mt-2">Fermer</Button>
+				<Button class="mt-2">Close</Button>
 			</Dialog.Close>
 		</Dialog.Content>
 	</Dialog.Root>

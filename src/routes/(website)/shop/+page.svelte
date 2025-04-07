@@ -13,7 +13,7 @@
 	});
 </script>
 
-<title>Krak'n Roses - Shop</title>
+<title>Samba Dos Krakos - Shop</title>
 <div class="flex flex-col justify-center gap-2">
 	<div class="flex h-[18vw] flex-col justify-center gap-3 text-center">
 		<h1 class="typography text-lg text-gray-900">SHOP</h1>

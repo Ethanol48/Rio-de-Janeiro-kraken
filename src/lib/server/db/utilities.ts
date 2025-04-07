@@ -41,6 +41,16 @@ export const CreateBlackJackGame = async (userId: string): Promise<string> => {
 	return id[0].id;
 };
 
+export const CreateEnigme = async(question:string, reponse:string, day:number, month:number,points:number,) => {
+	await db.insert(enigme).values({
+		id: crypto.randomUUID(),
+		question: question,
+		reponse: reponse,
+		points: points,
+		date_day: day,
+		date_month: month,
+})};
+
 export const GetBlackJackGame = async (userId: string) => {
 	const result_query = await db.select().from(blackjack).where(eq(blackjack.userId, userId));
 
@@ -197,6 +207,18 @@ export const getPoints = async (userId: string) => {
 	return result_query.at(0)!.points;
 };
 
+export const getIfClaimed = async (userId: string) => {
+	const result_query = await db
+		.select({ claimedOrders: user.claimedOrders })
+		.from(user)
+		.where(eq(user.id, userId));
+
+	return result_query.at(0)!.claimedOrders;
+};
+
+
+
+
 export const getUsername = async (userId: string) => {
 	const result_query = await db
 		.select({ username: user.username })
@@ -352,6 +374,31 @@ export const enigme_get_question = async (day: number, month: number) => {
 	const result = [result_query[0].question, check];
 	return result;
 };
+
+export const HasEnigme = async (day: number, month: number) => {
+	const result_query = await db
+		.select({ question: enigme.question })
+		.from(enigme)
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+	
+	
+	return result_query;
+}
+
+export const ModifiyEnigme = async (question:string, reponse:string, day:number, month:number,points:number) => {
+	return await db.update(enigme)
+		.set({ question: question, reponse: reponse, points: points })
+		.where(sql`${enigme.date_day} = ${day} AND ${enigme.date_month} = ${month}`);
+};
+export const GetAllEnigme = async () => {
+	const result_query = await db
+		.select({ question: enigme.question , reponse: enigme.reponse, points: enigme.points , month: enigme.date_month, day: enigme.date_day })
+		.from(enigme)
+		
+	
+	
+	return result_query;
+}
 //
 
 export const enigme_get_reponse = async (day: number, month: number) => {
@@ -479,6 +526,19 @@ export const GetOrdersOfUser = async (userId: string) => {
 
 	return joined;
 };
+export const GetOrdersOfUserWithDesc = async (userId: string) => {
+	const joined = await db
+		.select({
+			product: items.name,
+			itemsDesc: items.desc
+		})
+		.from(orders)
+		.leftJoin(user, eq(user.id, orders.userId))
+		.leftJoin(items, eq(items.id, orders.productId))
+		.where(eq(orders.userId, userId));
+
+	return joined;
+};
 
 export const GetPendingOrders = async () => {
 	const joined = await db
@@ -556,7 +616,7 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 
 			const id = crypto.randomUUID();
 
-			await db.insert(orders).values({ id: id, userId: userId, productId: itemId, claimed: false });
+			await db.insert(orders).values({ id: id, userId: userId, productId: itemId });
 		}
 	}
 
@@ -565,4 +625,45 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 
 export const SetAdminStatus = async (userId: string, value: boolean): Promise<void> => {
 	await db.update(user).set({ isAdmin: value }).where(eq(user.id, userId));
+};
+
+
+
+///
+// jeu des gobelets
+
+export const GetLastDayPlayed = async (user_id : string) => {
+	const joined = await db
+		.select({
+			lastday: games.lastdayplayed_gobelet
+		})
+		.from(games)
+		.where(eq(games.userId, user_id));
+
+	return joined[0].lastday;
+};
+
+export const SetLastDayPlayed = async (user_id : string, date : string) => {
+	return await db
+		.update(games)
+		.set({ lastdayplayed_gobelet : date, numberofplaytoday : 1 })
+		.where(eq(games.userId, user_id));
+};
+
+export const GetNumberOfPlay = async (user_id : string) => {
+	const joined = await db
+		.select({
+			NumberOfPlay: games.numberofplaytoday
+		})
+		.from(games)
+		.where(eq(games.userId, user_id));
+
+	return joined[0].NumberOfPlay;
+};
+
+export const AddNewGameGobelet = async (user_id : string) => {
+	return await db
+		.update(games)
+		.set({ numberofplaytoday : await GetNumberOfPlay(user_id)+1 })
+		.where(eq(games.userId, user_id));
 };

@@ -11,16 +11,17 @@
 	let trouve = false;
 	function trouverr() {
 		trouve = true;
+
 	}
 	// Réagit au changement de message pour lancer les confettis
-	if (form?.message && form?.message.includes('Bravo')) {
+	if (form?.message && form?.message.includes('Well')) {
 		confetti = true;
 	}
 </script>
 
 <form method="POST" action="?/check_result">
 	<div class="container">
-		<h1 class="enigme-title">🎭 Énigme du jour</h1>
+		<h1 class="enigme-title after:bg-primary">🔎 Daily Riddle</h1>
 
 		{#if !confetti}
 			<div class="enigme-box">
@@ -28,6 +29,7 @@
 					{#if data.check === true}
 						{data.msg}
 						{trouverr()}
+						
 					{:else}
 						{data.msg}
 					{/if}
@@ -40,45 +42,53 @@
 						<input required type="text" class="input" name="userInput" bind:value={userInput} />
 						<span class="bar"></span>
 						<label class="label">
-							<span class="label-char" style="--index: 0">L</span>
-							<span class="label-char" style="--index: 1">e</span>
-							<span class="label-char ml-1" style="--index: 3">c</span>
-							<span class="label-char" style="--index: 4">o</span>
-							<span class="label-char" style="--index: 5">d</span>
-							<span class="label-char" style="--index: 6">e</span>
+							<span class="label-char" style="--index: 0">P</span>
+							<span class="label-char" style="--index: 1">a</span>
+							<span class="label-char " style="--index: 2">s</span>
+							<span class="label-char" style="--index: 3">s</span>
+							<span class="label-char" style="--index: 4">w</span>
+							<span class="label-char" style="--index: 5">o</span>
+							<span class="label-char" style="--index: 6">r</span>
+							<span class="label-char" style="--index: 7">d</span>
 						</label>
 					</div>
-					<button type="submit">Vérifier</button>
+					<!-- From Uiverse.io by cssbuttons-io --> 
+					<button type="submit" class="learn-more">
+						<span class="circle" aria-hidden="true">
+						<span class="icon arrow"></span>
+						</span>
+						<span class="button-text">Check</span>
+					</button>
+					
 				{/if}
 			</div>
-
+			<br>
 			<br />
 			<div style="margin-left: 2%;">
 				<Dialog.Root>
 					<Dialog.Trigger>
-						<Button class="cursor-pointer" size="sm"><b>Comment jouer ❔</b></Button>
+						<Button class="cursor-pointer" size="sm"><b>How to play❔</b></Button>
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>L'énigme du jour 🔎</Dialog.Title>
+							<Dialog.Title>Daily riddle 🔎</Dialog.Title>
 							<Dialog.Description>
 								<br />
-								🌟 Tu te crois malin ? 🌟<br /><br />
-								Alors prouve-le ! 🧠💡 Une énigme t’attend… Un mot de passe est caché à EPITA ! 🔎✨<br
+								🌟 <b>You believe yourself clever ?</b> 🌟<br /><br />
+								So prove it!🧠💡 An enigma is waiting for you ... A password is hidden in Epita! 🔎✨<br
 								/><br />
-								Ta mission : le retrouver grâce à l’énigme… 📜🔐<br />
+								Your mission: to find it thanks to the enigma ... 📜🔐<br />
 
-								⚠️ Mais attention ! Chaque jour, il change de campus ! 🎭 <br />
-								📍 Un jour à Villejuif, un autre au Kremlin-Bicêtre… Sauras-tu suivre la piste ? 👀👣
+								⚠️ But beware!Every day, he changes campuses! 🎭 <br />
+								📍 One day in <b>Villejuif</b>, another at the <b>Kremlin-Bicêtre</b>… Will you be able to follow the track? 👀👣
 								<br /><br />
-								🚀 Le plus rapide gagne les points ! 🏆 Donc sois prêt, fonce et décroche la victoire
-								! 🔥
+								🚀 The fastest wins the points!🏆 So be ready, go for it and won the victory! 🔥
 								<br /><br />
-								🍀 Bonne chance ! 🍀
+								🍀 <strong style="text-decoration: underline;">Good luck !</strong>🍀
 							</Dialog.Description>
 						</Dialog.Header>
 						<Dialog.Close>
-							<Button class="mt-2">Fermer</Button>
+							<Button class="mt-2">Close</Button>
 						</Dialog.Close>
 					</Dialog.Content>
 				</Dialog.Root>
@@ -116,6 +126,7 @@
 		{/if}
 	</div>
 </form>
+<title>Sambas Dos Krakos - DailyRiddle</title>
 
 <style>
 	@keyframes slideUnderline {
@@ -153,7 +164,7 @@
 		justify-content: center;
 		min-height: 100vh;
 		text-align: center;
-		padding: 20px;
+		padding: 10px;
 	}
 	.enigme-title {
 		font-size: 2.5rem;
@@ -170,18 +181,17 @@
 		bottom: -5px;
 		width: 100%;
 		height: 4px;
-		background-color: #6c2a2a;
 		animation: slideUnderline 1s ease-in-out;
 	}
 	.enigme-box {
-		border: 2px solid #6c2a2a;
+		border: 2px solid #32881d;
 		padding: 20px;
 		border-radius: 10px;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-		margin: 20px 0;
+		margin: 30px 0;
 		animation: fadeIn 1s ease-in-out;
 		width: 100%;
-		max-width: 400px;
+		max-width: 600px;
 	}
 	.enigme-text {
 		font-size: 1.5rem;
@@ -194,14 +204,14 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		max-width: 400px;
+		max-width: 600px;
 		margin-top: 20px;
 	}
 	/* Stylisation de la wave-group */
 	.wave-group {
 		position: relative;
 		width: 100%;
-		max-width: 250px;
+		max-width: 200px;
 	}
 	.wave-group .input {
 		font-size: 16px;
@@ -209,14 +219,14 @@
 		display: block;
 		width: 100%;
 		border: none;
-		border-bottom: 1px solid #515151;
+		border-bottom: 1px solid #000000;
 		background: transparent;
 	}
 	.wave-group .input:focus {
 		outline: none;
 	}
 	.wave-group .label {
-		color: #999;
+		color: #000000;
 		font-size: 18px;
 		font-weight: normal;
 		position: absolute;
@@ -261,44 +271,6 @@
 		width: 50%;
 	}
 
-	/* Bouton (inspiré de Uiverse.io par adamgiebl) */
-	button {
-		font-family: inherit;
-		font-size: 20px;
-		background: #6c2a2a;
-		color: white;
-		padding: 0.7em 1em;
-		padding-left: 0.9em;
-		display: flex;
-		align-items: center;
-		border: none;
-		border-radius: 16px;
-		overflow: hidden;
-		transition: all 0.2s;
-		cursor: pointer;
-	}
-	button span {
-		display: block;
-		margin-left: 0.3em;
-		transition: all 0.3s ease-in-out;
-	}
-	button svg {
-		display: block;
-		transform-origin: center center;
-		transition: transform 0.3s ease-in-out;
-	}
-	button:hover .svg-wrapper {
-		animation: fly-1 0.6s ease-in-out infinite alternate;
-	}
-	button:hover svg {
-		transform: translateX(1.2em) rotate(45deg) scale(1.1);
-	}
-	button:hover span {
-		transform: translateX(5em);
-	}
-	button:active {
-		transform: scale(0.95);
-	}
 	@keyframes fly-1 {
 		from {
 			transform: translateY(0.1em);
@@ -350,4 +322,93 @@
 			max-width: 100%;
 		}
 	}
+
+	/* From Uiverse.io by cssbuttons-io */ 
+button {
+ position: relative;
+ display: inline-block;
+ cursor: pointer;
+ outline: none;
+ border: 0;
+ vertical-align: middle;
+ text-decoration: none;
+ background: transparent;
+ padding: 0;
+ font-size: inherit;
+ font-family: inherit;
+}
+
+button.learn-more {
+ width: 12rem;
+ height: auto;
+}
+
+button.learn-more .circle {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: relative;
+ display: block;
+ margin: 0;
+ width: 3rem;
+ height: 3rem;
+ background: #0a9338;
+ border-radius: 1.625rem;
+}
+
+button.learn-more .circle .icon {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: absolute;
+ top: 0;
+ bottom: 0;
+ margin: auto;
+ background: #fff;
+}
+
+button.learn-more .circle .icon.arrow {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ left: 0.625rem;
+ width: 1.125rem;
+ height: 0.125rem;
+ background: none;
+}
+
+button.learn-more .circle .icon.arrow::before {
+ position: absolute;
+ content: "";
+ top: -0.29rem;
+ right: 0.0625rem;
+ width: 0.625rem;
+ height: 0.625rem;
+ border-top: 0.125rem solid #fff;
+ border-right: 0.125rem solid #fff;
+ transform: rotate(45deg);
+}
+
+button.learn-more .button-text {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ padding: 0.75rem 0;
+ margin: 0 0 0 1.85rem;
+ color: #282936;
+ font-weight: 700;
+ line-height: 1.6;
+ text-align: center;
+ text-transform: uppercase;
+}
+
+button:hover .circle {
+ width: 100%;
+}
+
+button:hover .circle .icon.arrow {
+ background: #fff;
+ transform: translate(1rem, 0);
+}
+
+button:hover .button-text {
+ color: #fff;
+}
 </style>

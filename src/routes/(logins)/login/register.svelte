@@ -8,7 +8,7 @@
 		'focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 shadow h-9 px-4 py-2';
 </script>
 
-<title>Krak'n Roses - Register</title>
+<title>Samba Dos Krakos  - Register</title>
 <Card.Root>
 	<Card.Header>
 		<Card.Title class="text-2xl" style="color: black;">Register</Card.Title>
