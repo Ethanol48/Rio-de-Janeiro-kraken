@@ -31,6 +31,7 @@ export const games = pgTable('games', {
 	lastdayplayed_gobelet: varchar('lastdayplayed_gobelet').notNull().default('')
 });
 
+
 export const orders = pgTable('orders', {
 	id: varchar('id').primaryKey(),
 	userId: varchar('user_id')
