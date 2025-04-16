@@ -31,6 +31,7 @@ export const games = sqliteTable('games', {
 	lastdayplayed_gobelet: text('lastdayplayed_gobelet').notNull().default('')
 });
 
+
 export const orders = sqliteTable('orders', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
