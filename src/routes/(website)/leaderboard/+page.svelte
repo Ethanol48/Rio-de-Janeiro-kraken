@@ -31,7 +31,7 @@
 
 <style lang="postcss">
 	tr {
-		@apply m-0 border-t p-0 even:bg-muted;
+		@apply m-0 border-t p-0;
 	}
 
 	td {
