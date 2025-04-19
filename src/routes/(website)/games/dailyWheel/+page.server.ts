@@ -46,10 +46,10 @@ export const actions: Actions = {
 		}
 		const pointsWon = SEGMENT_POINTS[segment];
 		await processSpin(userId, pointsWon);
-		let message = "";
-		if(pointsWon === 0) {
+		let message = '';
+		if (pointsWon === 0) {
 			// ajouter l'item
-			message =" Go check in your inventory what it is 😉"
+			message = ' Go check in your inventory what it is 😉';
 		}
 		return {
 			status: 'success',

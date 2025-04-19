@@ -31,7 +31,6 @@ export const games = pgTable('games', {
 	lastdayplayed_gobelet: varchar('lastdayplayed_gobelet').notNull().default('')
 });
 
-
 export const orders = pgTable('orders', {
 	id: varchar('id').primaryKey(),
 	userId: varchar('user_id')
@@ -68,9 +67,7 @@ export const blackjack = pgTable('blackjack', {
 	neutral: boolean('neutral').default(false),
 	ended: boolean('ended').default(false),
 	playerWon: boolean('player_won').default(false),
-	createdAt: timestamp('created_at')
-		.notNull()
-		.defaultNow()
+	createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
 export const enigme = pgTable('enigme', {

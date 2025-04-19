@@ -27,20 +27,22 @@
 	<p style="font-size: 12px;" class="animate-slide-in">
 		You've got <b>{data.points}</b> points! Time to light up the carnival! 🎭🔥
 	</p>
-	<br>
+	<br />
 {/if}
 
-<h1 class="animate-slide-in">Are you ready to tear up the dance floor, conquer the samba, and set the party on fire? 💃🕺</h1>
+<h1 class="animate-slide-in">
+	Are you ready to tear up the dance floor, conquer the samba, and set the party on fire? 💃🕺
+</h1>
 <p class="animate-slide-in">
 	Show off your best moves, crush the challenges, and soak in the wild vibes of <b
-		style="text-decoration: underline;">Rio</b> ! 🌴🔥
-		<br>
+		style="text-decoration: underline;">Rio</b
+	>
+	! 🌴🔥
+	<br />
 </p>
-<br>
+<br />
 
-<p class="animate-slide-in">
-	You in? LET’S GO! 🚀
-</p>
+<p class="animate-slide-in">You in? LET’S GO! 🚀</p>
 
 <br />
 <br />
@@ -110,23 +112,30 @@
 				<Dialog.Title>❔ • Informations</Dialog.Title>
 				<Dialog.Description>
 					<br />
-					
-					<strong style="font-size: 15px; text-align:center">🎭🔥 Rio Carnival: The Quest for the Golden Mask! 🔥🎭</strong>
-					<br><br>
-					In the electrifying streets of Rio, where samba beats fill the air and confetti rains from the sky, an ancient legend comes to life…
 
-					<br><br>
-					🌟 The Golden Mask, the ultimate symbol of the carnival, has vanished! Only those who prove their skill, daring, and festive spirit can uncover its secret and claim the spotlight.
-					<br><br>
-					🎯 Your mission? Shine in the mini-games, rack up as many points as possible, and trade them in for dazzling rewards in the shop. Every challenge conquered brings you closer to the crown of the carnival!
-					<br><br>
-					🎭 But beware… Rumor has it the Golden Mask is hidden somewhere within the games, waiting to be found by the ultimate party legend. Can you crack the mystery and become Rio’s next carnival icon?
-					<br><br>
-					
-					
-					✨ <b style="text-decoration: underline; font-size:15px"
-						>Good luck—let the carnival begin!</b> ✨
+					<strong style="font-size: 15px; text-align:center"
+						>🎭🔥 Rio Carnival: The Quest for the Golden Mask! 🔥🎭</strong
+					>
+					<br /><br />
+					In the electrifying streets of Rio, where samba beats fill the air and confetti rains from
+					the sky, an ancient legend comes to life…
 
+					<br /><br />
+					🌟 The Golden Mask, the ultimate symbol of the carnival, has vanished! Only those who prove
+					their skill, daring, and festive spirit can uncover its secret and claim the spotlight.
+					<br /><br />
+					🎯 Your mission? Shine in the mini-games, rack up as many points as possible, and trade them
+					in for dazzling rewards in the shop. Every challenge conquered brings you closer to the crown
+					of the carnival!
+					<br /><br />
+					🎭 But beware… Rumor has it the Golden Mask is hidden somewhere within the games, waiting to
+					be found by the ultimate party legend. Can you crack the mystery and become Rio’s next carnival
+					icon?
+					<br /><br />
+
+					✨
+					<b style="text-decoration: underline; font-size:15px">Good luck—let the carnival begin!</b
+					> ✨
 				</Dialog.Description>
 			</Dialog.Header>
 			<Dialog.Close>

@@ -10,7 +10,7 @@
 	let gameStarted = $state(false);
 	let timeLeft = $state(30);
 	let msgstart = $state(true);
-	let timer ;
+	let timer;
 	let resultMessage = $state('');
 	let jeu_a_commencer = $state(false);
 	let showRose = $state(false);
@@ -109,35 +109,35 @@
 				y: -100,
 				duration: 0.5,
 				onComplete: () => {
-				start = true;
-				showRose = true;
-				setTimeout(() => {
-					start = false;
-					showRose = false;
-					gsap.to(`#cup2`, {
-					y: 0,
-					duration: 0.5,
-					onComplete: () => {
-						gsap.to('#cup1', { x: 180, duration: 1 });
-						gsap.to('#cup3', {
-						x: -170,
-						duration: 1,
-						onComplete: () => {
-							gsap.to('#cup1', { x: 0, duration: 1 });
-							gsap.to('#cup3', {
-							x: 20,
-							duration: 1,
+					start = true;
+					showRose = true;
+					setTimeout(() => {
+						start = false;
+						showRose = false;
+						gsap.to(`#cup2`, {
+							y: 0,
+							duration: 0.5,
 							onComplete: () => {
-								isAnimating = false;
-								showButtons = true;
-								startTimer();
+								gsap.to('#cup1', { x: 180, duration: 1 });
+								gsap.to('#cup3', {
+									x: -170,
+									duration: 1,
+									onComplete: () => {
+										gsap.to('#cup1', { x: 0, duration: 1 });
+										gsap.to('#cup3', {
+											x: 20,
+											duration: 1,
+											onComplete: () => {
+												isAnimating = false;
+												showButtons = true;
+												startTimer();
+											}
+										});
+									}
+								});
 							}
-							});
-						}
 						});
-					}
-					});
-				}, 1000);
+					}, 1000);
 				}
 			});
 		}
@@ -167,13 +167,12 @@
 				method: 'POST',
 				body: formData
 			});
-			
 
 			let data = await response.json();
 			// const data = await JSON.parse(actionResponse.data);
 
 			console.log('data: ', data);
-			if (data.success === false){
+			if (data.success === false) {
 				resultMessage = data.message;
 				endGame(false);
 				return;
@@ -282,12 +281,12 @@
 						<Dialog.Title>Find The Gold 🪙</Dialog.Title>
 						<Dialog.Description>
 							<br />
-							<b>Ah, you want to challenge me 😈?</b> <br> <br>
+							<b>Ah, you want to challenge me 😈?</b> <br /> <br />
 							🥇 If you find the gold coin, I will give you
 							<b style="text-decoration: underline;">4 points</b> as a reward 💲!
-							<br>
+							<br />
 							‼️But for information, each game costs 1 point, and you can only play 20 times a day!
-							<br><br>
+							<br /><br />
 							Good luck 🍀! <br />
 						</Dialog.Description>
 					</Dialog.Header>

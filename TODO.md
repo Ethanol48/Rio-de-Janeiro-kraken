@@ -14,7 +14,7 @@
     - [x] Refaire le css des message
     - [ ] Ajouter le gift secret a l'user
   - [ ] ShuffleCoin
-    - [x] Modifer l'api et le mettre en backend 
+    - [x] Modifer l'api et le mettre en backend
     - [x] Fix le css et le texte
     - [ ] Modifier l'apparition Si win
 - [x] Changer le texte pour le bon thème

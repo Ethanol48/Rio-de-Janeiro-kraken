@@ -16,7 +16,7 @@
 
 	let wheelElement: HTMLImageElement;
 	import { enhance } from '$app/forms';
-	
+
 	function spinWheel() {
 		intromsg = false;
 		if (spinning) return;
@@ -68,9 +68,8 @@
 						<Dialog.Description>
 							<br />
 							Hahaha! You come to try your <b>luck</b>? <br /><br />
-							Very well, here is the deal: you can win incredible <b>rewards</b>, and
-							maybe even a secret <b>gift</b>... 🎁 But beware, you can only play once
-							every 3 hours.
+							Very well, here is the deal: you can win incredible <b>rewards</b>, and maybe even a
+							secret <b>gift</b>... 🎁 But beware, you can only play once every 3 hours.
 							<br /><br />
 							So come back to see me and try your <b>luck</b>! 🍀
 						</Dialog.Description>
@@ -89,13 +88,12 @@
 		</button>
 
 		{#if form?.status === 'failure'}
-			
 			<div class="error-box">
 				{form.message}
 			</div>
 		{/if}
 
-		{#if form?.status === 'success' }
+		{#if form?.status === 'success'}
 			{spinWheel()}
 		{/if}
 

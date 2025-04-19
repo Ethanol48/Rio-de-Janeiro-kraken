@@ -32,7 +32,6 @@
 			const reponse = await data.json();
 
 			window.location.reload();
-
 		} catch (error) {
 			console.error('Erreur réseau:', error);
 		}
@@ -44,9 +43,7 @@
 		try {
 			await fetch('?/DisClaimed', { method: 'POST', body: formData });
 
-
 			window.location.reload();
-
 		} catch (error) {
 			console.error('Erreur réseau:', error);
 		}

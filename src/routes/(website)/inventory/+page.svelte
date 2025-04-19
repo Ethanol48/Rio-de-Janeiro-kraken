@@ -3,7 +3,6 @@
 	import { fly, fade } from 'svelte/transition';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
-
 	// Les données sont fournies par la fonction load du serveur
 	export let data: {
 		user: { username: string; points: number };
@@ -23,9 +22,9 @@
 		<!-- En-tête -->
 		<div class="mb-6 text-center">
 			<h1 class="text-2xl font-bold text-gray-800 md:text-3xl">
-				Hi {data.user.username}, <br> here is your inventory
+				Hi {data.user.username}, <br /> here is your inventory
 			</h1>
-			<br>
+			<br />
 			<p class="mt-2 text-lg text-gray-600 md:text-xl">
 				Current points: {data.user.points}
 			</p>
@@ -45,9 +44,7 @@
 			{/each}
 		</div>
 		{#if data.items.length === 0}
-		
-
-		<!--
+			<!--
 		<div class="mt-6 flex justify-center">
 			
 				<Button
@@ -86,7 +83,6 @@
 				{/if}
 		</div>
 		-->
-
 		{/if}
 	</div>
 </div>

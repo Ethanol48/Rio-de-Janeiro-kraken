@@ -1,6 +1,12 @@
 import { db } from '$lib/server/db';
 import { enigme, items, user } from '$lib/server/db/schema';
-import { CreateEnigme, enigme_get_question, GetAllEnigme, HasEnigme, ModifiyEnigme } from '$lib/server/db/utilities';
+import {
+	CreateEnigme,
+	enigme_get_question,
+	GetAllEnigme,
+	HasEnigme,
+	ModifiyEnigme
+} from '$lib/server/db/utilities';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
@@ -20,7 +26,7 @@ export const load: PageServerLoad = async () => {
 		.from(items);
 
 	let enigmes = await GetAllEnigme();
-	
+
 	return {
 		users: users,
 		items: items_,
@@ -29,9 +35,8 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-	CreateQuestion: async ({ request , locals }) => {
+	CreateQuestion: async ({ request, locals }) => {
 		if (!locals.user) return;
-
 
 		const data = await request.formData();
 		const question = data.get('question');
@@ -39,7 +44,7 @@ export const actions = {
 		const day = data.get('day');
 		const mois = data.get('mois');
 		const point = data.get('point');
-		if(day === null || mois === null || point === null) return { success: false };
+		if (day === null || mois === null || point === null) return { success: false };
 
 		const QuestionString = question!.toString();
 		const AnswerString = answer!.toString();
@@ -47,29 +52,27 @@ export const actions = {
 		const moisString = parseInt(mois!.toString());
 		const pointString = parseInt(point!.toString());
 		console.log(question, answer, day, mois, point);
-		
-		if ((await HasEnigme(dayString, moisString-1)).length===0) {
-			try{
-				await CreateEnigme(QuestionString, AnswerString, dayString, moisString-1, pointString);
+
+		if ((await HasEnigme(dayString, moisString - 1)).length === 0) {
+			try {
+				await CreateEnigme(QuestionString, AnswerString, dayString, moisString - 1, pointString);
 				return { success: true, message: "L'énigme a été crée avec succès !" };
-
-			}catch(e){
-				return { success: false, message: "Une erreur est survenue lors de la création de l'énigme" };
-
+			} catch (e) {
+				return {
+					success: false,
+					message: "Une erreur est survenue lors de la création de l'énigme"
+				};
 			}
-		}
-		else{
-			try{
-				await ModifiyEnigme(QuestionString, AnswerString, dayString, moisString-1, pointString);
+		} else {
+			try {
+				await ModifiyEnigme(QuestionString, AnswerString, dayString, moisString - 1, pointString);
 				return { success: true, message: "L'énigme a été mis à jour avec succès !" };
-
-			}catch(e){
-				return { success: false, message: "Une erreur est survenue lors de la modification de l'énigme" };
-
+			} catch (e) {
+				return {
+					success: false,
+					message: "Une erreur est survenue lors de la modification de l'énigme"
+				};
 			}
 		}
-	},
-
-	
+	}
 };
-

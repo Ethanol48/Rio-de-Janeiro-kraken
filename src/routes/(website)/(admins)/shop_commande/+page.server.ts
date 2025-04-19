@@ -27,7 +27,6 @@ ArmandMS
 
 */
 
-
 async function GetData() {
 	const ListOrder = await GetListOrder();
 
