@@ -14,15 +14,19 @@
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title>Buying</Dialog.Title>
-			<Dialog.Description></Dialog.Description>
+			<Dialog.Title>
+				<div class="flex justify-between">
+					<p>Buying: {item.name}</p>
+					<p class="pr-4">
+						Stock left: <span class:text-red-500={item.stock <= 5}>{item.stock}</span>
+					</p>
+				</div>
+			</Dialog.Title>
+			<Dialog.Description>{item.desc}</Dialog.Description>
 		</Dialog.Header>
 
 		<div>
-			<h2>Debug</h2>
-			<div>
-				<h3>itemId: {item.id}</h3>
-			</div>
+			<h3 class="typography">Price: {item.price}</h3>
 		</div>
 
 		<Dialog.Footer>

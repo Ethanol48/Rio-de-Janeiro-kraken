@@ -9,7 +9,10 @@
 
 <Card.Root class="w-[30vw] min-w-[200px] max-w-[300px]">
 	<Card.Header>
-		<h2 class="typography">{item.name}</h2>
+		<div class="flex justify-between">
+			<h2 class="typography">{item.name}</h2>
+			<p>Stock left: <span class:text-red-500={item.stock <= 5}>{item.stock}</span></p>
+		</div>
 	</Card.Header>
 	<Card.Content class="">
 		{item.desc}
