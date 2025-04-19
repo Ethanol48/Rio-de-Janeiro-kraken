@@ -1,6 +1,6 @@
 import { db } from '.';
 import { blackjack, enigme, games, items, orders, user } from './schema';
-import { count, desc, eq, sql } from 'drizzle-orm';
+import { and, count, desc, eq, sql } from 'drizzle-orm';
 import { CardsToString, createCards, shuffle } from '$lib/games/blackjack';
 import { md5 } from 'js-md5';
 
@@ -73,7 +73,7 @@ export const DoesGameExistAndNotEnded = async (gameId: string) => {
 	const result_query = await db
 		.select()
 		.from(blackjack)
-		.where(sql`${blackjack.id} = ${gameId} AND ${blackjack.ended} = 0`);
+    .where(and(eq(blackjack.id, gameId), eq(blackjack.ended, false)));
 
 	const theres_result = result_query.length > 0;
 
