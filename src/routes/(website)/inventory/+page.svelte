@@ -70,21 +70,26 @@
 							<Dialog.Description>
 								Do you really want to recover your order?
 								<br>
-								<br>
 								<strong style="color: red; text-decoration:underline; font-size:15px">After that, you will no longer be able to recover new gifts!</strong>
+
+								<br><br><br>
+								The date and location for collecting your order will be announced on the Kraken🐙 Discord server below:
+								<a href="https://discord.gg/xtRHMNWqnK" style="text-decoration: underline;">https://discord.gg/xtRHMNWqnK</a>
+
+								<br><br> To retrieve your order, please show your <b>inventory</b> at the time of pickup.
 							</Dialog.Description>
 						</Dialog.Header>
 						<Dialog.Footer class="mt-4 flex justify-end gap-2">
 							<Button variant="secondary" on:click={() => showConfirmation = false}>Cancel</Button>
 							<form action="?/Claim" method="post">
-							<Button type="submit">To validate</Button>
+							<Button type="submit">Confirm !</Button>
 							</form>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
 				{/if}
 		</div>
-		-->
+		
 
 		{/if}
 	</div>

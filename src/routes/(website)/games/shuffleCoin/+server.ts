@@ -60,6 +60,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	await removePoints(locals.user.id, 1);
 	const random = Math.random();
 
+	console.log('random', random);
 	const isWinner = random < 0.33;
 
 	if (isWinner) {

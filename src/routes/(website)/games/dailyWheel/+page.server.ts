@@ -1,7 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { canUserSpin, processSpin } from '$lib/server/db/utilities';
-import { message } from 'sveltekit-superforms';
+import {  canUserSpin, GiveItem, NbOfMystery, processSpin, ResetLastSpin } from '$lib/server/db/utilities';
 
 const SEGMENT_POINTS = [0, 20, 10, 6, 4];
 
@@ -33,7 +32,7 @@ export const actions: Actions = {
 		}
 
 		// Calcul du résultat du spin
-		const probabilities = [5, 5, 10, 30, 50]; // Probabilités en %
+		const probabilities = [5, 5, 10, 40, 40];
 		const random = Math.random() * 100;
 		let cumulative = 0;
 		let segment = 0;
@@ -44,13 +43,37 @@ export const actions: Actions = {
 				break;
 			}
 		}
+		
 		const pointsWon = SEGMENT_POINTS[segment];
+		
 		await processSpin(userId, pointsWon);
+		if (pointsWon === 0) {
+			const stockMystery = await NbOfMystery();
+			if (stockMystery === 0) {
+				await ResetLastSpin(userId); // on remet le compteur à 0
+
+				return {
+					status: 'success',
+					message: `The mystery gift is exhausted, relaunch the page and restart the wheel !`,
+					segment: segment,
+					points: pointsWon
+				};
+			}
+		
+			await GiveItem(userId, "10"); // cadeau mystère
+		}
+
 		let message = '';
 		if (pointsWon === 0) {
 			// ajouter l'item
-			message = ' Go check in your inventory what it is 😉';
+			return {
+				status: 'success',
+				message: `You have won a mystery gift ! Go check in your inventory what it is 😉`,
+				segment: segment,
+				points: pointsWon
+			};
 		}
+
 		return {
 			status: 'success',
 			message: `You have won ${pointsWon} points ! ${message}`,

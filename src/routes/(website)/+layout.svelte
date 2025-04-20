@@ -87,7 +87,7 @@
 	<!-- Liste déroulante affichée lorsque le menu est ouvert -->
 	{#if isMenuOpen}
 		<div
-			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#d8882ddd] p-3 shadow-md md:hidden"
+			class="backdrop-blur-md/50 animate-slide-down absolute left-3 top-12 flex flex-col gap-2 rounded bg-[#f2eeeedd] p-3 shadow-md md:hidden"
 		>
 			<Button on:click={toggleMenu} class="bg-primary/80" href="/home">🏠 Home</Button>
 			<Button on:click={toggleMenu} class="bg-primary/80" href="/leaderboard">📜 Leaderboard</Button

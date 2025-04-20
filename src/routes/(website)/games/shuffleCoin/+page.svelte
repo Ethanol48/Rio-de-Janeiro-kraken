@@ -10,6 +10,7 @@
 	let gameStarted = $state(false);
 	let timeLeft = $state(30);
 	let msgstart = $state(true);
+	let Winner = $state(false);
 	let timer;
 	let resultMessage = $state('');
 	let jeu_a_commencer = $state(false);
@@ -17,6 +18,7 @@
 	let start = $state(false);
 	let button_msg = $state('Pay 1 point to play');
 	let showButtons = $state(false);
+	let VictoryCup = $state(0);
 
 	let showConfirmation = false;
 	let cupToValidate: number | null = null;
@@ -56,7 +58,7 @@
 			resetGame();
 		}
 		msgstart = false;
-
+		Winner = false;
 		gameStarted = true;
 		button_msg = 'Start again';
 		jeu_a_commencer = true;
@@ -185,6 +187,8 @@
 					resultMessage = data.message;
 					if (data.isWinner) {
 						showRose = true;
+						Winner = true;
+						VictoryCup = cup;
 					}
 
 					endGame(data.isWinner);
@@ -234,7 +238,7 @@
 				on:click={() => onCupClick(cup)}
 				style="pointer-events: {showButtons ? 'auto' : 'none'}"
 			>
-				{#if (selectedCup === cup && showRose) || (2 === cup && showRose && start)}
+				{#if (selectedCup === cup && showRose) || (2 === cup && showRose && start)|| (Winner && VictoryCup === cup)}
 					<div class="rose"></div>
 				{/if}
 			</div>

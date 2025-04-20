@@ -8,13 +8,13 @@
     - [x] Before vs After
 - [x] Inventory
   - [x] Decide button for claim
-- [ ] Games
+- [x] Games
   - [x] Roue
     - [x] refaire le backend
     - [x] Refaire le css des message
-    - [ ] Ajouter le gift secret a l'user
-  - [ ] ShuffleCoin
+    - [x] Ajouter le gift secret a l'user
+  - [x] ShuffleCoin
     - [x] Modifer l'api et le mettre en backend
     - [x] Fix le css et le texte
-    - [ ] Modifier l'apparition Si win
+    - [x] Modifier l'apparition Si win
 - [x] Changer le texte pour le bon thème

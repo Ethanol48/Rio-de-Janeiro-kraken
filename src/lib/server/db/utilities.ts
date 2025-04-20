@@ -577,6 +577,7 @@ export const GetPendingOrders = async () => {
 export const GetItems = async () => {
 	const query = await db.select().from(items);
 
+
 	return query;
 };
 
@@ -643,6 +644,37 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 	return true;
 };
 
+export const NbOfMystery = async (): Promise<number> => {
+	const query = await db
+		.select({ stock: items.stock })
+		.from(items)
+		.where(eq(items.id, "10"));
+	return query[0].stock;
+}
+
+
+
+export const GiveItem = async (userId: string, itemId: string): Promise<boolean> => {
+	const item = await GetItem(itemId);
+
+	if (!item.present) {
+		console.error("tried to buy an item that doesn't exist");
+		return false;
+	} else {
+		
+		const id = crypto.randomUUID();
+
+		await db.insert(orders).values({ id: id, userId: userId, productId: itemId });
+		await db
+			.update(items)
+			.set({ stock: item.stock - 1 })
+			.where(eq(items.id, itemId));
+			
+	}
+
+	return true;
+};
+
 export const SetAdminStatus = async (userId: string, value: boolean): Promise<void> => {
 	await db.update(user).set({ isAdmin: value }).where(eq(user.id, userId));
 };
@@ -685,3 +717,11 @@ export const AddNewGameGobelet = async (user_id: string) => {
 		.set({ numberofplaytoday: (await GetNumberOfPlay(user_id)) + 1 })
 		.where(eq(games.userId, user_id));
 };
+
+
+// jeu row
+
+export const ResetLastSpin = async (userId:string) => {
+	await db.update(games).set({ last_spin: 0 }).where(eq(games.userId, userId));
+
+}
