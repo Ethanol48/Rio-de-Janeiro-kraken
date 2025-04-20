@@ -44,11 +44,7 @@
 			{/each}
 		</div>
 		{#if data.items.length !== 0}
-		
-
-		
-		<div class="mt-6 flex justify-center">
-			
+			<div class="mt-6 flex justify-center">
 				<Button
 					on:click={() => (showConfirmation = true)}
 					disabled={data.claimed}
@@ -61,36 +57,46 @@
 					{/if}
 				</Button>
 				{#if showConfirmation}
-				
-				<Dialog.Root open={true} on:openChange={(e) => { if (!e.detail) showConfirmation = false }}>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Confirm your choice</Dialog.Title>
-							<br>
-							<Dialog.Description>
-								Do you really want to recover your order?
-								<br>
-								<strong style="color: red; text-decoration:underline; font-size:15px">After that, you will no longer be able to recover new gifts!</strong>
+					<Dialog.Root
+						open={true}
+						on:openChange={(e) => {
+							if (!e.detail) showConfirmation = false;
+						}}
+					>
+						<Dialog.Content>
+							<Dialog.Header>
+								<Dialog.Title>Confirm your choice</Dialog.Title>
+								<br />
+								<Dialog.Description>
+									Do you really want to recover your order?
+									<br />
+									<strong style="color: red; text-decoration:underline; font-size:15px"
+										>After that, you will no longer be able to recover new gifts!</strong
+									>
 
-								<br><br><br>
-								The date and location for collecting your order will be announced on the Kraken🐙 Discord server below:
-								<a href="https://discord.gg/xtRHMNWqnK" style="text-decoration: underline;">https://discord.gg/xtRHMNWqnK</a>
+									<br /><br /><br />
+									The date and location for collecting your order will be announced on the Kraken🐙 Discord
+									server below:
+									<a href="https://discord.gg/xtRHMNWqnK" style="text-decoration: underline;"
+										>https://discord.gg/xtRHMNWqnK</a
+									>
 
-								<br><br> To retrieve your order, please show your <b>inventory</b> at the time of pickup.
-							</Dialog.Description>
-						</Dialog.Header>
-						<Dialog.Footer class="mt-4 flex justify-end gap-2">
-							<Button variant="secondary" on:click={() => showConfirmation = false}>Cancel</Button>
-							<form action="?/Claim" method="post">
-							<Button type="submit">Confirm !</Button>
-							</form>
-						</Dialog.Footer>
-					</Dialog.Content>
-				</Dialog.Root>
+									<br /><br /> To retrieve your order, please show your <b>inventory</b> at the time
+									of pickup.
+								</Dialog.Description>
+							</Dialog.Header>
+							<Dialog.Footer class="mt-4 flex justify-end gap-2">
+								<Button variant="secondary" on:click={() => (showConfirmation = false)}
+									>Cancel</Button
+								>
+								<form action="?/Claim" method="post">
+									<Button type="submit">Confirm !</Button>
+								</form>
+							</Dialog.Footer>
+						</Dialog.Content>
+					</Dialog.Root>
 				{/if}
-		</div>
-		
-
+			</div>
 		{/if}
 	</div>
 </div>

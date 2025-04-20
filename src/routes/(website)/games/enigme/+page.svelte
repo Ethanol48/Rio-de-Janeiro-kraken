@@ -22,15 +22,13 @@
 	<div class="container">
 		<h1 class="enigme-title after:bg-primary">🔎 Daily Riddle</h1>
 		{#if data.EnigmeToday === false}
-		<br>
+			<br />
 			<h3 style="font-size: 20px; font-weight: bold; text-decoration: underline;">
 				There is no riddle today!
 			</h3>
-			<br>
-			<h1 style="font-size: 36px;">
-				😔
-			</h1>
-			<br><br><br>
+			<br />
+			<h1 style="font-size: 36px;">😔</h1>
+			<br /><br /><br />
 			<div style="margin-left: 2%;">
 				<Dialog.Root>
 					<Dialog.Trigger>
@@ -47,7 +45,8 @@
 								Your mission: to find it thanks to the enigma ... 📜🔐<br />
 
 								⚠️ But beware!Every day, he changes campuses! 🎭 <br />
-								📍 One day in <b>Villejuif</b>, another at the <b>Kremlin-Bicêtre</b>… Will you be able to follow the track? 👀👣
+								📍 One day in <b>Villejuif</b>, another at the <b>Kremlin-Bicêtre</b>… Will you be
+								able to follow the track? 👀👣
 								<br /><br />
 								🚀 The fastest wins the points!🏆 So be ready, go for it and won the victory! 🔥
 								<br /><br />
@@ -61,46 +60,45 @@
 				</Dialog.Root>
 			</div>
 		{:else}
-		{#if !confetti}
-			<div class="enigme-box">
-				<p class="enigme-text">
-					{#if data.check === true}
-						{data.msg}
-						{trouverr()}
-					{:else}
-						{data.msg}
-					{/if}
-				</p>
-			</div>
+			{#if !confetti}
+				<div class="enigme-box">
+					<p class="enigme-text">
+						{#if data.check === true}
+							{data.msg}
+							{trouverr()}
+						{:else}
+							{data.msg}
+						{/if}
+					</p>
+				</div>
 
-			<div class="input-container">
-				{#if !trouve}
-					<div class="wave-group">
-						<input required type="text" class="input" name="userInput" bind:value={userInput} />
-						<span class="bar"></span>
-						<label class="label">
-							<span class="label-char" style="--index: 0">P</span>
-							<span class="label-char" style="--index: 1">a</span>
-							<span class="label-char" style="--index: 2">s</span>
-							<span class="label-char" style="--index: 3">s</span>
-							<span class="label-char" style="--index: 4">w</span>
-							<span class="label-char" style="--index: 5">o</span>
-							<span class="label-char" style="--index: 6">r</span>
-							<span class="label-char" style="--index: 7">d</span>
-						</label>
-					</div>
-					<!-- From Uiverse.io by cssbuttons-io -->
-					<button type="submit" class="learn-more">
-						<span class="circle" aria-hidden="true">
-							<span class="icon arrow"></span>
-						</span>
-						<span class="button-text">Check</span>
-					</button>
-				{/if}
-			</div>
-			<br />
-			<br />
-			
+				<div class="input-container">
+					{#if !trouve}
+						<div class="wave-group">
+							<input required type="text" class="input" name="userInput" bind:value={userInput} />
+							<span class="bar"></span>
+							<label class="label">
+								<span class="label-char" style="--index: 0">P</span>
+								<span class="label-char" style="--index: 1">a</span>
+								<span class="label-char" style="--index: 2">s</span>
+								<span class="label-char" style="--index: 3">s</span>
+								<span class="label-char" style="--index: 4">w</span>
+								<span class="label-char" style="--index: 5">o</span>
+								<span class="label-char" style="--index: 6">r</span>
+								<span class="label-char" style="--index: 7">d</span>
+							</label>
+						</div>
+						<!-- From Uiverse.io by cssbuttons-io -->
+						<button type="submit" class="learn-more">
+							<span class="circle" aria-hidden="true">
+								<span class="icon arrow"></span>
+							</span>
+							<span class="button-text">Check</span>
+						</button>
+					{/if}
+				</div>
+				<br />
+				<br />
 			{/if}
 			<div style="margin-left: 2%;">
 				<Dialog.Root>

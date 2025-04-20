@@ -5,11 +5,10 @@
 </script>
 
 <div
-	class="animate-gradient relative flex h-screen flex-col items-center justify-center bg-gradient-to-br from-green-500 via-yellow-400 to-orange-500"
+	class="animate-gradient relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-green-500 via-yellow-400 to-orange-500"
 >
 	{@render children()}
 </div>
-
 <Toaster />
 
 <style>

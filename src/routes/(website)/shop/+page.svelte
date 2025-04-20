@@ -4,8 +4,6 @@
 	import Item from './comps/Item.svelte';
 	let { data, form }: PageProps = $props();
 
-	data.items = data.items.filter((item) => item.id !== '10');
-
 	$effect(() => {
 		if (form?.success === true) {
 			toast.success('The item has successfully being bought');
@@ -21,11 +19,9 @@
 		<h1 class="typography text-lg text-gray-900">SHOP</h1>
 	</div>
 
-	<div class="flex flex-col justify-center gap-6 md:flex-row">
+	<div class="flex flex-wrap justify-center gap-4">
 		{#each data.items as item}
 			<Item user={data.user} {item} />
-
-			
 		{/each}
 	</div>
 </div>

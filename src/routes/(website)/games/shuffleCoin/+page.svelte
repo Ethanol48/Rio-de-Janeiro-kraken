@@ -238,7 +238,7 @@
 				on:click={() => onCupClick(cup)}
 				style="pointer-events: {showButtons ? 'auto' : 'none'}"
 			>
-				{#if (selectedCup === cup && showRose) || (2 === cup && showRose && start)|| (Winner && VictoryCup === cup)}
+				{#if (selectedCup === cup && showRose) || (2 === cup && showRose && start) || (Winner && VictoryCup === cup)}
 					<div class="rose"></div>
 				{/if}
 			</div>

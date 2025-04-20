@@ -1,6 +1,12 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import {  canUserSpin, GiveItem, NbOfMystery, processSpin, ResetLastSpin } from '$lib/server/db/utilities';
+import {
+	canUserSpin,
+	GiveItem,
+	NbOfMystery,
+	processSpin,
+	ResetLastSpin
+} from '$lib/server/db/utilities';
 
 const SEGMENT_POINTS = [0, 20, 10, 6, 4];
 
@@ -43,9 +49,9 @@ export const actions: Actions = {
 				break;
 			}
 		}
-		
+
 		const pointsWon = SEGMENT_POINTS[segment];
-		
+
 		await processSpin(userId, pointsWon);
 		if (pointsWon === 0) {
 			const stockMystery = await NbOfMystery();
@@ -59,8 +65,8 @@ export const actions: Actions = {
 					points: pointsWon
 				};
 			}
-		
-			await GiveItem(userId, "10"); // cadeau mystère
+
+			await GiveItem(userId, '10'); // cadeau mystère
 		}
 
 		let message = '';

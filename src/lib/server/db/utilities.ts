@@ -577,7 +577,6 @@ export const GetPendingOrders = async () => {
 export const GetItems = async () => {
 	const query = await db.select().from(items);
 
-
 	return query;
 };
 
@@ -633,7 +632,7 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 				throw e + ' contact with the website administrators';
 			}
 
-			// I hate js, whys isn't it golang????
+			// I hate js, why isn't it golang????
 
 			const id = crypto.randomUUID();
 
@@ -645,14 +644,9 @@ export const BuyItem = async (userId: string, itemId: string): Promise<boolean> 
 };
 
 export const NbOfMystery = async (): Promise<number> => {
-	const query = await db
-		.select({ stock: items.stock })
-		.from(items)
-		.where(eq(items.id, "10"));
+	const query = await db.select({ stock: items.stock }).from(items).where(eq(items.id, '10'));
 	return query[0].stock;
-}
-
-
+};
 
 export const GiveItem = async (userId: string, itemId: string): Promise<boolean> => {
 	const item = await GetItem(itemId);
@@ -661,7 +655,6 @@ export const GiveItem = async (userId: string, itemId: string): Promise<boolean>
 		console.error("tried to buy an item that doesn't exist");
 		return false;
 	} else {
-		
 		const id = crypto.randomUUID();
 
 		await db.insert(orders).values({ id: id, userId: userId, productId: itemId });
@@ -669,7 +662,6 @@ export const GiveItem = async (userId: string, itemId: string): Promise<boolean>
 			.update(items)
 			.set({ stock: item.stock - 1 })
 			.where(eq(items.id, itemId));
-			
 	}
 
 	return true;
@@ -718,10 +710,8 @@ export const AddNewGameGobelet = async (user_id: string) => {
 		.where(eq(games.userId, user_id));
 };
 
-
 // jeu row
 
-export const ResetLastSpin = async (userId:string) => {
+export const ResetLastSpin = async (userId: string) => {
 	await db.update(games).set({ last_spin: 0 }).where(eq(games.userId, userId));
-
-}
+};

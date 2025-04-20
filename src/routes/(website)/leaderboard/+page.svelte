@@ -8,7 +8,7 @@
 	<h1 class="typography mb-3 ml-auto mr-auto text-lg text-gray-900">Leaderboard</h1>
 
 	<div class="my-6 w-full overflow-y-auto">
-		<table class="w-full">
+		<table class="w-full bg-slate-100/25">
 			<thead>
 				<tr>
 					<th class="w-[20px]"> # </th>
@@ -30,6 +30,12 @@
 </div>
 
 <style lang="postcss">
+	tr,
+	td,
+	th {
+		@apply border-slate-950;
+	}
+
 	tr {
 		@apply m-0 border-t p-0;
 	}

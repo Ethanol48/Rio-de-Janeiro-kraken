@@ -15,7 +15,7 @@ export const session = pgTable('session', {
 	id: varchar('id').primaryKey(),
 	userId: varchar('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: 'cascade' }),
 	expiresAt: timestamp('expires_at').notNull()
 	//expiresAt: integer('expires_at').notNull()
 });
@@ -23,7 +23,7 @@ export const session = pgTable('session', {
 export const games = pgTable('games', {
 	userId: varchar('user_id')
 		.primaryKey()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: 'cascade' }),
 	foundSecret: boolean('foundSecret').notNull().default(false),
 	button: boolean('button').notNull().default(false),
 	last_spin: integer('last_spin').notNull().default(0),
@@ -35,7 +35,7 @@ export const orders = pgTable('orders', {
 	id: varchar('id').primaryKey(),
 	userId: varchar('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: 'cascade' }),
 	productId: varchar('product_id')
 		.notNull()
 		.references(() => items.id)
@@ -53,7 +53,7 @@ export const blackjack = pgTable('blackjack', {
 	id: varchar('id').primaryKey(),
 	userId: varchar('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: 'cascade' }),
 
 	// safe the cards as a string?
 	// {Color}{symbol/number};{Carta};{Carta}

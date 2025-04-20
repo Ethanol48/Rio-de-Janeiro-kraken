@@ -1,6 +1,6 @@
 {
-	"id": "8b706309-0ee7-4bd6-afb6-6a63a26b3023",
-	"prevId": "d437d1fe-1451-4879-a323-7c90d6e3d116",
+	"id": "0c269661-b3cb-41b0-bccb-24064210a91b",
+	"prevId": "8b706309-0ee7-4bd6-afb6-6a63a26b3023",
 	"version": "7",
 	"dialect": "postgresql",
 	"tables": {
@@ -102,11 +102,11 @@
 				"blackjack_user_id_user_id_fk": {
 					"name": "blackjack_user_id_user_id_fk",
 					"tableFrom": "blackjack",
-					"columnsFrom": ["user_id"],
 					"tableTo": "user",
+					"columnsFrom": ["user_id"],
 					"columnsTo": ["id"],
-					"onUpdate": "no action",
-					"onDelete": "no action"
+					"onDelete": "cascade",
+					"onUpdate": "no action"
 				}
 			},
 			"compositePrimaryKeys": {},
@@ -230,11 +230,11 @@
 				"games_user_id_user_id_fk": {
 					"name": "games_user_id_user_id_fk",
 					"tableFrom": "games",
-					"columnsFrom": ["user_id"],
 					"tableTo": "user",
+					"columnsFrom": ["user_id"],
 					"columnsTo": ["id"],
-					"onUpdate": "no action",
-					"onDelete": "no action"
+					"onDelete": "cascade",
+					"onUpdate": "no action"
 				}
 			},
 			"compositePrimaryKeys": {},
@@ -285,8 +285,8 @@
 			"uniqueConstraints": {
 				"stock_name_unique": {
 					"name": "stock_name_unique",
-					"columns": ["name"],
-					"nullsNotDistinct": false
+					"nullsNotDistinct": false,
+					"columns": ["name"]
 				}
 			},
 			"policies": {},
@@ -321,20 +321,20 @@
 				"orders_user_id_user_id_fk": {
 					"name": "orders_user_id_user_id_fk",
 					"tableFrom": "orders",
-					"columnsFrom": ["user_id"],
 					"tableTo": "user",
+					"columnsFrom": ["user_id"],
 					"columnsTo": ["id"],
-					"onUpdate": "no action",
-					"onDelete": "no action"
+					"onDelete": "cascade",
+					"onUpdate": "no action"
 				},
 				"orders_product_id_stock_id_fk": {
 					"name": "orders_product_id_stock_id_fk",
 					"tableFrom": "orders",
-					"columnsFrom": ["product_id"],
 					"tableTo": "stock",
+					"columnsFrom": ["product_id"],
 					"columnsTo": ["id"],
-					"onUpdate": "no action",
-					"onDelete": "no action"
+					"onDelete": "no action",
+					"onUpdate": "no action"
 				}
 			},
 			"compositePrimaryKeys": {},
@@ -361,7 +361,7 @@
 				},
 				"expires_at": {
 					"name": "expires_at",
-					"type": "integer",
+					"type": "timestamp",
 					"primaryKey": false,
 					"notNull": true
 				}
@@ -371,11 +371,11 @@
 				"session_user_id_user_id_fk": {
 					"name": "session_user_id_user_id_fk",
 					"tableFrom": "session",
-					"columnsFrom": ["user_id"],
 					"tableTo": "user",
+					"columnsFrom": ["user_id"],
 					"columnsTo": ["id"],
-					"onUpdate": "no action",
-					"onDelete": "no action"
+					"onDelete": "cascade",
+					"onUpdate": "no action"
 				}
 			},
 			"compositePrimaryKeys": {},
@@ -447,8 +447,8 @@
 			"uniqueConstraints": {
 				"user_login_unique": {
 					"name": "user_login_unique",
-					"columns": ["login"],
-					"nullsNotDistinct": false
+					"nullsNotDistinct": false,
+					"columns": ["login"]
 				}
 			},
 			"policies": {},
@@ -458,10 +458,10 @@
 	},
 	"enums": {},
 	"schemas": {},
-	"views": {},
 	"sequences": {},
 	"roles": {},
 	"policies": {},
+	"views": {},
 	"_meta": {
 		"columns": {},
 		"schemas": {},

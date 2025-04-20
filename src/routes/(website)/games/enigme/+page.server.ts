@@ -20,7 +20,7 @@ export const load: PageServerLoad = async (event) => {
 		return {
 			msg,
 			check: check,
-			EnigmeToday : false
+			EnigmeToday: false
 		};
 	}
 	const reponses = await enigme_get_question(Day.getDate(), Day.getMonth());
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		msg,
 		check: check,
-		EnigmeToday : true
+		EnigmeToday: true
 	};
 };
 
