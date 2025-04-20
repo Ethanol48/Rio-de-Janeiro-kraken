@@ -3,7 +3,8 @@ import {
 	enigme_check,
 	enigme_get_question,
 	enigme_vainqueur,
-	getUsername
+	getUsername,
+	HasEnigme
 } from '$lib/server/db/utilities';
 import { date } from 'drizzle-orm/mysql-core';
 import type { Actions, PageServerLoad } from './$types';
@@ -13,6 +14,15 @@ export const load: PageServerLoad = async (event) => {
 	const Day = new Date();
 	let msg = '';
 	let check = false;
+	const isEnigmeToday = await HasEnigme(Day.getDate(), Day.getMonth());
+	if (isEnigmeToday.length === 0) {
+		msg = 'No enigme today!';
+		return {
+			msg,
+			check: check,
+			EnigmeToday : false
+		};
+	}
 	const reponses = await enigme_get_question(Day.getDate(), Day.getMonth());
 	console.log(reponses);
 	if (reponses[1] === true) {
@@ -26,7 +36,8 @@ export const load: PageServerLoad = async (event) => {
 	console.log(msg);
 	return {
 		msg,
-		check: check
+		check: check,
+		EnigmeToday : true
 	};
 };
 

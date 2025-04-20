@@ -21,7 +21,46 @@
 <form method="POST" action="?/check_result">
 	<div class="container">
 		<h1 class="enigme-title after:bg-primary">🔎 Daily Riddle</h1>
+		{#if data.EnigmeToday === false}
+		<br>
+			<h3 style="font-size: 20px; font-weight: bold; text-decoration: underline;">
+				There is no riddle today!
+			</h3>
+			<br>
+			<h1 style="font-size: 36px;">
+				😔
+			</h1>
+			<br><br><br>
+			<div style="margin-left: 2%;">
+				<Dialog.Root>
+					<Dialog.Trigger>
+						<Button class="cursor-pointer" size="sm"><b>How to play❔</b></Button>
+					</Dialog.Trigger>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title>Daily riddle 🔎</Dialog.Title>
+							<Dialog.Description>
+								<br />
+								🌟 <b>You believe yourself clever ?</b> 🌟<br /><br />
+								So prove it!🧠💡 An enigma is waiting for you ... A password is hidden in Epita! 🔎✨<br
+								/><br />
+								Your mission: to find it thanks to the enigma ... 📜🔐<br />
 
+								⚠️ But beware!Every day, he changes campuses! 🎭 <br />
+								📍 One day in <b>Villejuif</b>, another at the <b>Kremlin-Bicêtre</b>… Will you be able to follow the track? 👀👣
+								<br /><br />
+								🚀 The fastest wins the points!🏆 So be ready, go for it and won the victory! 🔥
+								<br /><br />
+								🍀 <strong style="text-decoration: underline;">Good luck !</strong>🍀
+							</Dialog.Description>
+						</Dialog.Header>
+						<Dialog.Close>
+							<Button class="mt-2">Close</Button>
+						</Dialog.Close>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
+		{:else}
 		{#if !confetti}
 			<div class="enigme-box">
 				<p class="enigme-text">
@@ -61,6 +100,8 @@
 			</div>
 			<br />
 			<br />
+			
+			{/if}
 			<div style="margin-left: 2%;">
 				<Dialog.Root>
 					<Dialog.Trigger>

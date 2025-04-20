@@ -43,8 +43,10 @@
 				</div>
 			{/each}
 		</div>
-		{#if data.items.length === 0}
-			<!--
+		{#if data.items.length !== 0}
+		
+
+		
 		<div class="mt-6 flex justify-center">
 			
 				<Button
@@ -83,6 +85,7 @@
 				{/if}
 		</div>
 		-->
+
 		{/if}
 	</div>
 </div>
