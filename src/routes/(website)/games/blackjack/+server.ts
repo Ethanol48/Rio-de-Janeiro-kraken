@@ -419,7 +419,7 @@ function dealerPlay(player_hand: Hand, dealer_hand: Hand, deck: Card[]): State {
 	//console.log('cards of Dealer before:', CardsToString(dealer_hand.cards));
 	//console.log('calculating outcome');
 
-	while (dealerValue < 17) {
+	while (dealerValue < playerValue && dealerValue < 17) {
 		const card = deck.shift()!;
 		dealer_hand.cards.push(card);
 		dealerValue = dealer_hand.sumOfCards();
@@ -438,6 +438,11 @@ function dealerPlay(player_hand: Hand, dealer_hand: Hand, deck: Card[]): State {
 	} else {
 		//console.log('player lost, dealer value: ', dealerValue);
 		//console.log('player value: ', playerValue);
-		return State.PLAYER_LOST;
+
+		if (dealerValue < playerValue) {
+			return State.PLAYER_WON;
+		} else {
+			return State.PLAYER_LOST;
+		}
 	}
 }
